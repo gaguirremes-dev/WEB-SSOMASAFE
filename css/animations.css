@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════
+   SSOMA SAFE — animations.css
+   Estados iniciales GSAP + keyframes CSS
+═══════════════════════════════════════════ */
+
+/* ── Estados iniciales para GSAP (evitan FOUC) ── */
+.hero-badge,
+.hero-headline,
+.hero-sub,
+.hero-ctas,
+.hero-stats,
+.scroll-indicator {
+  opacity: 0;
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Cuando GSAP está listo, quita la clase y anima */
+.gsap-ready .reveal-up,
+.gsap-ready .reveal-left,
+.gsap-ready .reveal-right,
+.gsap-ready .reveal-scale {
+  /* GSAP toma el control, no hace falta CSS aquí */
+}
+
+/* ── Counters ── */
+.counter {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ── Gradiente animado navbar ── */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Pulse ring ── */
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.pulse-ring {
+  position: relative;
+}
+
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--brand-light);
+  animation: pulseRing 1.8s ease-out infinite;
+}
+
+/* ── Floating elements hero ── */
+@keyframes float1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-14px) rotate(3deg); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(-2deg); }
+}
+
+.float-1 { animation: float1 5s ease-in-out infinite; }
+.float-2 { animation: float2 7s ease-in-out infinite; }
+
+/* ── Gradient text animation ── */
+@keyframes gradientText {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient-text {
+  background-size: 200% 200%;
+  animation: gradientText 4s ease infinite;
+}
+
+/* ── Shimmer loading ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+    transparent 25%,
+    rgba(255,255,255,0.15) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Typewriter cursor ── */
+@keyframes blink {
+  0%, 50%  { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.typewriter-cursor::after {
+  content: '|';
+  color: var(--brand-light);
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Section divider ── */
+.wave-divider {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 60px;
+}
+
+/* ── Hover glow ── */
+.glow-on-hover {
+  transition: box-shadow 0.4s ease;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 30px rgba(127, 180, 229, 0.4);
+}
+
+/* ── Spinner ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── Prefers reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-badge,
+  .hero-headline,
+  .hero-sub,
+  .hero-ctas,
+  .hero-stats,
+  .scroll-indicator,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,261 @@
+/* ═══════════════════════════════════════════
+   SSOMA SAFE — style.css
+   Variables, base, componentes, utilidades
+═══════════════════════════════════════════ */
+
+:root {
+  --brand-primary: #003F8C;
+  --brand-light: #7FB4E5;
+  --brand-dark: #1E293B;
+  --brand-gray: #F5F7FA;
+  --white: #FFFFFF;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Manrope', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+
+  --shadow-brand: 0 20px 60px -10px rgba(0, 63, 140, 0.35);
+  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+img, video { display: block; max-width: 100%; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--brand-gray); }
+::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 3px; }
+
+/* ── Selection ── */
+::selection { background: var(--brand-primary); color: white; }
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--brand-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+#navbar {
+  transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease;
+}
+
+#navbar.scrolled {
+  background: rgba(30, 41, 59, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05), var(--shadow-soft);
+}
+
+#navbar.scrolled nav {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--brand-light);
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ── Hamburger ── */
+#menu-btn.open .ham-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+#menu-btn.open .ham-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+#menu-btn.open .ham-line:nth-child(3) {
+  width: 24px;
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero {
+  min-height: 100svh;
+}
+
+#hero-video {
+  transition: transform 8s ease-out;
+}
+
+/* Partículas */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--brand-light);
+  opacity: 0;
+  animation: particleFloat var(--duration) ease-in-out infinite var(--delay);
+}
+
+@keyframes particleFloat {
+  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+  20%  { opacity: 0.3; }
+  80%  { opacity: 0.1; }
+  100% { opacity: 0; transform: translateY(-120px) scale(1); }
+}
+
+/* ═══════════════════════════════════════════
+   SECCIONES GENERALES
+═══════════════════════════════════════════ */
+section {
+  position: relative;
+}
+
+/* ── Cards de servicios ── */
+.service-card {
+  cursor: default;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ── Stat cards ── */
+.stat-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-brand);
+}
+
+/* ── Benefit items ── */
+.benefit-item {
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.benefit-item:hover {
+  transform: translateY(-4px);
+}
+
+/* ── Legal cards ── */
+.legal-card {
+  transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+}
+
+.legal-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ═══════════════════════════════════════════
+   FORMULARIO
+═══════════════════════════════════════════ */
+#contact-form input:invalid:not(:placeholder-shown),
+#contact-form select:invalid:not([value=""]),
+#contact-form textarea:invalid:not(:placeholder-shown) {
+  border-color: #fca5a5;
+}
+
+#contact-form input.error,
+#contact-form select.error,
+#contact-form textarea.error {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+/* ── Loading state ── */
+#contact-form button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL INDICATOR
+═══════════════════════════════════════════ */
+.scroll-indicator {
+  animation: fadeInUp 1s ease 2s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   GLASSMORPHISM UTILS
+═══════════════════════════════════════════ */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero-headline { font-size: clamp(2rem, 6vw, 4rem); }
+}
+
+@media (max-width: 640px) {
+  .hero-headline { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  .hero-sub { font-size: 1rem; }
+}
+
+/* ── Skip to main ── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  background: var(--brand-primary);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  z-index: 9999;
+}

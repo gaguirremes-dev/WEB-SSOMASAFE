@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#003F8C" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/img/favicon-ssoma.jpg" />
+  <link rel="apple-touch-icon" href="assets/img/favicon-ssoma.jpg" />
+
+  <!-- SEO primario -->
+  <title>SSOMA SAFE | Consultoría en Seguridad, Salud Ocupacional y EPPs — Perú</title>
+  <meta name="description" content="SSOMA SAFE: consultoría especializada en Seguridad y Salud en el Trabajo, vigilancia ocupacional, suministro de EPPs certificados y cumplimiento SUNAFIL. Lima y Chiclayo." />
+  <meta name="keywords" content="SSOMA, seguridad industrial, EPP, salud ocupacional, SUNAFIL, IPERC, auditoría SST, Ley 29783, Perú" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.ssomasafe.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.ssomasafe.com/" />
+  <meta property="og:title" content="SSOMA SAFE | Seguridad y Salud Ocupacional Premium" />
+  <meta property="og:description" content="Blindamos la seguridad y continuidad operativa de tu empresa. Consultoría SSOMA, EPPs certificados y cumplimiento normativo." />
+  <meta property="og:image" content="https://www.ssomasafe.com/assets/img/og-image.jpg" />
+  <meta property="og:locale" content="es_PE" />
+  <meta property="og:site_name" content="SSOMA SAFE" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SSOMA SAFE | Consultoría SSOMA Perú" />
+  <meta name="twitter:description" content="Consultoría especializada en SST, vigilancia ocupacional y EPPs certificados." />
+  <meta name="twitter:image" content="https://www.ssomasafe.com/assets/img/og-image.jpg" />
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "SSOMA SAFE",
+    "description": "Consultoría especializada en Seguridad y Salud Ocupacional, vigilancia médica y suministro de EPPs certificados.",
+    "url": "https://www.ssomasafe.com",
+    "email": "info@ssomasafe.com",
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. República de Chile 324",
+        "addressLocality": "Lima",
+        "addressCountry": "PE"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Lapoint 1221",
+        "addressLocality": "Chiclayo",
+        "addressCountry": "PE"
+      }
+    ],
+    "serviceType": ["Consultoría SSOMA", "Suministro EPP", "Vigilancia Ocupacional", "Auditorías SST"],
+    "areaServed": "PE"
+  }
+  </script>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#003F8C',
+              light: '#7FB4E5',
+              dark: '#1E293B',
+              gray: '#F5F7FA',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Manrope', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- CSS propio -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- GSAP + Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js" defer></script>
+</head>
+<body class="bg-white text-brand-dark font-sans antialiased overflow-x-hidden">
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" role="banner">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex items-center justify-between" aria-label="Navegación principal">
+
+      <!-- Logo -->
+      <a href="#hero" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
+        <div class="bg-white rounded-2xl px-3 py-2 shadow-lg group-hover:scale-105 transition-transform duration-300">
+          <img src="assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-10 w-auto object-contain" width="120" height="40" />
+        </div>
+      </a>
+
+      <!-- Nav links — desktop -->
+      <ul class="hidden lg:flex items-center gap-8" role="list">
+        <li><a href="#nosotros" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Nosotros</a></li>
+        <li><a href="#servicios" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Servicios</a></li>
+        <li><a href="#beneficios" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Beneficios</a></li>
+        <li><a href="#legal" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Marco Legal</a></li>
+        <li><a href="#contacto" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Contacto</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Intranet</a></li>
+      </ul>
+
+      <!-- CTA nav -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="https://wa.me/51999999999?text=Hola,%20quiero%20solicitar%20un%20diagnóstico%20SSOMA"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-nav px-5 py-2.5 rounded-xl bg-brand-primary text-white text-sm font-semibold hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-brand-primary/40"
+           aria-label="Contactar por WhatsApp">
+          Solicitar Diagnóstico
+        </a>
+      </div>
+
+      <!-- Hamburger — mobile -->
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="ham-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="ham-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="ham-line block w-4 h-0.5 bg-white transition-all duration-300"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="lg:hidden hidden bg-brand-dark/95 backdrop-blur-xl border-t border-white/10" role="dialog" aria-label="Menú móvil">
+      <ul class="flex flex-col px-6 py-6 gap-4" role="list">
+        <li><a href="#nosotros" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Nosotros</a></li>
+        <li><a href="#servicios" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Servicios</a></li>
+        <li><a href="#beneficios" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Beneficios</a></li>
+        <li><a href="#legal" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Marco Legal</a></li>
+        <li><a href="#contacto" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Contacto</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="text-white/80 hover:text-white font-medium transition-colors">Intranet</a></li>
+        <li>
+          <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer"
+             class="block w-full text-center px-5 py-3 rounded-xl bg-brand-primary text-white font-semibold hover:bg-blue-800 transition-all">
+            Solicitar Diagnóstico
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ═══════════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════════ -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero principal">
+
+      <!-- Video background -->
+      <div class="absolute inset-0 z-0">
+        <video
+          id="hero-video"
+          class="w-full h-full object-cover scale-105"
+          autoplay muted loop playsinline
+          aria-hidden="true"
+          poster="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.png">
+          <source src="assets/video/VIDEO%20HERO.mp4" type="video/mp4" />
+        </video>
+        <!-- Overlay multicapa -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#001f4d]/90 via-[#003F8C]/70 to-[#001a3d]/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#001020]/60 via-transparent to-transparent"></div>
+      </div>
+
+      <!-- Contenido hero -->
+      <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 text-center">
+
+        <!-- Badge -->
+        <div class="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-light/30 bg-white/5 backdrop-blur-sm text-brand-light text-sm font-medium mb-8">
+          <span class="w-2 h-2 rounded-full bg-brand-light animate-pulse"></span>
+          Expertos en Seguridad Industrial — Perú
+        </div>
+
+        <!-- Headline -->
+        <h1 class="hero-headline font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight mb-6 tracking-tight">
+          Blindamos la Seguridad<br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-blue-300">
+            y Continuidad Operativa
+          </span><br />
+          de tu Empresa
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="hero-sub max-w-3xl mx-auto text-white/70 text-lg sm:text-xl leading-relaxed mb-12 font-light">
+          Consultoría especializada SSOMA, vigilancia ocupacional y suministro integral de EPPs certificados.
+          Cumplimiento total con <strong class="text-white font-semibold">SUNAFIL, Ley 29783</strong> y normativa vigente.
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero-ctas flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#contacto"
+             class="cta-primary group relative px-8 py-4 rounded-2xl bg-brand-primary text-white font-bold text-base hover:bg-blue-700 transition-all duration-300 shadow-2xl hover:shadow-brand-primary/50 hover:-translate-y-0.5 flex items-center gap-3"
+             aria-label="Solicitar diagnóstico SSOMA">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Solicitar Diagnóstico
+            <span class="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          </a>
+          <a href="https://wa.me/51999999999?text=Hola,%20quiero%20cotizar%20EPPs%20certificados"
+             target="_blank" rel="noopener noreferrer"
+             class="cta-secondary px-8 py-4 rounded-2xl border border-white/30 text-white font-semibold text-base hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-sm flex items-center gap-3"
+             aria-label="Cotizar equipos de protección">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/>
+            </svg>
+            Cotizar Equipos
+          </a>
+        </div>
+
+        <!-- Stats hero -->
+        <div class="hero-stats mt-16 grid grid-cols-3 gap-6 max-w-xl mx-auto">
+          <div class="text-center">
+            <p class="text-2xl font-display font-bold text-white">+500</p>
+            <p class="text-xs text-white/50 mt-1">Empresas asesoradas</p>
+          </div>
+          <div class="text-center border-x border-white/10">
+            <p class="text-2xl font-display font-bold text-white">98%</p>
+            <p class="text-xs text-white/50 mt-1">Cumplimiento SUNAFIL</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl font-display font-bold text-white">10+</p>
+            <p class="text-xs text-white/50 mt-1">Años de experiencia</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2" aria-hidden="true">
+        <span class="text-white/40 text-xs tracking-widest uppercase">Scroll</span>
+        <div class="w-px h-12 bg-gradient-to-b from-white/40 to-transparent">
+          <div class="scroll-dot w-1 h-1 rounded-full bg-brand-light mx-auto animate-bounce mt-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         QUIÉNES SOMOS
+    ═══════════════════════════════════════════ -->
+    <section id="nosotros" class="relative py-32 bg-white overflow-hidden" aria-labelledby="nosotros-heading">
+      <!-- Decoración fondo -->
+      <div class="absolute top-0 right-0 w-1/2 h-full opacity-5 pointer-events-none" aria-hidden="true"
+           style="background: radial-gradient(ellipse at 80% 50%, #003F8C 0%, transparent 70%);">
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+          <!-- Texto -->
+          <div>
+            <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Quiénes Somos
+            </div>
+            <h2 id="nosotros-heading" class="reveal-up font-display font-extrabold text-4xl lg:text-5xl text-brand-dark leading-tight mb-6">
+              Tu Aliado Estratégico en<br />
+              <span class="text-brand-primary">Seguridad Industrial</span>
+            </h2>
+            <p class="reveal-up text-gray-600 text-lg leading-relaxed mb-6">
+              En <strong class="text-brand-dark">SSOMA SAFE</strong> fusionamos consultoría técnica especializada con el abastecimiento integral de insumos y equipos, bajo los más exigentes estándares nacionales e internacionales.
+            </p>
+            <p class="reveal-up text-gray-600 leading-relaxed mb-8">
+              Nos especializamos en proteger el capital más valioso de tu organización: sus trabajadores. Con enfoque preventivo, cumplimiento normativo y respaldo técnico de primer nivel, somos el partner definitivo para empresas que operan bajo altos estándares de seguridad.
+            </p>
+
+            <!-- Badges -->
+            <div class="reveal-up flex flex-wrap gap-3">
+              <span class="px-4 py-2 rounded-xl bg-brand-gray text-brand-dark text-sm font-medium border border-gray-200">✓ Ley 29783</span>
+              <span class="px-4 py-2 rounded-xl bg-brand-gray text-brand-dark text-sm font-medium border border-gray-200">✓ SUNAFIL</span>
+              <span class="px-4 py-2 rounded-xl bg-brand-gray text-brand-dark text-sm font-medium border border-gray-200">✓ OSHA</span>
+              <span class="px-4 py-2 rounded-xl bg-brand-gray text-brand-dark text-sm font-medium border border-gray-200">✓ ANSI</span>
+              <span class="px-4 py-2 rounded-xl bg-brand-gray text-brand-dark text-sm font-medium border border-gray-200">✓ NTP</span>
+            </div>
+          </div>
+
+          <!-- Imagen + Stats -->
+          <div class="space-y-5">
+            <!-- Imagen principal -->
+            <div class="reveal-up relative rounded-3xl overflow-hidden shadow-2xl shadow-brand-primary/20">
+              <img
+                src="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.png"
+                alt="Ingeniero SSOMA supervisando operaciones en planta industrial"
+                class="w-full h-72 object-cover object-center"
+                loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/60 to-transparent"></div>
+              <div class="absolute bottom-4 left-5 right-5">
+                <p class="text-white/90 text-sm font-medium">Supervisión técnica en campo — SSOMA SAFE</p>
+              </div>
+            </div>
+            <!-- Stats grid -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-primary text-white">
+                <p class="counter text-4xl font-display font-black mb-1" data-target="500">0</p>
+                <p class="text-blue-200 text-sm font-medium">Empresas asesoradas</p>
+              </div>
+              <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-gray border border-gray-200">
+                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="98">0</p>
+                <p class="text-gray-600 text-sm font-medium">% Tasa de cumplimiento</p>
+              </div>
+              <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-gray border border-gray-200">
+                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="10">0</p>
+                <p class="text-gray-600 text-sm font-medium">Años de experiencia</p>
+              </div>
+              <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-dark text-white">
+                <p class="counter text-4xl font-display font-black text-brand-light mb-1" data-target="100">0</p>
+                <p class="text-gray-400 text-sm font-medium">% Respaldo normativo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SERVICIOS
+    ═══════════════════════════════════════════ -->
+    <section id="servicios" class="relative py-32 bg-brand-gray overflow-hidden" aria-labelledby="servicios-heading">
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-20">
+          <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Nuestros Servicios
+          </div>
+          <h2 id="servicios-heading" class="reveal-up font-display font-extrabold text-4xl lg:text-5xl text-brand-dark mb-5">
+            Soluciones Integrales <span class="text-brand-primary">SSOMA</span>
+          </h2>
+          <p class="reveal-up max-w-2xl mx-auto text-gray-500 text-lg">
+            Tres ejes estratégicos diseñados para proteger tu empresa, cumplir la normativa y potenciar la productividad.
+          </p>
+        </div>
+
+        <!-- Eje A: Consultoría -->
+        <div class="mb-16">
+          <h3 class="reveal-up font-display font-bold text-xl text-brand-primary mb-8 flex items-center gap-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-brand-primary text-white text-sm font-black flex items-center justify-center">A</span>
+            Consultoría, Ingeniería y Gestión SSOMA
+          </h3>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <article class="service-card reveal-up group bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+                <svg class="w-7 h-7 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <h4 class="font-display font-bold text-lg text-brand-dark mb-3">Consultoría SST</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">Diseño e implementación de Sistemas de Gestión de SST según Ley 29783 y D.S. 005-2012-TR.</p>
+            </article>
+
+            <article class="service-card reveal-up group bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+                <svg class="w-7 h-7 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <h4 class="font-display font-bold text-lg text-brand-dark mb-3">IPERC y Matrices</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">Identificación de peligros, evaluación y control de riesgos. Mapas de riesgo y planes de contingencia.</p>
+            </article>
+
+            <article class="service-card reveal-up group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="relative h-40 overflow-hidden">
+                <img
+                  src="assets/img/INSPECCIONES%20INDUSTRIALES.png"
+                  alt="Inspecciones industriales SSOMA"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy" />
+                <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-brand-primary/10 transition-colors duration-300"></div>
+              </div>
+              <div class="p-8">
+                <div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center mb-4 group-hover:bg-brand-primary transition-colors duration-300">
+                  <svg class="w-5 h-5 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
+                <h4 class="font-display font-bold text-lg text-brand-dark mb-3">Auditorías SST</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">Auditorías internas y externas de cumplimiento normativo. Diagnóstico previo a inspecciones SUNAFIL.</p>
+              </div>
+            </article>
+
+            <article class="service-card reveal-up group bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+                <svg class="w-7 h-7 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <h4 class="font-display font-bold text-lg text-brand-dark mb-3">Capacitaciones</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">4 capacitaciones mínimas anuales obligatorias. Brigadas de emergencia y formación de Comités SST.</p>
+            </article>
+
+            <article class="service-card reveal-up group bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center mb-6 group-hover:bg-brand-primary group-hover:scale-110 transition-all duration-300">
+                <svg class="w-7 h-7 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h4 class="font-display font-bold text-lg text-brand-dark mb-3">Monitoreos Ocupacionales</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">Monitoreos físicos, químicos, biológicos, ergonómicos y psicosociales. Informes técnicos certificados.</p>
+            </article>
+
+            <article class="service-card reveal-up group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+              <div class="relative h-40 overflow-hidden">
+                <img
+                  src="assets/img/BRIGADAS%20DE%20EMERGENCIA.png"
+                  alt="Brigadas de emergencia SSOMA equipadas"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy" />
+                <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-brand-primary/10 transition-colors duration-300"></div>
+              </div>
+              <div class="p-8">
+                <div class="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center mb-4 group-hover:bg-brand-primary transition-colors duration-300">
+                  <svg class="w-5 h-5 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </div>
+                <h4 class="font-display font-bold text-lg text-brand-dark mb-3">Brigadas de Emergencia</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">Formación, entrenamiento y evaluación de brigadas. Simulacros y planes de respuesta ante emergencias.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Eje B: EPPs + Eje C: Salud -->
+        <div class="grid lg:grid-cols-2 gap-8">
+
+          <!-- EPPs -->
+          <div class="reveal-up relative bg-gradient-to-br from-brand-primary to-[#002a6e] rounded-3xl overflow-hidden text-white">
+            <!-- Imagen de fondo EPP -->
+            <div class="absolute inset-0">
+              <img
+                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.png"
+                alt=""
+                class="w-full h-full object-cover object-center"
+                aria-hidden="true"
+                loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-br from-brand-primary/92 to-[#002a6e]/95"></div>
+            </div>
+            <div class="relative z-10 p-10">
+            <div class="flex items-center gap-3 mb-8">
+              <span class="w-8 h-8 rounded-lg bg-white/20 text-white text-sm font-black flex items-center justify-center">B</span>
+              <h3 class="font-display font-bold text-xl">Suministro Integral de EPPs</h3>
+            </div>
+            <ul class="space-y-4" role="list">
+              <li class="flex items-center gap-3 text-blue-100">
+                <svg class="w-5 h-5 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Cascos, calzado dieléctrico e industrial
+              </li>
+              <li class="flex items-center gap-3 text-blue-100">
+                <svg class="w-5 h-5 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Protección auditiva, visual y respiratoria
+              </li>
+              <li class="flex items-center gap-3 text-blue-100">
+                <svg class="w-5 h-5 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Sistemas anticaídas certificados ANSI/EN
+              </li>
+              <li class="flex items-center gap-3 text-blue-100">
+                <svg class="w-5 h-5 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Señalización NTP 399.010-1 y sistemas LOTO
+              </li>
+              <li class="flex items-center gap-3 text-blue-100">
+                <svg class="w-5 h-5 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Kits de emergencia, botiquines y extintores
+              </li>
+            </ul>
+            <a href="#contacto" class="mt-8 inline-flex items-center gap-2 text-brand-light font-semibold hover:text-white transition-colors group">
+              Cotizar equipos
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+            <!-- Imagen producto EPP -->
+            <div class="mt-8 rounded-2xl overflow-hidden ring-1 ring-white/10">
+              <img
+                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.png"
+                alt="Equipos de protección personal certificados — cascos, protección auditiva, respiratoria y guantes"
+                class="w-full h-44 object-cover object-center hover:scale-105 transition-transform duration-500"
+                loading="lazy" />
+            </div>
+            </div><!-- /relative z-10 -->
+          </div>
+
+          <!-- Salud Ocupacional -->
+          <div class="reveal-up bg-white rounded-3xl p-10 border border-gray-100 shadow-xl">
+            <div class="flex items-center gap-3 mb-8">
+              <span class="w-8 h-8 rounded-lg bg-brand-primary text-white text-sm font-black flex items-center justify-center">C</span>
+              <h3 class="font-display font-bold text-xl text-brand-dark">Salud Ocupacional</h3>
+            </div>
+            <ul class="space-y-4" role="list">
+              <li class="flex items-center gap-3 text-gray-600">
+                <svg class="w-5 h-5 text-brand-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Vigilancia médico-ocupacional integral
+              </li>
+              <li class="flex items-center gap-3 text-gray-600">
+                <svg class="w-5 h-5 text-brand-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                EMO: ingreso, periódicos y retiro
+              </li>
+              <li class="flex items-center gap-3 text-gray-600">
+                <svg class="w-5 h-5 text-brand-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Ergonomía y evaluaciones especializadas
+              </li>
+              <li class="flex items-center gap-3 text-gray-600">
+                <svg class="w-5 h-5 text-brand-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Pausas activas y programas de bienestar
+              </li>
+              <li class="flex items-center gap-3 text-gray-600">
+                <svg class="w-5 h-5 text-brand-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Gestión de enfermedades ocupacionales
+              </li>
+            </ul>
+            <a href="#contacto" class="mt-8 inline-flex items-center gap-2 text-brand-primary font-semibold hover:text-blue-700 transition-colors group">
+              Consultar programa
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         BANNER EQUIPO — Ingenieros en campo
+    ═══════════════════════════════════════════ -->
+    <section class="relative overflow-hidden h-[420px]" aria-label="Equipo SSOMA SAFE en campo">
+      <img
+        src="assets/img/INGENIEROS%20INDUSTRIALES.png"
+        alt="Equipo de ingenieros SSOMA SAFE en planta industrial"
+        class="absolute inset-0 w-full h-full object-cover object-center"
+        loading="lazy" />
+      <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/85 via-brand-dark/50 to-transparent"></div>
+      <div class="relative z-10 h-full flex flex-col justify-center px-8 sm:px-16 max-w-3xl">
+        <p class="reveal-up text-brand-light text-sm font-semibold uppercase tracking-widest mb-4">Nuestro Equipo</p>
+        <h2 class="reveal-up font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-5">
+          Ingenieros certificados,<br />listos para proteger<br />tu empresa
+        </h2>
+        <p class="reveal-up text-white/70 text-lg max-w-md">
+          Operamos en plantas industriales, minería, construcción y manufactura en todo el Perú.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         BENEFICIOS
+    ═══════════════════════════════════════════ -->
+    <section id="beneficios" class="relative py-32 bg-white overflow-hidden" aria-labelledby="beneficios-heading">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-20">
+          <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Beneficios Empresariales
+          </div>
+          <h2 id="beneficios-heading" class="reveal-up font-display font-extrabold text-4xl lg:text-5xl text-brand-dark mb-5">
+            ¿Por qué elegir <span class="text-brand-primary">SSOMA SAFE</span>?
+          </h2>
+          <p class="reveal-up max-w-2xl mx-auto text-gray-500 text-lg">
+            Invertir en seguridad es invertir en la continuidad y productividad de tu empresa.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Reducción de Riesgos</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Minimiza accidentes e incidentes laborales con sistemas de gestión preventivos y protocolos de emergencia efectivos.</p>
+          </div>
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Cumplimiento SUNAFIL</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Evita multas millonarias con documentación al día, protocolos implementados y asesoría legal especializada.</p>
+          </div>
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Protección Legal</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Respaldo jurídico completo con todas las normas vigentes: Ley 29783, D.S. 005-2012-TR, OSHA y normativas internacionales.</p>
+          </div>
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Mayor Productividad</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Ambientes de trabajo seguros reducen el ausentismo y aumentan la eficiencia operativa de tus equipos.</p>
+          </div>
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-yellow-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Continuidad Operativa</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Previene paradas de planta y contingencias que afecten tu operación con planes de emergencia robustos.</p>
+          </div>
+
+          <div class="benefit-item reveal-up flex flex-col gap-4 p-8 rounded-3xl bg-brand-gray border border-gray-100 hover:border-brand-primary/30 hover:shadow-xl transition-all duration-500">
+            <div class="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center">
+              <svg class="w-6 h-6 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-dark">Reporting y Métricas</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Indicadores de gestión, estadísticas de siniestralidad y reportes ejecutivos para la toma de decisiones.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         MARCO LEGAL
+    ═══════════════════════════════════════════ -->
+    <section id="legal" class="relative py-32 bg-brand-dark overflow-hidden" aria-labelledby="legal-heading">
+      <!-- Video de fondo -->
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <video
+          class="w-full h-full object-cover opacity-60"
+          autoplay muted loop playsinline>
+          <source src="assets/video/PARTÍCULAS ATMOSFÉRICAS.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 bg-brand-dark/55"></div>
+      </div>
+      <!-- Decoración radial encima -->
+      <div class="absolute inset-0 z-1 opacity-10 pointer-events-none" aria-hidden="true"
+           style="background-image: radial-gradient(circle at 20% 50%, #7FB4E5 0%, transparent 50%), radial-gradient(circle at 80% 20%, #003F8C 0%, transparent 50%);">
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-20">
+          <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-brand-light text-sm font-semibold mb-6">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+            </svg>
+            Marco Legal y Normativo
+          </div>
+          <h2 id="legal-heading" class="reveal-up font-display font-extrabold text-4xl lg:text-5xl text-white mb-5">
+            Cumplimiento <span class="text-brand-light">100% Legal</span>
+          </h2>
+          <p class="reveal-up max-w-2xl mx-auto text-gray-400 text-lg">
+            Operamos bajo los más estrictos marcos legales peruanos e internacionales.
+          </p>
+        </div>
+
+        <!-- Timeline legal -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">Ley N.° 29783</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Seguridad y Salud en el Trabajo</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Marco legal principal de SST en Perú. Obligatoria para todas las empresas con más de 20 trabajadores.</p>
+          </div>
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">D.S. 005-2012-TR</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Reglamento de la Ley SST</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Reglamento que establece los requisitos mínimos del Sistema de Gestión de SST en organizaciones peruanas.</p>
+          </div>
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">OSHA</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Estándar Internacional</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Normas de la Administración de Seguridad y Salud Ocupacional de EE.UU. adoptadas como referencia global.</p>
+          </div>
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">ANSI / EN</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Homologación de EPPs</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Estándares americanos y europeos para certificación de equipos de protección personal. Todos nuestros EPPs cumplen estas normas.</p>
+          </div>
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">NTP 399.010-1</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Señalización de Seguridad</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Norma Técnica Peruana de señales de seguridad. Colores, símbolos, tamaños y colocación correcta en instalaciones.</p>
+          </div>
+
+          <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
+            <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">Ley N.° 29733</div>
+            <h3 class="font-display font-bold text-xl text-white mb-3">Protección de Datos</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Ley de Protección de Datos Personales. Garantizamos la seguridad y confidencialidad de tu información corporativa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         CTA CORPORATIVO
+    ═══════════════════════════════════════════ -->
+    <section class="relative py-32 bg-gradient-to-br from-brand-primary via-[#0051b4] to-[#002a6e] overflow-hidden" aria-label="Llamado a la acción">
+      <!-- Decoraciones -->
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10"
+             style="background-image: radial-gradient(circle at 30% 50%, white 0%, transparent 60%);">
+        </div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-white/5 translate-x-1/2 translate-y-1/2"></div>
+        <div class="absolute top-0 left-0 w-64 h-64 rounded-full bg-brand-light/10 -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+        <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-brand-light text-sm font-semibold mb-8 border border-white/20">
+          <svg class="w-4 h-4 text-yellow-400 animate-pulse" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Alerta de Cumplimiento
+        </div>
+
+        <h2 class="reveal-up font-display font-extrabold text-4xl lg:text-5xl xl:text-6xl text-white leading-tight mb-8">
+          ¿Tu empresa está preparada<br />
+          para una inspección <span class="text-brand-light">SUNAFIL</span>?
+        </h2>
+        <p class="reveal-up text-white/70 text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+          Las multas por incumplimiento pueden superar las <strong class="text-white">100 UIT</strong>. Un diagnóstico preventivo puede salvar a tu empresa de contingencias millonarias.
+        </p>
+
+        <div class="reveal-up flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#contacto"
+             class="group px-10 py-5 rounded-2xl bg-white text-brand-primary font-bold text-lg hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-300 shadow-2xl flex items-center gap-3"
+             aria-label="Solicitar diagnóstico empresarial">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Solicitar Diagnóstico Empresarial
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         CONTACTO
+    ═══════════════════════════════════════════ -->
+    <section id="contacto" class="relative py-32 bg-white overflow-hidden" aria-labelledby="contacto-heading">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-20">
+
+          <!-- Info -->
+          <div>
+            <div class="reveal-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 text-brand-primary text-sm font-semibold mb-6">
+              Contacto
+            </div>
+            <h2 id="contacto-heading" class="reveal-up font-display font-extrabold text-4xl lg:text-5xl text-brand-dark mb-6">
+              Hablemos de tu<br /><span class="text-brand-primary">Seguridad</span>
+            </h2>
+            <p class="reveal-up text-gray-500 text-lg leading-relaxed mb-10">
+              Nuestro equipo especializado está listo para analizar las necesidades específicas de tu empresa y diseñar una solución a medida.
+            </p>
+
+            <!-- Datos de contacto -->
+            <div class="reveal-up space-y-6">
+              <a href="mailto:info@ssomasafe.com" class="flex items-center gap-4 p-5 rounded-2xl bg-brand-gray hover:bg-brand-primary/5 border border-transparent hover:border-brand-primary/20 transition-all duration-300 group" aria-label="Enviar correo a SSOMA SAFE">
+                <div class="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center group-hover:bg-brand-primary transition-colors flex-shrink-0">
+                  <svg class="w-6 h-6 text-brand-primary group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Correo corporativo</p>
+                  <p class="font-semibold text-brand-dark">info@ssomasafe.com</p>
+                </div>
+              </a>
+
+              <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-5 rounded-2xl bg-brand-gray hover:bg-green-50 border border-transparent hover:border-green-200 transition-all duration-300 group" aria-label="Contactar por WhatsApp">
+                <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center group-hover:bg-green-500 transition-colors flex-shrink-0">
+                  <svg class="w-6 h-6 text-green-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">WhatsApp</p>
+                  <p class="font-semibold text-brand-dark">+51 999 999 999</p>
+                </div>
+              </a>
+
+              <div class="flex items-start gap-4 p-5 rounded-2xl bg-brand-gray border border-transparent">
+                <div class="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Sedes</p>
+                  <p class="font-semibold text-brand-dark text-sm">Lima: Av. República de Chile 324</p>
+                  <p class="font-semibold text-brand-dark text-sm">Chiclayo: Lapoint 1221</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <div class="reveal-up">
+            <form id="contact-form" class="bg-white rounded-3xl p-10 shadow-2xl shadow-gray-200/50 border border-gray-100" novalidate aria-label="Formulario de contacto">
+              <h3 class="font-display font-bold text-2xl text-brand-dark mb-8">Solicitar Diagnóstico</h3>
+
+              <div class="space-y-5">
+                <div>
+                  <label for="nombre" class="block text-sm font-semibold text-brand-dark mb-2">Nombre completo *</label>
+                  <input type="text" id="nombre" name="nombre" required autocomplete="name"
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
+                    placeholder="Ej: Carlos Mendoza" aria-required="true" />
+                  <span class="form-error hidden text-red-500 text-xs mt-1" role="alert">Este campo es obligatorio</span>
+                </div>
+
+                <div>
+                  <label for="empresa" class="block text-sm font-semibold text-brand-dark mb-2">Empresa *</label>
+                  <input type="text" id="empresa" name="empresa" required autocomplete="organization"
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
+                    placeholder="Nombre de tu empresa" aria-required="true" />
+                  <span class="form-error hidden text-red-500 text-xs mt-1" role="alert">Este campo es obligatorio</span>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="email" class="block text-sm font-semibold text-brand-dark mb-2">Correo electrónico *</label>
+                    <input type="email" id="email" name="email" required autocomplete="email"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
+                      placeholder="tu@empresa.com" aria-required="true" />
+                    <span class="form-error hidden text-red-500 text-xs mt-1" role="alert">Correo inválido</span>
+                  </div>
+                  <div>
+                    <label for="telefono" class="block text-sm font-semibold text-brand-dark mb-2">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" autocomplete="tel"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
+                      placeholder="+51 999 999 999" />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="servicio" class="block text-sm font-semibold text-brand-dark mb-2">Servicio de interés *</label>
+                  <select id="servicio" name="servicio" required
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
+                    aria-required="true">
+                    <option value="" disabled selected>Selecciona un servicio</option>
+                    <option value="consultoria-sst">Consultoría SST</option>
+                    <option value="iperc">IPERC y Matrices de Riesgo</option>
+                    <option value="auditoria">Auditoría SST</option>
+                    <option value="epp">Suministro de EPPs</option>
+                    <option value="salud-ocupacional">Salud Ocupacional / EMO</option>
+                    <option value="capacitaciones">Capacitaciones y Brigadas</option>
+                    <option value="otro">Otro / Consulta general</option>
+                  </select>
+                  <span class="form-error hidden text-red-500 text-xs mt-1" role="alert">Selecciona un servicio</span>
+                </div>
+
+                <div>
+                  <label for="mensaje" class="block text-sm font-semibold text-brand-dark mb-2">Mensaje</label>
+                  <textarea id="mensaje" name="mensaje" rows="4"
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all resize-none"
+                    placeholder="Cuéntanos sobre tu empresa y necesidades..."></textarea>
+                </div>
+
+                <button type="submit"
+                  class="w-full py-4 rounded-2xl bg-brand-primary text-white font-bold text-base hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-brand-primary/40 flex items-center justify-center gap-3"
+                  aria-label="Enviar solicitud de diagnóstico">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                  Enviar Solicitud
+                </button>
+
+                <!-- Success message -->
+                <div id="form-success" class="hidden p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm text-center font-medium" role="status" aria-live="polite">
+                  ¡Mensaje enviado! Nos comunicaremos contigo en menos de 24h.
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="bg-brand-dark text-white" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12">
+
+        <!-- Marca -->
+        <div class="lg:col-span-2">
+          <div class="mb-6">
+            <div class="inline-block bg-white rounded-2xl px-3 py-2 shadow-md">
+              <img src="assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-10 w-auto object-contain" width="120" height="40" loading="lazy" />
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
+            Consultoría especializada en Seguridad y Salud Ocupacional, Medio Ambiente e Insumos Industriales. Tu aliado definitivo en cumplimiento normativo.
+          </p>
+          <div class="flex gap-3">
+            <a href="#" class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center hover:bg-brand-primary transition-colors" aria-label="LinkedIn de SSOMA SAFE">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors" aria-label="WhatsApp de SSOMA SAFE">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Servicios -->
+        <div>
+          <h4 class="font-display font-semibold text-sm uppercase tracking-widest text-gray-400 mb-5">Servicios</h4>
+          <ul class="space-y-3" role="list">
+            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Consultoría SST</a></li>
+            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">IPERC y Auditorías</a></li>
+            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Vigilancia Ocupacional</a></li>
+            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Suministro EPPs</a></li>
+            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Capacitaciones</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-display font-semibold text-sm uppercase tracking-widest text-gray-400 mb-5">Legal</h4>
+          <ul class="space-y-3" role="list">
+            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Política de Privacidad</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Términos y Condiciones</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Libro de Reclamaciones</a></li>
+            <li><a href="mailto:info@ssomasafe.com" class="text-gray-400 hover:text-white text-sm transition-colors">info@ssomasafe.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-gray-500 text-sm">© 2026 SSOMA SAFE. Todos los derechos reservados.</p>
+        <p class="text-gray-600 text-xs">RUC: XXXXXXXXXX &nbsp;|&nbsp; Lima & Chiclayo, Perú</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Módulos -->
+  <script src="js/smooth-scroll.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/components.js" defer></script>
+  <script src="js/app.js" defer></script>
+
+</body>
+</html>
