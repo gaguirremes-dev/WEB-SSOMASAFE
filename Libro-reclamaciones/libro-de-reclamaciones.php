@@ -414,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $_SESSION['csrf_token']      = bin2hex(random_bytes(32));
         $_SESSION['reclamo_success'] = $submittedData;
-        header('Location: index.php?ok=1');
+        header('Location: libro-de-reclamaciones.php?ok=1');
         exit;
     }
 }
@@ -667,7 +667,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
 
                     <!-- Cuerpo del formulario -->
                     <div class="p-6 sm:p-8">
-                        <form method="POST" action="index.php" class="space-y-6">
+                        <form method="POST" action="libro-de-reclamaciones.php" class="space-y-6">
                             <input type="hidden" name="csrf_token" value="<?= esc($_SESSION['csrf_token'] ?? '') ?>">
                             <div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
                                 <label for="hp_website">Sitio web (no llenar)</label>
