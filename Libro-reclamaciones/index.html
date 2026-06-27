@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="theme-color" content="#003F8C" />
+  <link rel="icon" type="image/jpeg" href="../assets/img/favicon-ssoma.jpg" />
+  <link rel="apple-touch-icon" href="../assets/img/favicon-ssoma.jpg" />
+
+  <title>Libro de Reclamaciones | SSOMA SAFE — Perú</title>
+  <meta name="description" content="Libro de Reclamaciones Virtual de SSOMA SAFE. Registra tu queja o reclamo conforme al Código de Protección al Consumidor — Ley N.° 29571 — INDECOPI." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.ssomasafe.com/libro-reclamaciones/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#003F8C', light: '#7FB4E5', dark: '#1E293B', gray: '#F5F7FA' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Manrope', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: #F5F7FA; }
+
+    /* ── Form inputs ── */
+    .lr-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 0.75rem;
+      font-size: 0.9375rem;
+      font-family: 'Inter', sans-serif;
+      color: #1E293B;
+      background: #FAFBFC;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .lr-input:focus {
+      border-color: #003F8C;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0,63,140,.12);
+    }
+    .lr-input.is-error {
+      border-color: #EF4444;
+      background: #FFF5F5;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.10);
+    }
+    .lr-input.is-ok {
+      border-color: #16A34A;
+      background: #F0FDF4;
+    }
+    select.lr-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .75rem center; background-size: 1.1rem; padding-right: 2.5rem; }
+
+    /* ── Labels & errors ── */
+    .lr-label { display: block; font-size: .8125rem; font-weight: 600; color: #374151; margin-bottom: .4rem; }
+    .lr-err { display: none; font-size: .75rem; color: #EF4444; margin-top: .3rem; font-weight: 500; align-items: center; gap: .25rem; }
+    .lr-err.show { display: flex; }
+
+    /* ── Toggle buttons (tipo persona / tipo reclamacion) ── */
+    .toggle-btn {
+      flex: 1;
+      padding: .9rem .75rem;
+      border: 2px solid #E2E8F0;
+      border-radius: .875rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      background: #F8FAFC;
+      user-select: none;
+    }
+    .toggle-btn:hover { border-color: #94a3b8; background: #f1f5f9; }
+    .toggle-btn.active-blue { border-color: #003F8C; background: #EFF6FF; }
+    .toggle-btn.active-red  { border-color: #DC2626; background: #FEF2F2; }
+    .toggle-btn.active-amber { border-color: #D97706; background: #FFFBEB; }
+
+    /* ── CAPTCHA box ── */
+    .captcha-wrap { background: linear-gradient(135deg,#F0F7FF,#E8F0FE); border: 1.5px solid #BFDBFE; border-radius: .875rem; padding: 1.25rem 1.5rem; }
+
+    /* ── Upload area ── */
+    .upload-area { border: 2px dashed #CBD5E1; border-radius: .875rem; padding: 1.5rem; text-align: center; cursor: pointer; transition: all .2s; background: #F8FAFC; }
+    .upload-area:hover, .upload-area.has-file { border-color: #003F8C; background: #EFF6FF; }
+    .upload-area.has-file { border-color: #16A34A; background: #F0FDF4; }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%; padding: 1rem 2rem; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #003F8C, #0051b4);
+      color: #fff; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1rem;
+      border-radius: .875rem; transition: all .3s;
+      box-shadow: 0 4px 20px rgba(0,63,140,.35);
+      display: flex; align-items: center; justify-content: center; gap: .75rem;
+    }
+    .btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,63,140,.45); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* ── Custom checkboxes ── */
+    input[type="checkbox"] { accent-color: #003F8C; width: 1.1rem; height: 1.1rem; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── Divider ── */
+    .lr-divider { border: none; height: 1px; background: linear-gradient(90deg,transparent,#E2E8F0,transparent); margin: 1.75rem 0; }
+
+    /* ── Success overlay ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { background: #fff; border-radius: 1.5rem; padding: 2.5rem 2rem; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.2); transform: scale(.9); transition: transform .3s; }
+    .modal-overlay.open .modal-box { transform: scale(1); }
+
+    /* ── Honeypot (invisible, bot trap) ── */
+    .hp { opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 1.25rem; height: 1.25rem; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+
+    /* ── Print ── */
+    @media print {
+      #navbar, .btn-submit, .upload-area, .captcha-wrap { display: none !important; }
+      .modal-overlay { display: none !important; }
+    }
+
+    /* ── Info cards in hero ── */
+    .info-card { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.13); border-radius: 1rem; padding: 1.1rem; }
+
+    /* ── Form card ── */
+    .form-card { background: rgba(255,255,255,.99); border: 1px solid rgba(0,63,140,.07); border-radius: 1.5rem; box-shadow: 0 20px 60px rgba(0,63,140,.09), 0 2px 8px rgba(0,0,0,.04); }
+  </style>
+</head>
+
+<body class="font-sans antialiased overflow-x-hidden">
+
+  <!-- ══════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════ -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/96 backdrop-blur-xl border-b border-white/8" role="banner">
+    <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-3.5 flex items-center justify-between" aria-label="Navegación">
+      <a href="../index.html" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
+        <div class="bg-white rounded-xl px-3 py-1.5 shadow group-hover:scale-105 transition-transform">
+          <img src="../assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-8 w-auto object-contain" width="110" height="32" />
+        </div>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="hidden sm:inline-flex items-center gap-1.5 text-white/65 hover:text-white text-sm font-medium transition-colors">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          Inicio
+        </a>
+        <a href="https://wa.me/51999999999?text=Hola,%20tengo%20una%20consulta%20sobre%20mi%20reclamo"
+           target="_blank" rel="noopener noreferrer"
+           class="px-4 py-2 rounded-xl bg-brand-primary text-white text-sm font-semibold hover:bg-blue-700 transition-all shadow"
+           aria-label="Ayuda por WhatsApp">
+          ¿Necesitas ayuda?
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ══════════════════════════════════
+         HERO
+    ══════════════════════════════════ -->
+    <section class="pt-20" aria-labelledby="lr-title">
+      <div style="background: linear-gradient(135deg,#001f4d 0%,#003F8C 55%,#004db5 100%)" class="relative overflow-hidden pb-16 pt-14">
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div style="background:radial-gradient(ellipse at 75% 30%,rgba(127,180,229,.18) 0%,transparent 60%)" class="absolute inset-0"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-5 lg:px-8 text-center">
+
+          <!-- INDECOPI badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold" style="background:rgba(200,16,46,.15);border:1.5px solid rgba(200,16,46,.35);color:#ff6b7a;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Conforme al Código de Protección al Consumidor — INDECOPI
+          </div>
+
+          <!-- Icon -->
+          <div class="w-18 h-18 mx-auto mb-5 rounded-2xl flex items-center justify-center" style="width:4.5rem;height:4.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);">
+            <svg class="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+
+          <h1 id="lr-title" class="font-display font-extrabold text-4xl sm:text-5xl text-white leading-tight mb-4">
+            Libro de <span class="text-brand-light">Reclamaciones</span>
+          </h1>
+          <p class="text-white/70 text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+            Tu derecho como consumidor. Respondemos en máximo
+            <strong class="text-white">30 días calendario</strong> según la Ley N.° 29571.
+          </p>
+
+          <!-- 3 info cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+            <div class="info-card">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5" style="background:rgba(127,180,229,.2);">
+                <svg class="w-4 h-4 text-brand-light" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <p class="text-white font-semibold text-sm mb-0.5">Respuesta en 30 días</p>
+              <p class="text-white/45 text-xs">Plazo legal establecido por INDECOPI</p>
+            </div>
+            <div class="info-card">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5" style="background:rgba(127,180,229,.2);">
+                <svg class="w-4 h-4 text-brand-light" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              </div>
+              <p class="text-white font-semibold text-sm mb-0.5">100% Confidencial</p>
+              <p class="text-white/45 text-xs">Protegido por la Ley N.° 29733</p>
+            </div>
+            <div class="info-card">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5" style="background:rgba(127,180,229,.2);">
+                <svg class="w-4 h-4 text-brand-light" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              </div>
+              <p class="text-white font-semibold text-sm mb-0.5">Registro inmediato</p>
+              <p class="text-white/45 text-xs">Confirmación al instante por email</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Queja vs Reclamo strip -->
+      <div class="bg-white border-b border-gray-100 py-7">
+        <div class="max-w-4xl mx-auto px-5 lg:px-8">
+          <p class="text-center text-xs text-gray-400 font-semibold uppercase tracking-widest mb-5">¿Cuál es la diferencia?</p>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="flex items-start gap-4 p-5 rounded-2xl bg-blue-50 border border-blue-100">
+              <div class="w-9 h-9 rounded-xl bg-brand-primary flex items-center justify-center flex-shrink-0">
+                <svg class="w-4.5 h-4.5 text-white" style="width:1.1rem;height:1.1rem" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              </div>
+              <div>
+                <p class="font-bold text-brand-primary text-sm mb-1">RECLAMO</p>
+                <p class="text-gray-600 text-sm leading-relaxed">Disconformidad con los <strong>productos o servicios</strong> adquiridos. El proveedor debe dar solución.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-5 rounded-2xl bg-amber-50 border border-amber-100">
+              <div class="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0">
+                <svg class="text-white" style="width:1.1rem;height:1.1rem" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <div>
+                <p class="font-bold text-amber-700 text-sm mb-1">QUEJA</p>
+                <p class="text-gray-600 text-sm leading-relaxed">Disconformidad con la <strong>atención al cliente</strong> o instalaciones. Refleja insatisfacción con el trato.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         FORMULARIO PRINCIPAL
+    ══════════════════════════════════ -->
+    <section class="py-12 px-4 sm:px-6" aria-labelledby="form-title">
+      <div class="max-w-3xl mx-auto">
+
+        <div class="form-card overflow-hidden">
+
+          <!-- Top bar del formulario -->
+          <div style="background:linear-gradient(135deg,#003F8C,#0051b4)" class="p-5 sm:p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(255,255,255,.15);">
+                  <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div>
+                  <h2 id="form-title" class="text-white font-bold text-sm font-display">Registro de Reclamación</h2>
+                  <p class="text-white/55 text-xs mt-0.5">N.° de hoja: <span id="claim-number" class="font-mono text-white/80 font-semibold"></span></p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-white/50 text-xs">Fecha</p>
+                <p id="current-date" class="text-white font-semibold text-sm font-mono"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form body -->
+          <div class="p-6 sm:p-8">
+            <form id="lr-form" novalidate autocomplete="off" aria-label="Formulario de libro de reclamaciones">
+
+              <!-- ░░ HONEYPOT — invisible para humanos, trampa para bots ░░ -->
+              <div class="hp" aria-hidden="true">
+                <label for="hp-website">No completar</label>
+                <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <!-- Tokens de seguridad ocultos -->
+              <input type="hidden" id="sec-token" name="security_token" />
+              <input type="hidden" id="form-ts" name="form_timestamp" />
+
+              <!-- ════ SECCIÓN 1: DATOS DEL CONSUMIDOR ════ -->
+              <div class="mb-7">
+                <div class="flex items-center gap-3 mb-5">
+                  <div class="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white text-xs font-black">1</div>
+                  <h3 class="font-display font-bold text-brand-dark">Datos del Consumidor</h3>
+                </div>
+
+                <!-- Tipo de persona -->
+                <div class="mb-5">
+                  <label class="lr-label">Tipo de persona <span class="text-red-500" aria-label="campo requerido">*</span></label>
+                  <div class="flex gap-3" role="group" aria-label="Tipo de persona">
+                    <button type="button" id="btn-natural" class="toggle-btn active-blue" onclick="setPersona('natural')" aria-pressed="true">
+                      <svg class="w-5 h-5 mx-auto mb-1.5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                      <p class="font-semibold text-xs text-brand-dark">Persona Natural</p>
+                      <p class="text-xs text-gray-400 mt-0.5">DNI / CE</p>
+                    </button>
+                    <button type="button" id="btn-juridica" class="toggle-btn" onclick="setPersona('juridica')" aria-pressed="false">
+                      <svg class="w-5 h-5 mx-auto mb-1.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                      <p class="font-semibold text-xs text-brand-dark">Persona Jurídica</p>
+                      <p class="text-xs text-gray-400 mt-0.5">RUC</p>
+                    </button>
+                  </div>
+                  <input type="hidden" id="tipo-persona" name="tipo_persona" value="natural" />
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <!-- Nombre -->
+                  <div class="sm:col-span-2">
+                    <label for="nombre" class="lr-label"><span id="lbl-nombre">Nombre completo</span> <span class="text-red-500">*</span></label>
+                    <input type="text" id="nombre" name="nombre" class="lr-input" required maxlength="150" placeholder="Ingresa tu nombre completo" autocomplete="name" aria-describedby="err-nombre" />
+                    <p id="err-nombre" class="lr-err" role="alert">
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                      <span>Campo requerido (mínimo 5 caracteres)</span>
+                    </p>
+                  </div>
+
+                  <!-- Documento -->
+                  <div>
+                    <label for="documento" class="lr-label"><span id="lbl-doc">DNI</span> <span class="text-red-500">*</span></label>
+                    <input type="text" id="documento" name="documento" class="lr-input" required maxlength="8" placeholder="00000000" inputmode="numeric" autocomplete="off" aria-describedby="err-doc" />
+                    <p id="err-doc" class="lr-err" role="alert">
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                      <span id="err-doc-txt">DNI inválido (8 dígitos)</span>
+                    </p>
+                  </div>
+
+                  <!-- Teléfono -->
+                  <div>
+                    <label for="telefono" class="lr-label">Teléfono / Celular <span class="text-red-500">*</span></label>
+                    <input type="tel" id="telefono" name="telefono" class="lr-input" required maxlength="9" placeholder="9XX XXX XXX" inputmode="tel" autocomplete="tel" aria-describedby="err-tel" />
+                    <p id="err-tel" class="lr-err" role="alert">
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                      <span>9 dígitos, comenzando por 9</span>
+                    </p>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="sm:col-span-2">
+                    <label for="email" class="lr-label">Correo electrónico <span class="text-red-500">*</span></label>
+                    <input type="email" id="email" name="email" class="lr-input" required maxlength="100" placeholder="tucorreo@ejemplo.com" autocomplete="email" aria-describedby="err-email" />
+                    <p id="err-email" class="lr-err" role="alert">
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                      <span>Correo electrónico inválido</span>
+                    </p>
+                  </div>
+
+                  <!-- Domicilio -->
+                  <div class="sm:col-span-2">
+                    <label for="domicilio" class="lr-label">Domicilio <span class="text-gray-400 font-normal text-xs">(opcional)</span></label>
+                    <input type="text" id="domicilio" name="domicilio" class="lr-input" maxlength="200" placeholder="Av. Ejemplo 123, Lima" autocomplete="street-address" />
+                  </div>
+                </div>
+              </div>
+
+              <hr class="lr-divider" />
+
+              <!-- ════ SECCIÓN 2: DETALLE DEL RECLAMO ════ -->
+              <div class="mb-7">
+                <div class="flex items-center gap-3 mb-5">
+                  <div class="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white text-xs font-black">2</div>
+                  <h3 class="font-display font-bold text-brand-dark">Detalle de la Reclamación</h3>
+                </div>
+
+                <!-- Sede -->
+                <div class="mb-5">
+                  <label for="sede" class="lr-label">Sede / Establecimiento <span class="text-red-500">*</span></label>
+                  <select id="sede" name="sede" class="lr-input" required aria-describedby="err-sede">
+                    <option value="">Selecciona la sede</option>
+                    <option value="Lima - Av. República de Chile 324">Lima — Av. República de Chile 324</option>
+                    <option value="Chiclayo - Lapoint 1221">Chiclayo — Lapoint 1221</option>
+                    <option value="Servicio online / plataforma digital">Servicio online / plataforma digital</option>
+                  </select>
+                  <p id="err-sede" class="lr-err" role="alert">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Selecciona una sede</span>
+                  </p>
+                </div>
+
+                <!-- Tipo reclamo/queja -->
+                <div class="mb-5">
+                  <label class="lr-label">Tipo de reclamación <span class="text-red-500">*</span></label>
+                  <div class="flex gap-3" role="group" aria-label="Tipo de reclamación">
+                    <button type="button" id="btn-reclamo" class="toggle-btn" onclick="setTipo('reclamo')" aria-pressed="false">
+                      <svg class="w-5 h-5 mx-auto mb-1.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      <p class="font-bold text-xs text-brand-dark">RECLAMO</p>
+                      <p class="text-xs text-gray-400 mt-0.5">Producto / servicio</p>
+                    </button>
+                    <button type="button" id="btn-queja" class="toggle-btn" onclick="setTipo('queja')" aria-pressed="false">
+                      <svg class="w-5 h-5 mx-auto mb-1.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                      <p class="font-bold text-xs text-brand-dark">QUEJA</p>
+                      <p class="text-xs text-gray-400 mt-0.5">Atención al cliente</p>
+                    </button>
+                  </div>
+                  <input type="hidden" id="tipo-reclamo" name="tipo_reclamacion" value="" />
+                  <p id="err-tipo" class="lr-err" role="alert" style="display:none;">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Selecciona el tipo de reclamación</span>
+                  </p>
+                </div>
+
+                <!-- Servicio involucrado -->
+                <div class="mb-5">
+                  <label for="servicio" class="lr-label">Servicio o producto involucrado <span class="text-red-500">*</span></label>
+                  <input type="text" id="servicio" name="servicio" class="lr-input" required maxlength="200" placeholder="Ej: Consultoría SST, EPP certificado, Capacitación IPERC..." aria-describedby="err-servicio" />
+                  <p id="err-servicio" class="lr-err" role="alert">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Indica el servicio o producto (mínimo 3 caracteres)</span>
+                  </p>
+                </div>
+
+                <!-- Monto disputado -->
+                <div class="mb-5">
+                  <label for="monto" class="lr-label">Monto reclamado en S/. <span class="text-gray-400 font-normal text-xs">(opcional)</span></label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm pointer-events-none select-none">S/</span>
+                    <input type="number" id="monto" name="monto" class="lr-input" style="padding-left:2.25rem" placeholder="0.00" min="0" max="999999" step="0.01" />
+                  </div>
+                </div>
+
+                <!-- Descripción detallada -->
+                <div class="mb-5">
+                  <label for="descripcion" class="lr-label">Descripción detallada <span class="text-red-500">*</span></label>
+                  <textarea id="descripcion" name="descripcion" class="lr-input resize-none" required rows="5" maxlength="2000" placeholder="Describe con detalle lo ocurrido: fechas, circunstancias, personas involucradas, etc." aria-describedby="err-desc"></textarea>
+                  <div class="flex justify-between mt-1">
+                    <p id="err-desc" class="lr-err" role="alert">
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                      <span>Mínimo 30 caracteres</span>
+                    </p>
+                    <p id="desc-count" class="text-xs text-gray-400 ml-auto">0 / 2000</p>
+                  </div>
+                </div>
+
+                <!-- Pedido del consumidor -->
+                <div class="mb-5">
+                  <label for="pedido" class="lr-label">Pedido del consumidor <span class="text-red-500">*</span></label>
+                  <textarea id="pedido" name="pedido" class="lr-input resize-none" required rows="3" maxlength="1000" placeholder="¿Qué solución esperas? Ej: devolución del pago, reposición del producto..." aria-describedby="err-pedido"></textarea>
+                  <p id="err-pedido" class="lr-err" role="alert">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Mínimo 10 caracteres</span>
+                  </p>
+                </div>
+
+                <!-- Adjunto -->
+                <div>
+                  <label class="lr-label">Evidencia adjunta <span class="text-gray-400 font-normal text-xs">(opcional — JPG, PNG, PDF — máx. 5 MB)</span></label>
+                  <div class="upload-area" id="upload-area" onclick="document.getElementById('evidencia').click()" role="button" tabindex="0" aria-label="Seleccionar archivo de evidencia">
+                    <svg class="w-7 h-7 text-gray-400 mx-auto mb-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <p class="text-sm text-gray-500 font-medium" id="upload-label">Haz clic para subir un archivo</p>
+                    <p class="text-xs text-gray-400 mt-0.5">JPG, PNG, PDF — máx. 5 MB</p>
+                  </div>
+                  <input type="file" id="evidencia" name="evidencia" class="hidden" accept=".jpg,.jpeg,.png,.pdf" aria-label="Archivo de evidencia" />
+                  <p id="err-file" class="lr-err" role="alert">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Formato no válido o archivo mayor a 5 MB</span>
+                  </p>
+                </div>
+              </div>
+
+              <hr class="lr-divider" />
+
+              <!-- ════ SECCIÓN 3: SEGURIDAD Y CONFIRMACIÓN ════ -->
+              <div class="mb-6">
+                <div class="flex items-center gap-3 mb-5">
+                  <div class="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white text-xs font-black">3</div>
+                  <h3 class="font-display font-bold text-brand-dark">Confirmación y Seguridad</h3>
+                </div>
+
+                <!-- CAPTCHA matemático -->
+                <div class="captcha-wrap mb-5">
+                  <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-4.5 h-4.5 text-brand-primary flex-shrink-0" style="width:1.1rem;height:1.1rem" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <p class="text-sm font-semibold text-brand-dark">Verificación de seguridad</p>
+                  </div>
+                  <p class="text-sm text-gray-500 mb-3">Para confirmar que eres una persona, resuelve:</p>
+                  <div class="flex items-center gap-3">
+                    <div class="bg-white rounded-xl px-4 py-2 border border-blue-200 shadow-sm">
+                      <p class="text-brand-primary font-bold text-lg font-mono" id="captcha-q"></p>
+                    </div>
+                    <span class="text-gray-500 font-bold">=</span>
+                    <div style="width:5.5rem">
+                      <input type="number" id="captcha-ans" name="captcha_answer" class="lr-input text-center font-mono text-lg" placeholder="?" inputmode="numeric" autocomplete="off" aria-label="Respuesta a la verificación" aria-describedby="err-captcha" />
+                    </div>
+                    <button type="button" onclick="makeCaptcha()" class="w-9 h-9 rounded-lg bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition-colors flex-shrink-0" aria-label="Nueva pregunta de seguridad" title="Regenerar">
+                      <svg class="w-4 h-4 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </button>
+                  </div>
+                  <p id="err-captcha" class="lr-err mt-2" role="alert">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <span>Respuesta incorrecta. Verifica la operación.</span>
+                  </p>
+                </div>
+
+                <!-- Checkbox: autorización datos -->
+                <label class="flex items-start gap-3 cursor-pointer mb-3" for="chk-datos">
+                  <input type="checkbox" id="chk-datos" name="autorizo_datos" required aria-describedby="err-datos" />
+                  <p class="text-sm text-gray-600 leading-relaxed">
+                    Autorizo el tratamiento de mis datos personales conforme a la
+                    <a href="#" class="text-brand-primary hover:underline font-medium">Política de Privacidad</a>
+                    de SSOMA SAFE y a la Ley N.° 29733. <span class="text-red-500">*</span>
+                  </p>
+                </label>
+                <p id="err-datos" class="lr-err mb-4" role="alert">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                  <span>Debes aceptar el tratamiento de datos para continuar</span>
+                </p>
+
+                <!-- Checkbox: declaración jurada -->
+                <label class="flex items-start gap-3 cursor-pointer" for="chk-veracidad">
+                  <input type="checkbox" id="chk-veracidad" name="declaro_veracidad" required aria-describedby="err-veracidad" />
+                  <p class="text-sm text-gray-600 leading-relaxed">
+                    Declaro bajo juramento que la información proporcionada es verídica. Entiendo que proporcionar datos falsos puede tener consecuencias legales. <span class="text-red-500">*</span>
+                  </p>
+                </label>
+                <p id="err-veracidad" class="lr-err mt-2" role="alert">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                  <span>Debes confirmar la veracidad de la información</span>
+                </p>
+              </div>
+
+              <!-- Rate limit alert -->
+              <div id="rate-msg" class="hidden mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <p class="text-amber-800 text-sm font-medium">Límite de registros alcanzado para esta sesión. Contáctanos directamente si necesitas más ayuda.</p>
+                </div>
+              </div>
+
+              <!-- Global validation error -->
+              <div id="global-err" class="hidden mb-4 p-4 rounded-xl bg-red-50 border border-red-200" role="alert" aria-live="assertive">
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <p class="text-red-800 text-sm font-medium">Por favor revisa los campos marcados e inténtalo nuevamente.</p>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" id="btn-submit" class="btn-submit mt-2" aria-label="Registrar reclamación">
+                <span id="btn-icon-wrap">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                </span>
+                <span id="btn-label">Registrar Reclamación</span>
+              </button>
+
+              <p class="text-center text-xs text-gray-400 mt-4 leading-relaxed">
+                Al enviar, SSOMA SAFE registrará tu reclamación conforme a la Ley N.° 29571.
+                Respuesta máxima en <strong class="text-gray-500">30 días calendario</strong>.
+              </p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Aviso INDECOPI -->
+        <div class="mt-5 flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-100 shadow-sm">
+          <img src="../Libro-reclamaciones/AvisoVirtual_page1.png" alt="Aviso Libro de Reclamaciones INDECOPI" class="h-14 w-auto object-contain flex-shrink-0" />
+          <div>
+            <p class="font-bold text-brand-dark text-sm">Contamos con Libro de Reclamaciones Virtual</p>
+            <p class="text-xs text-gray-500 leading-relaxed mt-0.5">Conforme al Art. 150° del Código de Protección y Defensa del Consumidor — Ley N.° 29571</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer class="bg-brand-dark py-14 mt-8" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <div class="inline-block bg-white rounded-2xl px-3 py-2 shadow-md mb-5">
+            <img src="../assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-9 w-auto object-contain" width="110" height="36" loading="lazy" />
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed max-w-xs">Consultoría en Seguridad y Salud Ocupacional, Medio Ambiente e Insumos Industriales.</p>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-xs uppercase tracking-widest text-gray-400 mb-4">Servicios</h4>
+          <ul class="space-y-2.5" role="list">
+            <li><a href="../index.html#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Consultoría SST</a></li>
+            <li><a href="../index.html#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">IPERC y Auditorías</a></li>
+            <li><a href="../index.html#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Vigilancia Ocupacional</a></li>
+            <li><a href="../index.html#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Suministro EPPs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-xs uppercase tracking-widest text-gray-400 mb-4">Legal</h4>
+          <ul class="space-y-2.5" role="list">
+            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Política de Privacidad</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Términos y Condiciones</a></li>
+            <li><a href="../Libro-reclamaciones/" class="text-white text-sm font-semibold">Libro de Reclamaciones</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display font-semibold text-xs uppercase tracking-widest text-gray-400 mb-4">Contacto</h4>
+          <ul class="space-y-2.5" role="list">
+            <li><a href="mailto:info@ssomasafe.com" class="text-gray-400 hover:text-white text-sm transition-colors">info@ssomasafe.com</a></li>
+            <li><a href="https://wa.me/51999999999" target="_blank" rel="noopener" class="text-gray-400 hover:text-white text-sm transition-colors">+51 999 999 999</a></li>
+            <li class="text-gray-500 text-sm">Lima — Av. República de Chile 324</li>
+            <li class="text-gray-500 text-sm">Chiclayo — Lapoint 1221</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 pt-7 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-gray-500 text-sm">© 2026 SSOMA SAFE. Todos los derechos reservados.</p>
+        <p class="text-gray-600 text-xs">RUC: XXXXXXXXXX &nbsp;|&nbsp; Lima & Chiclayo, Perú</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════
+       MODAL DE ÉXITO
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-green-100 flex items-center justify-center">
+        <svg class="w-9 h-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3 id="modal-title" class="font-display font-extrabold text-2xl text-brand-dark mb-1">¡Reclamación Registrada!</h3>
+      <p class="text-gray-500 text-sm mb-1">N.° de seguimiento: <strong id="modal-num" class="font-mono text-brand-primary"></strong></p>
+      <p class="text-gray-600 text-sm leading-relaxed mb-5">
+        Hemos recibido tu reclamación. Recibirás confirmación en tu correo y daremos respuesta en máximo <strong>30 días calendario</strong> conforme a la Ley N.° 29571.
+      </p>
+      <div class="bg-brand-gray rounded-xl p-4 mb-5 text-left">
+        <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-2">Próximos pasos</p>
+        <ul class="space-y-2">
+          <li class="flex items-center gap-2 text-sm text-gray-600">
+            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Revisa tu correo para la confirmación
+          </li>
+          <li class="flex items-center gap-2 text-sm text-gray-600">
+            <svg class="w-4 h-4 text-brand-light flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Respuesta en máx. 30 días hábiles
+          </li>
+          <li class="flex items-center gap-2 text-sm text-gray-600">
+            <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/></svg>
+            Puedes contactarnos por WhatsApp
+          </li>
+        </ul>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeModal()" class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-brand-dark font-semibold text-sm hover:bg-gray-50 transition-colors">Cerrar</button>
+        <a href="https://wa.me/51999999999" target="_blank" rel="noopener noreferrer" class="flex-1 px-4 py-2.5 rounded-xl bg-green-600 text-white font-semibold text-sm hover:bg-green-700 transition-colors text-center flex items-center justify-center">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       JAVASCRIPT — Seguridad + UX
+  ══════════════════════════════════ -->
+  <script>
+  /* ═══════════════════════════════════════════════════
+     SSOMA SAFE — Libro de Reclamaciones
+     Seguridad: Honeypot · Timing · Rate-limit · CAPTCHA
+     · Sanitización · Double-submit · Validación inline
+  ═══════════════════════════════════════════════════ */
+
+  // ── Estado global ────────────────────────────────
+  let captchaAns   = 0;
+  let loadTime     = Date.now();
+  let personaMode  = 'natural';   // 'natural' | 'juridica'
+  let tipoMode     = '';          // 'reclamo' | 'queja'
+  const MAX_SUBS   = 3;
+  const MIN_MS     = 3000;        // 3 s mínimo antes de enviar
+
+  // ── Seguridad: generar token UUID v4 ────────────
+  function uid() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+  }
+
+  // ── N.° de hoja ──────────────────────────────────
+  function claimNum() {
+    const d = new Date();
+    const p = n => String(n).padStart(2,'0');
+    return `LR-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.floor(Math.random()*9000)+1000}`;
+  }
+
+  // ── CAPTCHA matemático ───────────────────────────
+  function makeCaptcha() {
+    const ops = ['+', '-', 'x'];
+    const op  = ops[Math.floor(Math.random() * ops.length)];
+    let a, b, r;
+    if (op === '+') { a = rand(1,20); b = rand(1,20); r = a+b; }
+    else if (op==='-') { a = rand(10,30); b = rand(1,a-1); r = a-b; }
+    else { a = rand(2,9); b = rand(2,9); r = a*b; }
+    captchaAns = r;
+    document.getElementById('captcha-q').textContent = `${a} ${op} ${b}`;
+    document.getElementById('captcha-ans').value = '';
+    hide('err-captcha');
+  }
+  function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+  // ── Tipo persona ─────────────────────────────────
+  function setPersona(t) {
+    personaMode = t;
+    document.getElementById('tipo-persona').value = t;
+    const nat = document.getElementById('btn-natural');
+    const jur = document.getElementById('btn-juridica');
+    if (t === 'natural') {
+      nat.className = 'toggle-btn active-blue'; nat.setAttribute('aria-pressed','true');
+      jur.className = 'toggle-btn';             jur.setAttribute('aria-pressed','false');
+      document.getElementById('lbl-nombre').textContent = 'Nombre completo';
+      document.getElementById('nombre').placeholder = 'Ingresa tu nombre completo';
+      document.getElementById('lbl-doc').textContent = 'DNI';
+      const d = document.getElementById('documento');
+      d.placeholder = '00000000'; d.maxLength = 8;
+    } else {
+      jur.className = 'toggle-btn active-blue'; jur.setAttribute('aria-pressed','true');
+      nat.className = 'toggle-btn';             nat.setAttribute('aria-pressed','false');
+      document.getElementById('lbl-nombre').textContent = 'Razón social';
+      document.getElementById('nombre').placeholder = 'Ingresa la razón social';
+      document.getElementById('lbl-doc').textContent = 'RUC';
+      const d = document.getElementById('documento');
+      d.placeholder = '00000000000'; d.maxLength = 11;
+    }
+    hide('err-doc');
+    document.getElementById('documento').value = '';
+  }
+
+  // ── Tipo reclamo/queja ───────────────────────────
+  function setTipo(t) {
+    tipoMode = t;
+    document.getElementById('tipo-reclamo').value = t;
+    const r = document.getElementById('btn-reclamo');
+    const q = document.getElementById('btn-queja');
+    r.className = 'toggle-btn'; r.setAttribute('aria-pressed','false');
+    q.className = 'toggle-btn'; q.setAttribute('aria-pressed','false');
+    if (t === 'reclamo') { r.className='toggle-btn active-red'; r.setAttribute('aria-pressed','true'); }
+    else                 { q.className='toggle-btn active-amber'; q.setAttribute('aria-pressed','true'); }
+    document.getElementById('err-tipo').style.display = 'none';
+  }
+
+  // ── Error helpers ────────────────────────────────
+  function show(id) {
+    const el = document.getElementById(id);
+    if (el) { el.classList.add('show'); el.style.display='flex'; }
+  }
+  function hide(id) {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('show'); el.style.display='none'; }
+  }
+  function mark(id, state) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('is-error','is-ok');
+    if (state) el.classList.add(state);
+  }
+
+  // ── Rate limiting (sessionStorage) ───────────────
+  function rateOk() {
+    const now   = Date.now();
+    const last  = parseInt(sessionStorage.getItem('lr_ts') || '0');
+    const count = parseInt(sessionStorage.getItem('lr_n')  || '0');
+    if (now - last > 3_600_000) { sessionStorage.setItem('lr_n','0'); return true; }
+    if (count >= MAX_SUBS) {
+      document.getElementById('rate-msg').classList.remove('hidden');
+      document.getElementById('btn-submit').disabled = true;
+      return false;
+    }
+    return true;
+  }
+  function rateBump() {
+    const c = parseInt(sessionStorage.getItem('lr_n') || '0');
+    sessionStorage.setItem('lr_n', String(c+1));
+    sessionStorage.setItem('lr_ts', String(Date.now()));
+  }
+
+  // ── Sanitización XSS ────────────────────────────
+  function clean(s) {
+    return String(s).replace(/[<>"'`]/g, c =>
+      ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
+  }
+
+  // ── Validación completa ──────────────────────────
+  function validate() {
+    let ok = true;
+
+    // Honeypot
+    if (document.getElementById('hp-website').value.trim() !== '') return false;
+
+    // Timing check (bot submit demasiado rápido)
+    if (Date.now() - loadTime < MIN_MS) return false;
+
+    // Nombre
+    const nom = document.getElementById('nombre').value.trim();
+    if (nom.length < 5 || nom.length > 150) { show('err-nombre'); mark('nombre','is-error'); ok=false; }
+    else { hide('err-nombre'); mark('nombre','is-ok'); }
+
+    // Documento
+    const doc = document.getElementById('documento').value.trim();
+    if (personaMode === 'natural') {
+      if (!/^\d{8}$/.test(doc)) {
+        document.getElementById('err-doc-txt').textContent = 'DNI inválido (8 dígitos exactos)';
+        show('err-doc'); mark('documento','is-error'); ok=false;
+      } else { hide('err-doc'); mark('documento','is-ok'); }
+    } else {
+      if (!/^\d{11}$/.test(doc)) {
+        document.getElementById('err-doc-txt').textContent = 'RUC inválido (11 dígitos exactos)';
+        show('err-doc'); mark('documento','is-error'); ok=false;
+      } else { hide('err-doc'); mark('documento','is-ok'); }
+    }
+
+    // Teléfono
+    const tel = document.getElementById('telefono').value.trim().replace(/\s/g,'');
+    if (!/^9\d{8}$/.test(tel)) { show('err-tel'); mark('telefono','is-error'); ok=false; }
+    else { hide('err-tel'); mark('telefono','is-ok'); }
+
+    // Email
+    const em = document.getElementById('email').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { show('err-email'); mark('email','is-error'); ok=false; }
+    else { hide('err-email'); mark('email','is-ok'); }
+
+    // Sede
+    if (!document.getElementById('sede').value) { show('err-sede'); mark('sede','is-error'); ok=false; }
+    else { hide('err-sede'); mark('sede','is-ok'); }
+
+    // Tipo reclamo
+    if (!tipoMode) { document.getElementById('err-tipo').style.display='flex'; ok=false; }
+    else           { document.getElementById('err-tipo').style.display='none'; }
+
+    // Servicio
+    const srv = document.getElementById('servicio').value.trim();
+    if (srv.length < 3 || srv.length > 200) { show('err-servicio'); mark('servicio','is-error'); ok=false; }
+    else { hide('err-servicio'); mark('servicio','is-ok'); }
+
+    // Descripción
+    const dsc = document.getElementById('descripcion').value.trim();
+    if (dsc.length < 30 || dsc.length > 2000) { show('err-desc'); mark('descripcion','is-error'); ok=false; }
+    else { hide('err-desc'); mark('descripcion','is-ok'); }
+
+    // Pedido
+    const ped = document.getElementById('pedido').value.trim();
+    if (ped.length < 10 || ped.length > 1000) { show('err-pedido'); mark('pedido','is-error'); ok=false; }
+    else { hide('err-pedido'); mark('pedido','is-ok'); }
+
+    // CAPTCHA
+    const cap = parseInt(document.getElementById('captcha-ans').value);
+    if (isNaN(cap) || cap !== captchaAns) { show('err-captcha'); mark('captcha-ans','is-error'); ok=false; }
+    else { hide('err-captcha'); mark('captcha-ans','is-ok'); }
+
+    // Checkboxes
+    if (!document.getElementById('chk-datos').checked)     { show('err-datos');    ok=false; } else { hide('err-datos'); }
+    if (!document.getElementById('chk-veracidad').checked) { show('err-veracidad');ok=false; } else { hide('err-veracidad'); }
+
+    // Archivo adjunto (si lo hay)
+    const fi = document.getElementById('evidencia');
+    if (fi.files.length > 0) {
+      const f = fi.files[0];
+      const allowed = ['image/jpeg','image/png','application/pdf'];
+      if (f.size > 5*1024*1024 || !allowed.includes(f.type)) { show('err-file'); ok=false; }
+      else { hide('err-file'); }
+    }
+
+    return ok;
+  }
+
+  // ── Submit handler ───────────────────────────────
+  document.getElementById('lr-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (!rateOk()) return;
+
+    if (!validate()) {
+      document.getElementById('global-err').classList.remove('hidden');
+      // Scroll to first visible error
+      const first = document.querySelector('.lr-err.show, .lr-err[style*="flex"]');
+      if (first) first.scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
+    document.getElementById('global-err').classList.add('hidden');
+
+    // Anti double-submit
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    document.getElementById('btn-label').textContent = 'Enviando...';
+    document.getElementById('btn-icon-wrap').innerHTML =
+      '<div class="spinner"></div>';
+
+    // ── Aquí conectar el endpoint real (Formspree / EmailJS / backend) ──
+    // Ejemplo Formspree: fetch('https://formspree.io/f/YOUR_FORM_ID', {...})
+    // Por ahora simula el envío con un delay:
+    setTimeout(() => {
+      rateBump();
+      openModal();
+      resetForm();
+      btn.disabled = false;
+      document.getElementById('btn-label').textContent = 'Registrar Reclamación';
+      document.getElementById('btn-icon-wrap').innerHTML =
+        '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+    }, 1800);
+  });
+
+  // ── Reset del formulario ─────────────────────────
+  function resetForm() {
+    document.getElementById('lr-form').reset();
+    tipoMode = '';
+    document.getElementById('btn-reclamo').className='toggle-btn';
+    document.getElementById('btn-queja').className='toggle-btn';
+    document.getElementById('btn-reclamo').setAttribute('aria-pressed','false');
+    document.getElementById('btn-queja').setAttribute('aria-pressed','false');
+    document.querySelectorAll('.lr-input').forEach(el => el.classList.remove('is-error','is-ok'));
+    document.getElementById('upload-area').classList.remove('has-file');
+    document.getElementById('upload-label').textContent = 'Haz clic para subir un archivo';
+    document.getElementById('desc-count').textContent = '0 / 2000';
+    setPersona('natural');
+    makeCaptcha();
+    loadTime = Date.now();
+    // Regenerar tokens
+    document.getElementById('sec-token').value = uid();
+    document.getElementById('form-ts').value   = String(loadTime);
+    document.getElementById('claim-number').textContent = claimNum();
+  }
+
+  // ── Modal ────────────────────────────────────────
+  function openModal() {
+    document.getElementById('modal-num').textContent = document.getElementById('claim-number').textContent;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+  document.getElementById('modal').addEventListener('click', e => { if (e.target===document.getElementById('modal')) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
+
+  // ── Contador de caracteres en descripción ────────
+  document.getElementById('descripcion').addEventListener('input', function() {
+    document.getElementById('desc-count').textContent = `${this.value.length} / 2000`;
+  });
+
+  // ── Solo dígitos en campos numéricos ────────────
+  ['documento','telefono'].forEach(id =>
+    document.getElementById(id).addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g,'');
+    })
+  );
+
+  // ── Validación inline en blur ────────────────────
+  document.getElementById('nombre').addEventListener('blur', function() {
+    if (this.value.trim().length < 5) { show('err-nombre'); mark('nombre','is-error'); }
+    else { hide('err-nombre'); mark('nombre','is-ok'); }
+  });
+  document.getElementById('email').addEventListener('blur', function() {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.value.trim())) { show('err-email'); mark('email','is-error'); }
+    else { hide('err-email'); mark('email','is-ok'); }
+  });
+  document.getElementById('documento').addEventListener('blur', function() {
+    const v = this.value.trim();
+    const valid = personaMode==='natural' ? /^\d{8}$/.test(v) : /^\d{11}$/.test(v);
+    if (!valid) { show('err-doc'); mark('documento','is-error'); }
+    else { hide('err-doc'); mark('documento','is-ok'); }
+  });
+  document.getElementById('telefono').addEventListener('blur', function() {
+    if (!/^9\d{8}$/.test(this.value.trim())) { show('err-tel'); mark('telefono','is-error'); }
+    else { hide('err-tel'); mark('telefono','is-ok'); }
+  });
+
+  // ── File upload UI ────────────────────────────────
+  document.getElementById('evidencia').addEventListener('change', function() {
+    const area = document.getElementById('upload-area');
+    const lbl  = document.getElementById('upload-label');
+    if (!this.files.length) return;
+    const f = this.files[0];
+    const ok = f.size <= 5*1024*1024 && ['image/jpeg','image/png','application/pdf'].includes(f.type);
+    if (ok) {
+      area.classList.add('has-file');
+      lbl.textContent = `✓ ${f.name} (${(f.size/1024).toFixed(0)} KB)`;
+      hide('err-file');
+    } else {
+      area.classList.remove('has-file');
+      lbl.textContent = 'Haz clic para subir un archivo';
+      show('err-file');
+      this.value = '';
+    }
+  });
+  document.getElementById('upload-area').addEventListener('keydown', e => {
+    if (e.key==='Enter'||e.key===' ') { e.preventDefault(); document.getElementById('evidencia').click(); }
+  });
+
+  // ── Init ─────────────────────────────────────────
+  (function init() {
+    // Tokens de seguridad
+    document.getElementById('sec-token').value = uid();
+    document.getElementById('form-ts').value   = String(loadTime);
+
+    // N.° de hoja y fecha
+    const num = claimNum();
+    document.getElementById('claim-number').textContent = num;
+    document.getElementById('modal-num').textContent    = num;
+
+    const now = new Date();
+    document.getElementById('current-date').textContent =
+      now.toLocaleDateString('es-PE', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+    // CAPTCHA inicial
+    makeCaptcha();
+
+    // Verificar rate limit al cargar
+    rateOk();
+
+    // Estado inicial persona
+    setPersona('natural');
+  })();
+  </script>
+
+</body>
+</html>

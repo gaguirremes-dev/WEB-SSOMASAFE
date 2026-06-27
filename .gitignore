@@ -1,0 +1,44 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Claude Code
+.claude/
+
+# Variables de entorno
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
+logs/
+
+# Dependencias (si en el futuro se agrega Node)
+node_modules/
+npm-debug.log*
+
+# Build output (si en el futuro se compila Tailwind)
+dist/
+build/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Assets originales / sin comprimir (carpeta de trabajo local)
+assets/img/originales/
+assets/img/raw/
+
+# Libro de Reclamaciones (credenciales y registros)
+config.smtp.php
+Libro-reclamaciones/reclamaciones/
