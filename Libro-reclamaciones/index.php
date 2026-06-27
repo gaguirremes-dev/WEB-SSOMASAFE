@@ -11,23 +11,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 date_default_timezone_set('America/Lima');
 
-define('DOMINIO_PERMITIDO',   'ssomasafe.com');
-define('EMPRESA_RAZON_SOCIAL','SSOMA SAFE S.A.C.');
-define('EMPRESA_RUC',         'XXXXXXXXXX');
-define('EMPRESA_DIRECCION',   'Av. República de Chile 324, Lima / Lapoint 1221, Chiclayo');
-define('EMPRESA_EMAIL',       'info@ssomasafe.com');
-
 $smtpConfigFile = __DIR__ . '/../config.smtp.php';
 if (file_exists($smtpConfigFile)) require $smtpConfigFile;
 
-if (!defined('SMTP_PORT'))           define('SMTP_PORT',           465);
-if (!defined('SMTP_FROM_NAME'))      define('SMTP_FROM_NAME',      'SSOMA SAFE');
-if (!defined('EMPRESA_NOTIF_EMAIL')) define('EMPRESA_NOTIF_EMAIL', 'reclamaciones@ssomasafe.com');
-
-define('RATE_LIMIT_MAX',    1);
-define('RATE_LIMIT_WINDOW', 1800);
-if (!defined('HCAPTCHA_SITE_KEY'))   define('HCAPTCHA_SITE_KEY',   '');
-if (!defined('HCAPTCHA_SECRET_KEY')) define('HCAPTCHA_SECRET_KEY', '');
+if (!defined('DOMINIO_PERMITIDO'))    define('DOMINIO_PERMITIDO',    'ssomasafe.com');
+if (!defined('EMPRESA_RAZON_SOCIAL')) define('EMPRESA_RAZON_SOCIAL', 'SSOMA SAFE S.A.C.');
+if (!defined('EMPRESA_RUC'))          define('EMPRESA_RUC',          'XXXXXXXXXX');
+if (!defined('EMPRESA_DIRECCION'))    define('EMPRESA_DIRECCION',    'Av. República de Chile 324, Lima / Lapoint 1221, Chiclayo');
+if (!defined('EMPRESA_EMAIL'))        define('EMPRESA_EMAIL',        'info@ssomasafe.com');
+if (!defined('SMTP_PORT'))            define('SMTP_PORT',            465);
+if (!defined('SMTP_FROM_NAME'))       define('SMTP_FROM_NAME',       'SSOMA SAFE');
+if (!defined('EMPRESA_NOTIF_EMAIL'))  define('EMPRESA_NOTIF_EMAIL',  'reclamaciones@ssomasafe.com');
+if (!defined('RATE_LIMIT_MAX'))       define('RATE_LIMIT_MAX',       1);
+if (!defined('RATE_LIMIT_WINDOW'))    define('RATE_LIMIT_WINDOW',    1800);
+if (!defined('HCAPTCHA_SITE_KEY'))    define('HCAPTCHA_SITE_KEY',    '');
+if (!defined('HCAPTCHA_SECRET_KEY'))  define('HCAPTCHA_SECRET_KEY',  '');
 
 $recordsDir  = __DIR__ . '/reclamaciones';
 $recordsFile = $recordsDir . '/records.json';
