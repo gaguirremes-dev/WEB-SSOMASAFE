@@ -27,6 +27,11 @@ if (!defined('RATE_LIMIT_WINDOW'))    define('RATE_LIMIT_WINDOW',    1800);
 if (!defined('HCAPTCHA_SITE_KEY'))    define('HCAPTCHA_SITE_KEY',    '');
 if (!defined('HCAPTCHA_SECRET_KEY'))  define('HCAPTCHA_SECRET_KEY',  '');
 
+/* El RUC del config solo manda si es un RUC real de 11 digitos: un documento
+   legal no puede mostrar un placeholder */
+define('EMPRESA_RUC_PUBLICO', preg_match('/^[0-9]{11}$/', (string) EMPRESA_RUC) ? EMPRESA_RUC : '20607018287');
+
+
 $recordsDir  = __DIR__ . '/reclamaciones';
 $recordsFile = $recordsDir . '/records.json';
 $lockFile    = $recordsDir . '/records.lock';
@@ -80,7 +85,7 @@ function generarPDFReclamo(array $d): string {
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(0, 6, $c('PROVEEDOR'), 0, 1, 'L', true);
     $pdf->SetFont('Arial', '', 9);
-    $pdf->MultiCell(0, 5, $c('Razon Social: ' . EMPRESA_RAZON_SOCIAL . '   RUC: ' . EMPRESA_RUC), 0, 'L');
+    $pdf->MultiCell(0, 5, $c('Razon Social: ' . EMPRESA_RAZON_SOCIAL . '   RUC: ' . EMPRESA_RUC_PUBLICO), 0, 'L');
     $pdf->MultiCell(0, 5, $c('Domicilio: ' . EMPRESA_DIRECCION), 0, 'L');
     $pdf->Ln(2);
 
@@ -538,7 +543,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-500 border-b border-gray-100 pb-4 mb-4">
                 <div><span class="block font-bold text-gray-700 mb-0.5">Proveedor:</span><?= EMPRESA_RAZON_SOCIAL ?></div>
-                <div><span class="block font-bold text-gray-700 mb-0.5">RUC:</span><?= EMPRESA_RUC ?></div>
+                <div><span class="block font-bold text-gray-700 mb-0.5">RUC:</span><?= EMPRESA_RUC_PUBLICO ?></div>
                 <div class="md:col-span-2"><span class="block font-bold text-gray-700 mb-0.5">Domicilio Fiscal:</span><?= EMPRESA_DIRECCION ?></div>
             </div>
 
@@ -869,7 +874,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                     </div>
                     <div>
                         <span class="block text-gray-400 uppercase tracking-widest text-[9px] mb-0.5">RUC</span>
-                        <strong class="text-brand-dark"><?= EMPRESA_RUC ?></strong>
+                        <strong class="text-brand-dark"><?= EMPRESA_RUC_PUBLICO ?></strong>
                     </div>
                     <div>
                         <span class="block text-gray-400 uppercase tracking-widest text-[9px] mb-0.5">Dirección</span>
@@ -918,7 +923,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
 <!-- FOOTER -->
 <footer class="no-print bg-brand-dark py-10 mt-8">
     <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-gray-400 text-sm">© <?= date('Y') ?> <?= EMPRESA_RAZON_SOCIAL ?> · RUC <?= EMPRESA_RUC ?> · Todos los derechos reservados.</p>
+        <p class="text-gray-400 text-sm">© <?= date('Y') ?> <?= EMPRESA_RAZON_SOCIAL ?> · RUC <?= EMPRESA_RUC_PUBLICO ?> · Todos los derechos reservados.</p>
         <p class="text-gray-600 text-xs mt-1">Regulado por INDECOPI · Ley de Protección de Datos Personales N.° 29733</p>
     </div>
 </footer>
