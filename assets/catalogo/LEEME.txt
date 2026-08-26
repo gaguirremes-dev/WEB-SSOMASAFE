@@ -1,0 +1,16 @@
+CATÁLOGO — SSOMA SAFE
+=====================
+
+Coloca aquí el PDF del catálogo con este nombre EXACTO:
+
+    CATALOGO SSOMASAFE.pdf
+
+Ruta final:  assets/catalogo/CATALOGO SSOMASAFE.pdf
+
+El botón "Revisar catálogo" (sección Servicios) lo abre en el visor
+del sitio. Si algún día cambias el nombre del archivo, actualiza el
+atributo data-pdf del botón en index.html.
+
+Recomendaciones:
+- Peso ideal por debajo de 15 MB para una carga rápida.
+- Exporta a PDF optimizado para web (imágenes ~150 dpi).
