@@ -16,7 +16,7 @@ if (file_exists($smtpConfigFile)) require $smtpConfigFile;
 
 if (!defined('DOMINIO_PERMITIDO'))    define('DOMINIO_PERMITIDO',    'ssomasafe.com');
 if (!defined('EMPRESA_RAZON_SOCIAL')) define('EMPRESA_RAZON_SOCIAL', 'SSOMA SAFE S.A.C.');
-if (!defined('EMPRESA_RUC'))          define('EMPRESA_RUC',          'XXXXXXXXXX');
+if (!defined('EMPRESA_RUC'))          define('EMPRESA_RUC',          '20607018287');
 if (!defined('EMPRESA_DIRECCION'))    define('EMPRESA_DIRECCION',    'Av. República de Chile 324, Lima / Lapoint 1221, Chiclayo');
 if (!defined('EMPRESA_EMAIL'))        define('EMPRESA_EMAIL',        'info@ssomasafe.com');
 if (!defined('SMTP_PORT'))            define('SMTP_PORT',            465);
