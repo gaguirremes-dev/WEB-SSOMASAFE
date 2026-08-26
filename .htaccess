@@ -39,19 +39,3 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
-
-# Catálogo PDF — fuera de los buscadores
-<IfModule mod_headers.c>
-  <FilesMatch "^.*\.(pdf)$">
-    Header always set X-Robots-Tag "noindex, nofollow, noarchive"
-    Header always set Content-Disposition "inline"
-  </FilesMatch>
-</IfModule>
-
-# Opcional: bloquear el acceso directo al PDF por URL.
-# El visor del sitio seguirá funcionando (envía Referer propio).
-# Si el catálogo deja de cargar en algún navegador, comenta estas 4 líneas.
-# <IfModule mod_rewrite.c>
-#   RewriteCond %{HTTP_REFERER}::%{HTTP_HOST} !^https?://(www\.)?([^/]+)/.*::\2$ [NC]
-#   RewriteRule ^assets/catalogo/.*\.pdf$ - [F,L]
-# </IfModule>
