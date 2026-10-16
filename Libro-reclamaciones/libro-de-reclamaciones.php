@@ -496,14 +496,12 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
 <body class="min-h-screen flex flex-col">
 
 <!-- HEADER -->
-<header class="no-print fixed top-0 left-0 right-0 z-50 bg-brand-dark/96 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<header class="no-print fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-3.5 flex items-center justify-between">
         <a href="../index.html" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
-            <div class="bg-white rounded-xl px-3 py-1.5 shadow group-hover:scale-105 transition-transform">
-                <img src="../assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-8 w-auto object-contain" width="110" height="32">
-            </div>
+            <img src="../assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-14 w-auto object-contain group-hover:scale-105 transition-transform" width="85" height="56">
         </a>
-        <a href="../index.html" class="text-white/60 hover:text-white text-sm flex items-center gap-1.5 transition-colors">
+        <a href="../index.html" class="text-brand-dark/60 hover:text-brand-primary text-sm flex items-center gap-1.5 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>

@@ -45,19 +45,21 @@ img, video { display: block; max-width: 100%; }
    NAVBAR
 ═══════════════════════════════════════════ */
 #navbar {
+  background: var(--white);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.06);
   transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease;
 }
 
 #navbar.scrolled {
-  background: rgba(30, 41, 59, 0.97);
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.05), var(--shadow-soft);
+  box-shadow: 0 1px 0 rgba(30, 41, 59, 0.06), 0 10px 30px -12px rgba(0, 63, 140, 0.18);
 }
 
 #navbar.scrolled nav {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .nav-link {
@@ -71,7 +73,7 @@ img, video { display: block; max-width: 100%; }
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--brand-light);
+  background: var(--brand-primary);
   border-radius: 1px;
   transition: width 0.3s ease;
 }

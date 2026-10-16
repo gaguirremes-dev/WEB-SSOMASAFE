@@ -112,23 +112,21 @@
        NAVBAR
   ═══════════════════════════════════════════ -->
   <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" role="banner">
-    <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex items-center justify-between" aria-label="Navegación principal">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-3 flex items-center justify-between" aria-label="Navegación principal">
 
       <!-- Logo -->
       <a href="#hero" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
-        <div class="bg-white rounded-2xl px-3 py-2 shadow-lg group-hover:scale-105 transition-transform duration-300">
-          <img src="assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-10 w-auto object-contain" width="120" height="40" />
-        </div>
+        <img src="assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300" width="98" height="64" />
       </a>
 
       <!-- Nav links — desktop -->
       <ul class="hidden lg:flex items-center gap-8" role="list">
-        <li><a href="#nosotros" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Nosotros</a></li>
-        <li><a href="#servicios" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Servicios</a></li>
-        <li><a href="#beneficios" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Beneficios</a></li>
-        <li><a href="#legal" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Marco Legal</a></li>
-        <li><a href="#contacto" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Contacto</a></li>
-        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Intranet</a></li>
+        <li><a href="#nosotros" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Nosotros</a></li>
+        <li><a href="#servicios" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Servicios</a></li>
+        <li><a href="#beneficios" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Beneficios</a></li>
+        <li><a href="#legal" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Marco Legal</a></li>
+        <li><a href="#contacto" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Contacto</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Intranet</a></li>
       </ul>
 
       <!-- CTA nav -->
@@ -143,21 +141,21 @@
 
       <!-- Hamburger — mobile -->
       <button id="menu-btn" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
-        <span class="ham-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
-        <span class="ham-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
-        <span class="ham-line block w-4 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="ham-line block w-6 h-0.5 bg-brand-dark transition-all duration-300"></span>
+        <span class="ham-line block w-6 h-0.5 bg-brand-dark transition-all duration-300"></span>
+        <span class="ham-line block w-4 h-0.5 bg-brand-dark transition-all duration-300"></span>
       </button>
     </nav>
 
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="lg:hidden hidden bg-brand-dark/95 backdrop-blur-xl border-t border-white/10" role="dialog" aria-label="Menú móvil">
+    <div id="mobile-menu" class="lg:hidden hidden bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-lg" role="dialog" aria-label="Menú móvil">
       <ul class="flex flex-col px-6 py-6 gap-4" role="list">
-        <li><a href="#nosotros" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Nosotros</a></li>
-        <li><a href="#servicios" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Servicios</a></li>
-        <li><a href="#beneficios" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Beneficios</a></li>
-        <li><a href="#legal" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Marco Legal</a></li>
-        <li><a href="#contacto" class="text-white/80 hover:text-white font-medium transition-colors" onclick="closeMobileMenu()">Contacto</a></li>
-        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="text-white/80 hover:text-white font-medium transition-colors">Intranet</a></li>
+        <li><a href="#nosotros" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Nosotros</a></li>
+        <li><a href="#servicios" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Servicios</a></li>
+        <li><a href="#beneficios" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Beneficios</a></li>
+        <li><a href="#legal" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Marco Legal</a></li>
+        <li><a href="#contacto" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Contacto</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors">Intranet</a></li>
         <li>
           <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer"
              class="block w-full text-center px-5 py-3 rounded-xl bg-brand-primary text-white font-semibold hover:bg-blue-800 transition-all">
@@ -919,9 +917,7 @@
         <!-- Marca -->
         <div class="lg:col-span-2">
           <div class="mb-6">
-            <div class="inline-block bg-white rounded-2xl px-3 py-2 shadow-md">
-              <img src="assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-10 w-auto object-contain" width="120" height="40" loading="lazy" />
-            </div>
+            <img src="assets/img/logo-ssoma-light.png" alt="SSOMA SAFE" class="h-16 w-auto object-contain" width="98" height="64" loading="lazy" />
           </div>
           <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
             Consultoría especializada en Seguridad y Salud Ocupacional, Medio Ambiente e Insumos Industriales. Tu aliado definitivo en cumplimiento normativo.
@@ -994,7 +990,7 @@
         <!-- Barra superior -->
         <header class="flex items-center gap-3 px-3 sm:px-5 py-3 bg-brand-dark text-white shrink-0">
           <div class="bg-white rounded-lg px-2 py-1.5 shrink-0 hidden sm:block">
-            <img src="assets/img/logo-ssoma.jpg" alt="SSOMA SAFE" class="h-6 w-auto object-contain" />
+            <img src="assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-12 w-auto object-contain" width="73" height="48" />
           </div>
           <div class="min-w-0">
             <h3 id="catalogo-title" class="font-display font-bold text-sm sm:text-base leading-tight truncate">Catálogo SSOMA SAFE</h3>
