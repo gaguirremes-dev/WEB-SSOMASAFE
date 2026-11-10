@@ -176,7 +176,7 @@ Soluciones Integrales en:
 - Insumos Industriales
 
 ## Correo Corporativo
-info@ssomasafe.com
+comercial@ssomasafe.com
 
 ## Sede Administrativa — Lima
 Av. República de Chile 324
