@@ -5,10 +5,7 @@
  * y el D.S. N° 011-2011-PCM (modificado por D.S. 101-2021-PCM).
  */
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => isset($_SERVER['HTTPS']), 'httponly' => true, 'samesite' => 'Strict']);
-    session_start();
-}
+// Session: started by reclamosIniciarSesion() (HttpOnly, SameSite=Lax, Secure on HTTPS).
 date_default_timezone_set('America/Lima');
 
 $smtpConfigFile = __DIR__ . '/../config.smtp.php';
@@ -22,8 +19,6 @@ if (!defined('EMPRESA_EMAIL'))        define('EMPRESA_EMAIL',        'comercial@
 if (!defined('SMTP_PORT'))            define('SMTP_PORT',            465);
 if (!defined('SMTP_FROM_NAME'))       define('SMTP_FROM_NAME',       'SSOMA SAFE');
 if (!defined('EMPRESA_NOTIF_EMAIL'))  define('EMPRESA_NOTIF_EMAIL',  'reclamaciones@ssomasafe.com');
-if (!defined('RATE_LIMIT_MAX'))       define('RATE_LIMIT_MAX',       1);
-if (!defined('RATE_LIMIT_WINDOW'))    define('RATE_LIMIT_WINDOW',    1800);
 if (!defined('HCAPTCHA_SITE_KEY'))    define('HCAPTCHA_SITE_KEY',    '');
 if (!defined('HCAPTCHA_SECRET_KEY'))  define('HCAPTCHA_SECRET_KEY',  '');
 
@@ -36,17 +31,7 @@ $recordsDir  = __DIR__ . '/reclamaciones';
 $recordsFile = $recordsDir . '/records.json';
 $lockFile    = $recordsDir . '/records.lock';
 
-if (!is_dir($recordsDir)) {
-    if (!@mkdir($recordsDir, 0755, true))
-        $errorMsg = 'Error de configuración del servidor.';
-}
-
-$rateFile     = $recordsDir . '/rate_limits.json';
-$logFile      = $recordsDir . '/security.log';
-$htaccessPath = $recordsDir . '/.htaccess';
-if (!file_exists($htaccessPath)) {
-    @file_put_contents($htaccessPath, "Order Deny,Allow\nDeny from all\n");
-}
+$logFile      = $recordsDir . '/security.log'; // directory is prepared by reclamosPrepararDirectorio()
 
 $fpdfPath      = __DIR__ . '/../lib/fpdf.php';
 $fpdfAvailable = file_exists($fpdfPath);
@@ -156,154 +141,487 @@ function generarPDFReclamo(array $d): string {
     return $pdf->Output('', 'S');
 }
 
-// ── Enviar correo SMTP ────────────────────────────────────────────────────────
-function enviarCorreoSMTP(string $toEmail, string $subject, string $htmlBody, string $pdfB64 = '', string $pdfName = '', string &$err = ''): bool {
-    if (!defined('SMTP_HOST') || !defined('SMTP_USER') || !defined('SMTP_PASS')) {
-        $err = 'Configuración SMTP no encontrada.'; return false;
-    }
-    $toEmail = sanitizarCabecera($toEmail);
-    $subject = sanitizarCabecera($subject);
-    $enc     = fn(string $s): string => '=?UTF-8?B?' . base64_encode($s) . '?=';
-    $from    = SMTP_USER;
-    $eol     = "\r\n";
-    $headers  = 'Date: ' . date('r') . $eol;
-    $headers .= 'From: ' . $enc(SMTP_FROM_NAME) . ' <' . $from . '>' . $eol;
-    $headers .= 'To: <' . $toEmail . '>' . $eol;
-    $headers .= 'Subject: ' . $enc($subject) . $eol;
-    $headers .= 'Reply-To: ' . EMPRESA_EMAIL . $eol;
-    $headers .= 'MIME-Version: 1.0' . $eol;
-    if ($pdfB64) {
-        $b = '----=_Part_' . md5(uniqid());
-        $headers .= 'Content-Type: multipart/mixed; boundary="' . $b . '"' . $eol;
-        $body  = '--' . $b . $eol . 'Content-Type: text/html; charset=UTF-8' . $eol . 'Content-Transfer-Encoding: 7bit' . $eol . $eol . $htmlBody . $eol;
-        $body .= '--' . $b . $eol . 'Content-Type: application/pdf; name="' . $pdfName . '"' . $eol . 'Content-Transfer-Encoding: base64' . $eol . 'Content-Disposition: attachment; filename="' . $pdfName . '"' . $eol . $eol . $pdfB64 . $eol;
-        $body .= '--' . $b . '--';
-    } else {
-        $headers .= 'Content-Type: text/html; charset=UTF-8' . $eol;
-        $body = $htmlBody;
-    }
-    $message = str_replace($eol . '.', $eol . '..', str_replace("\n", $eol, str_replace(["\r\n","\r","\n"], "\n", $headers . $eol . $body)));
-    $ctx = stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]]);
-    $fp  = @stream_socket_client((SMTP_PORT == 465 ? 'ssl://' : '') . SMTP_HOST . ':' . SMTP_PORT, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $ctx);
-    if (!$fp) { $err = "Conexión SMTP fallida: $errstr ($errno)"; return false; }
-    stream_set_timeout($fp, 20);
-    $read = function() use ($fp): string { $d=''; while(($l=fgets($fp,515))!==false){$d.=$l;if(strlen($l)<4||$l[3]===' ')break;} return $d; };
-    $cmd  = function(string $c) use ($fp, $read): string { fwrite($fp, $c . "\r\n"); return $read(); };
-    $ok   = function(string $r, array $codes) use (&$err): bool { foreach($codes as $c){if(strncmp($r,$c,strlen($c))===0)return true;} $err=trim($r);return false; };
-    $fail = function() use ($fp) { @fwrite($fp,"QUIT\r\n"); @fclose($fp); return false; };
+// ══════════════════════════════════════════════════════════════════════════════
+// HARDENING CORE - identical in every complaints book. Keep the six copies in sync.
+// ══════════════════════════════════════════════════════════════════════════════
 
-    if (!$ok($read(),                            ['220'])) return $fail();
-    if (!$ok($cmd('EHLO '.SMTP_HOST),            ['250'])) return $fail();
-    if (!$ok($cmd('AUTH LOGIN'),                  ['334'])) return $fail();
-    if (!$ok($cmd(base64_encode(SMTP_USER)),      ['334'])) return $fail();
-    if (!$ok($cmd(base64_encode(SMTP_PASS)),      ['235'])) return $fail();
-    if (!$ok($cmd('MAIL FROM:<'.$from.'>'),       ['250'])) return $fail();
-    if (!$ok($cmd('RCPT TO:<'.$toEmail.'>'), ['250','251'])) return $fail();
-    if (!$ok($cmd('DATA'),                        ['354'])) return $fail();
-    if (!$ok($cmd($message."\r\n."),              ['250'])) return $fail();
-    $cmd('QUIT'); fclose($fp);
+// Optional limits / switches (override them in config.smtp.php).
+foreach ([
+    'RATE_LIMIT_MAX'      => 1,     // submissions per IP inside RATE_LIMIT_WINDOW
+    'RATE_LIMIT_WINDOW'   => 1800,  // seconds (30 min)
+    'RATE_LIMIT_DAY_MAX'  => 5,     // submissions per IP per 24 h
+    'SITE_LIMIT_HOUR_MAX' => 20,    // site-wide submissions per hour
+    'SITE_LIMIT_DAY_MAX'  => 80,    // site-wide submissions per 24 h
+    'SMTP_VERIFY_TLS'     => true,  // verify the SMTP server certificate
+    'IP_HASH_SALT'        => '',    // optional; empty = random per-install key file
+] as $reclamosK => $reclamosV) {
+    if (!defined($reclamosK)) define($reclamosK, $reclamosV);
+}
+
+// Cloudflare published ranges (https://www.cloudflare.com/ips/). Review from time to time.
+define('RECLAMOS_CF_RANGES', [
+    '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22',
+    '141.101.64.0/18', '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20',
+    '197.234.240.0/22', '198.41.128.0/17', '162.158.0.0/15', '104.16.0.0/13',
+    '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
+    '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32',
+    '2405:8100::/32', '2a06:98c0::/29', '2c0f:f248::/32',
+]);
+const RECLAMOS_MAX_BODY  = 65536; // reject bigger POST bodies (bytes)
+const RECLAMOS_MIN_AGE   = 5;     // seconds after render before a submit is accepted
+const RECLAMOS_MAX_AGE   = 7200;  // seconds after render before the form expires
+
+function reclamosCabecerasSeguridad(): void {
+    if (headers_sent()) return;
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: DENY');
+    header('Referrer-Policy: same-origin');
+    header('Cache-Control: no-store');
+    header_remove('X-Powered-By');
+}
+
+function reclamosIniciarSesion(): void {
+    if (session_status() !== PHP_SESSION_NONE) return;
+    $https = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off')
+          || (int)($_SERVER['SERVER_PORT'] ?? 0) === 443
+          || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https' && reclamosEsCloudflare((string)($_SERVER['REMOTE_ADDR'] ?? '')));
+    @ini_set('session.use_strict_mode', '1');
+    @ini_set('session.use_only_cookies', '1');
+    session_cache_limiter(''); // keep our own Cache-Control header
+    session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
+    session_start();
+}
+
+// ── Client IP: REMOTE_ADDR, or CF-Connecting-IP only when the peer is Cloudflare ──
+function reclamosNormalizarIp(string $ip): string {
+    $ip = trim($ip);
+    if (preg_match('/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i', $ip, $m)) return $m[1];
+    return $ip;
+}
+function reclamosIpEnCidr(string $ip, string $cidr): bool {
+    $parts  = explode('/', $cidr, 2);
+    $ipBin  = @inet_pton($ip);
+    $netBin = @inet_pton($parts[0]);
+    if ($ipBin === false || $netBin === false || strlen($ipBin) !== strlen($netBin)) return false;
+    $bits  = isset($parts[1]) ? (int)$parts[1] : strlen($ipBin) * 8;
+    $bytes = intdiv($bits, 8);
+    $rem   = $bits % 8;
+    if ($bytes > 0 && substr($ipBin, 0, $bytes) !== substr($netBin, 0, $bytes)) return false;
+    if ($rem === 0) return true;
+    $mask = (0xFF << (8 - $rem)) & 0xFF;
+    return (ord($ipBin[$bytes]) & $mask) === (ord($netBin[$bytes]) & $mask);
+}
+function reclamosEsCloudflare(string $ip): bool {
+    $ip = reclamosNormalizarIp($ip);
+    if (filter_var($ip, FILTER_VALIDATE_IP) === false) return false;
+    foreach (RECLAMOS_CF_RANGES as $cidr) {
+        if (reclamosIpEnCidr($ip, $cidr)) return true;
+    }
+    return false;
+}
+function reclamosClientIp(): string {
+    $remote = reclamosNormalizarIp((string)($_SERVER['REMOTE_ADDR'] ?? ''));
+    if (filter_var($remote, FILTER_VALIDATE_IP) === false) return '0.0.0.0';
+    if (reclamosEsCloudflare($remote)) {
+        $cf = reclamosNormalizarIp((string)($_SERVER['HTTP_CF_CONNECTING_IP'] ?? ''));
+        if ($cf !== '' && filter_var($cf, FILTER_VALIDATE_IP) !== false) return $cf;
+    }
+    return $remote;
+}
+
+// ── Records directory: protected, never listable, per-install secret key ─────
+function reclamosPrepararDirectorio(string $dir): bool {
+    if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) return false;
+    $ht  = $dir . '/.htaccess';
+    $cur = is_file($ht) ? (string)@file_get_contents($ht) : '';
+    if (strpos($cur, 'Require all denied') === false || strpos($cur, 'Options -Indexes') === false) {
+        @file_put_contents($ht,
+            "# Protected records directory: never served over HTTP.\n" .
+            "<IfModule mod_authz_core.c>\n    Require all denied\n</IfModule>\n" .
+            "<IfModule !mod_authz_core.c>\n    Order allow,deny\n    Deny from all\n</IfModule>\n" .
+            "Options -Indexes\n");
+    }
+    if (!is_file($dir . '/index.html')) @file_put_contents($dir . '/index.html', '');
+    return is_writable($dir);
+}
+function reclamosClaveInstalacion(string $dir): string {
+    static $cache = [];
+    if (isset($cache[$dir])) return $cache[$dir];
+    $path = $dir . '/install.key';
+    $key  = is_file($path) ? trim((string)@file_get_contents($path)) : '';
+    if (strlen($key) < 32) {
+        $fp = @fopen($path, 'c+');
+        $key = '';
+        if ($fp && flock($fp, LOCK_EX)) {
+            $existing = trim((string)stream_get_contents($fp));
+            if (strlen($existing) >= 32) {
+                $key = $existing;
+            } else {
+                $new = bin2hex(random_bytes(32));
+                ftruncate($fp, 0); rewind($fp); fwrite($fp, $new); fflush($fp);
+                @chmod($path, 0600);
+                $key = $new;
+            }
+            flock($fp, LOCK_UN);
+        }
+        if ($fp) fclose($fp);
+    }
+    return $cache[$dir] = $key;
+}
+// Salted SHA-256 of the IP: the only form in which an IP is ever stored.
+function reclamosHashIp(string $ip, string $dir): string {
+    $salt = (string)IP_HASH_SALT;
+    if ($salt === '') $salt = reclamosClaveInstalacion($dir);
+    if ($salt === '') return '';
+    return hash('sha256', $salt . '|' . $ip);
+}
+function reclamosHuellaContenido(string $dir, string $detalle, string $email): string {
+    $norm = mb_strtolower(preg_replace('/\s+/u', ' ', trim($detalle)), 'UTF-8') . '|' . strtolower($email);
+    return hash_hmac('sha256', $norm, reclamosClaveInstalacion($dir));
+}
+
+// ── Logging (never secrets, bodies or personal data) ─────────────────────────
+function logSecurityEvent(string $logFile, string $event, array $context = []): void {
+    foreach (['email','nombres','doc_nro','apoderado_nombres','apoderado_doc_nro','detalle','pedido'] as $k) unset($context[$k]);
+    if (@is_file($logFile) && @filesize($logFile) > 2097152) @rename($logFile, $logFile . '.1'); // crude rotation
+    $line = date('Y-m-d H:i:s') . ' | ' . $event . ' | ' . json_encode($context, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR) . PHP_EOL;
+    @file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX);
+}
+
+// ── Time trap: HMAC-signed render timestamp, bound to the session CSRF token ──
+function reclamosTokenTiempo(string $dir, string $csrf): string {
+    $key = reclamosClaveInstalacion($dir);
+    if ($key === '' || $csrf === '') return '';
+    $ts = (string)time();
+    return $ts . '.' . hash_hmac('sha256', 'ts|' . $ts . '|' . $csrf, $key);
+}
+// Returns '' when valid, otherwise a short reason code.
+function reclamosVerificarTiempo(string $dir, string $csrf, string $token): string {
+    $key = reclamosClaveInstalacion($dir);
+    if ($key === '' || $csrf === '') return 'TT_NO_KEY';
+    if (!preg_match('/^(\d{9,11})\.([a-f0-9]{64})$/', $token, $m)) return 'TT_MALFORMED';
+    $expected = hash_hmac('sha256', 'ts|' . $m[1] . '|' . $csrf, $key);
+    if (!hash_equals($expected, $m[2])) return 'TT_BAD_SIGNATURE';
+    $age = time() - (int)$m[1];
+    if ($age < RECLAMOS_MIN_AGE) return 'TT_TOO_FAST';
+    if ($age > RECLAMOS_MAX_AGE) return 'TT_EXPIRED';
+    return '';
+}
+
+// ── Origin / Referer: compare parsed hosts, never substrings ─────────────────
+function reclamosHostPermitido(string $host): bool {
+    $host = rtrim(strtolower(trim($host)), '.');
+    $dom  = strtolower((string)DOMINIO_PERMITIDO);
+    return $host !== '' && ($host === $dom || $host === 'www.' . $dom);
+}
+function reclamosOrigenValido(): bool {
+    $origin  = trim((string)($_SERVER['HTTP_ORIGIN']  ?? ''));
+    $referer = trim((string)($_SERVER['HTTP_REFERER'] ?? ''));
+    if ($origin !== '') return reclamosHostPermitido((string)parse_url($origin, PHP_URL_HOST)); // "null" -> rejected
+    if ($referer !== '') return reclamosHostPermitido((string)parse_url($referer, PHP_URL_HOST));
+    return true; // some privacy setups strip both; CSRF + captcha + time trap still apply
+}
+
+// ── hCaptcha: fails closed (no keys / no answer / bad hostname => false) ─────
+function verificarHCaptcha(string $token, string $secretKey): bool {
+    if ($token === '' || strlen($token) > 4096 || $secretKey === '') return false;
+    $post = ['secret' => $secretKey, 'response' => $token];
+    if (HCAPTCHA_SITE_KEY !== '') $post['sitekey'] = HCAPTCHA_SITE_KEY;
+    $ctx = stream_context_create(['http' => [
+        'method'  => 'POST',
+        'header'  => 'Content-Type: application/x-www-form-urlencoded',
+        'content' => http_build_query($post),
+        'timeout' => 10,
+    ]]);
+    $result = @file_get_contents('https://hcaptcha.com/siteverify', false, $ctx);
+    if ($result === false) return false;
+    $data = json_decode($result, true);
+    if (!is_array($data) || ($data['success'] ?? false) !== true) return false;
+    if (isset($data['hostname']) && is_string($data['hostname']) && $data['hostname'] !== '') {
+        if (!reclamosHostPermitido($data['hostname'])) return false;
+    }
     return true;
 }
 
-// ── Funciones de seguridad ────────────────────────────────────────────────────
+// ── Input helpers ─────────────────────────────────────────────────────────────
 function sanitizarCabecera(string $s): string {
-    return trim(str_replace(["\r\n","\r","\n","%0d%0a","%0D%0A","%0d","%0D","%0a","%0A"], '', $s));
+    $s = str_ireplace(['%0d', '%0a'], '', $s);
+    return trim((string)preg_replace('/[\x00-\x1F\x7F]+/', '', $s));
 }
 function esc(?string $s): string {
     return htmlspecialchars((string)$s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 }
-function limpiarTexto(?string $s, int $maxLen = 500): string {
+// Strips tags, control chars and invisible bidi/format chars; enforces UTF-8 and max length.
+function limpiarTexto(?string $s, int $maxLen = 500, bool $multiline = false): string {
     if ($s === null || $s === '') return '';
-    return mb_substr(trim(strip_tags($s)), 0, $maxLen, 'UTF-8');
+    if (!mb_check_encoding($s, 'UTF-8')) return '';
+    $s = strip_tags($s);
+    $s = str_replace(["\r\n", "\r"], "\n", $s);
+    $s = $multiline
+        ? (string)preg_replace('/[\x00-\x09\x0B-\x1F\x7F]/', '', $s)
+        : (string)preg_replace('/[\x00-\x1F\x7F]+/', ' ', $s);
+    $s = (string)preg_replace('/[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}\x{FEFF}]/u', '', $s);
+    if ($multiline) $s = (string)preg_replace("/\n{3,}/", "\n\n", $s);
+    return mb_substr(trim($s), 0, $maxLen, 'UTF-8');
 }
-function checkAndRegisterRateLimit(string $ip, string $rateFile): bool {
-    $lockPath = $rateFile . '.lock';
-    $fp = @fopen($lockPath, 'c');
-    if (!$fp || !flock($fp, LOCK_EX)) return true;
-    $now = time(); $window = RATE_LIMIT_WINDOW; $max = RATE_LIMIT_MAX; $data = [];
-    if (file_exists($rateFile)) {
-        $raw = file_get_contents($rateFile);
-        $data = ($raw !== false && $raw !== '') ? (json_decode($raw, true) ?: []) : [];
+// Valid address (<= 254 chars, no header-breaking chars) or '' when invalid.
+function reclamosEmail($raw): string {
+    $e = trim((string)$raw);
+    if ($e === '' || strlen($e) > 254 || preg_match('/[\x00-\x20\x7F<>,;"\'\\\\]/', $e)) return '';
+    $ok = filter_var($e, FILTER_VALIDATE_EMAIL);
+    return $ok === false ? '' : (string)$ok;
+}
+// Spam heuristics: more than 2 URLs in the free text, <a ...> tags or [url=] BBCode.
+function reclamosContenidoSospechoso(array $textos): bool {
+    $all = implode("\n", array_map('strval', $textos));
+    if (preg_match('/<\s*a[\s>]/i', $all) || preg_match('/\[\s*(?:url|link)\b/i', $all)) return true;
+    return preg_match_all('~(?:https?://|ftp://|www\.)\S+~i', $all) > 2;
+}
+
+// ── Request guards. Returns '' when everything passes, else a Spanish message ─
+function reclamosGuardarSolicitud(string $dir, string $logFile, string $ipHash): string {
+    $log = function (string $ev, array $ctx = []) use ($logFile, $ipHash): void {
+        logSecurityEvent($logFile, $ev, $ctx + ['ip_hash' => $ipHash]);
+    };
+    $contacto = defined('EMPRESA_EMAIL') ? ' o escríbenos a ' . EMPRESA_EMAIL : '';
+
+    if ($ipHash === '') {
+        $log('NO_KEY_AVAILABLE');
+        return 'No pudimos procesar tu solicitud en este momento. Inténtalo más tarde' . $contacto . '.';
     }
-    foreach (array_keys($data) as $k) {
-        $data[$k] = array_values(array_filter($data[$k], function($ts) use ($now, $window) { return ($now - $ts) < $window; }));
-        if (empty($data[$k])) unset($data[$k]);
+    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > RECLAMOS_MAX_BODY) {
+        $log('PAYLOAD_TOO_LARGE');
+        http_response_code(413);
+        return 'La solicitud es demasiado grande. Reduce el texto e inténtalo de nuevo.';
     }
-    $ipEntries = $data[$ip] ?? [];
-    if (count($ipEntries) >= $max) { flock($fp, LOCK_UN); fclose($fp); return false; }
-    $ipEntries[] = $now; $data[$ip] = $ipEntries;
-    file_put_contents($rateFile, json_encode($data));
-    flock($fp, LOCK_UN); fclose($fp);
-    return true;
-}
-function logSecurityEvent(string $logFile, string $event, array $context = []): void {
-    foreach (['email','nombres','doc_nro','apoderado_nombres','apoderado_doc_nro'] as $k) unset($context[$k]);
-    @file_put_contents($logFile, date('Y-m-d H:i:s') . ' | ' . $event . ' | ' . json_encode($context, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND | LOCK_EX);
-}
-function verificarHCaptcha(string $token, string $secretKey): bool {
-    if ($token === '' || $secretKey === '') return false;
-    $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-Type: application/x-www-form-urlencoded', 'content' => http_build_query(['secret' => $secretKey, 'response' => $token]), 'timeout' => 10]]);
-    $result = @file_get_contents('https://hcaptcha.com/siteverify', false, $ctx);
-    if ($result === false) return false;
-    $data = json_decode($result, true);
-    return isset($data['success']) && $data['success'] === true;
-}
-
-$success = false; $errorMsg = ''; $generatedCode = ''; $submittedData = [];
-$clientIP = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0')[0]);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // 1. Honeypot
+    // Honeypot: off-screen field, humans never fill it. Answer 200 and do nothing.
     if (!empty($_POST['hp_website'] ?? '')) {
-        logSecurityEvent($logFile, 'HONEYPOT_TRIGGERED', ['ip' => $clientIP]);
-        header('HTTP/1.1 200 OK'); exit;
+        $log('HONEYPOT_TRIGGERED');
+        http_response_code(200);
+        exit;
     }
-
-    // 2. CSRF
+    foreach ($_POST as $v) {
+        if (!is_string($v) || !mb_check_encoding($v, 'UTF-8')) {
+            $log('BAD_INPUT_ENCODING');
+            return 'El formulario contiene datos no válidos. Recarga la página e inténtalo de nuevo.';
+        }
+    }
     $csrfPost = (string)($_POST['csrf_token'] ?? '');
     $csrfSess = (string)($_SESSION['csrf_token'] ?? '');
-    if (!$csrfPost || !$csrfSess || !hash_equals($csrfSess, $csrfPost)) {
-        logSecurityEvent($logFile, 'CSRF_FAILED', ['ip' => $clientIP]);
-        $errorMsg = 'Token de seguridad inválido. Recarga la página e inténtalo de nuevo.';
+    if ($csrfPost === '' || $csrfSess === '' || !hash_equals($csrfSess, $csrfPost)) {
+        $log('CSRF_FAILED');
+        return 'Token de seguridad inválido. Recarga la página e inténtalo de nuevo.';
     }
+    $tt = reclamosVerificarTiempo($dir, $csrfSess, (string)($_POST['form_ts'] ?? ''));
+    if ($tt !== '') {
+        $log('TIME_TRAP', ['reason' => $tt]);
+        return $tt === 'TT_TOO_FAST'
+            ? 'Enviaste el formulario demasiado rápido. Espera unos segundos e inténtalo de nuevo.'
+            : 'El formulario expiró o no es válido. Revisa tus datos e inténtalo de nuevo.';
+    }
+    if (!reclamosOrigenValido()) {
+        $log('ORIGIN_REJECTED');
+        return 'Solicitud rechazada. Recarga la página e inténtalo de nuevo.';
+    }
+    if (reclamosContenidoSospechoso([$_POST['detalle'] ?? '', $_POST['pedido'] ?? '', $_POST['bien_desc'] ?? '', $_POST['servicio'] ?? ''])) {
+        $log('SPAM_CONTENT');
+        return 'Tu mensaje contiene enlaces o formato no permitido. Quita los enlaces e inténtalo de nuevo.';
+    }
+    if (HCAPTCHA_SECRET_KEY === '' || HCAPTCHA_SITE_KEY === '') {
+        $log('CAPTCHA_NOT_CONFIGURED');
+        return 'El servicio no está disponible temporalmente. Inténtalo más tarde' . $contacto . '.';
+    }
+    if (!verificarHCaptcha((string)($_POST['h-captcha-response'] ?? ''), HCAPTCHA_SECRET_KEY)) {
+        $log('CAPTCHA_FAILED');
+        return 'Por favor, completa el desafío de seguridad (captcha) antes de enviar.';
+    }
+    return '';
+}
 
-    // 3. hCaptcha (solo si está configurado)
-    if (empty($errorMsg) && defined('HCAPTCHA_SECRET_KEY') && HCAPTCHA_SECRET_KEY !== '') {
-        $captchaToken = (string)($_POST['h-captcha-response'] ?? '');
-        if (!verificarHCaptcha($captchaToken, HCAPTCHA_SECRET_KEY)) {
-            logSecurityEvent($logFile, 'CAPTCHA_FAILED', ['ip' => $clientIP]);
-            $errorMsg = 'Por favor, completa el desafío de seguridad (captcha) antes de enviar.';
-        }
+// ── Atomic rate limit (per IP-hash + site-wide) and duplicate-content check ──
+// Reserves the slot when everything passes. Returns '' on success, else a Spanish message.
+function reclamosReservarEnvio(string $dir, string $ipHash, string $dupHash, string $logFile): string {
+    $contacto = defined('EMPRESA_EMAIL') ? ' o escríbenos a ' . EMPRESA_EMAIL : '';
+    $generic  = 'No pudimos registrar tu solicitud en este momento. Inténtalo más tarde' . $contacto . '.';
+    $stateFile = $dir . '/rate_state.json';
+    @unlink($dir . '/rate_limits.json');      // legacy file kept raw IPs
+    @unlink($dir . '/rate_limits.json.lock');
+    $fp = @fopen($stateFile . '.lock', 'c');
+    if (!$fp || !flock($fp, LOCK_EX)) {
+        if ($fp) fclose($fp);
+        logSecurityEvent($logFile, 'RATE_LOCK_FAILED', ['ip_hash' => $ipHash]);
+        return $generic; // fail closed
     }
+    $now  = time();
+    $data = [];
+    if (is_file($stateFile)) {
+        $raw  = (string)@file_get_contents($stateFile);
+        $data = $raw !== '' ? (json_decode($raw, true) ?: []) : [];
+    }
+    $ips  = is_array($data['ip']   ?? null) ? $data['ip']   : [];
+    $site = is_array($data['site'] ?? null) ? $data['site'] : [];
+    $dups = is_array($data['dup']  ?? null) ? $data['dup']  : [];
+    $fresh = function ($ts) use ($now): bool { return is_int($ts) && ($now - $ts) < 86400; };
+    $site = array_values(array_filter($site, $fresh));
+    $dups = array_filter($dups, $fresh);
+    foreach ($ips as $h => $list) {
+        $ips[$h] = is_array($list) ? array_values(array_filter($list, $fresh)) : [];
+        if (!$ips[$h]) unset($ips[$h]);
+    }
+    $mine     = $ips[$ipHash] ?? [];
+    $inWindow = count(array_filter($mine, function ($t) use ($now) { return ($now - $t) < RATE_LIMIT_WINDOW; }));
+    $siteHour = count(array_filter($site, function ($t) use ($now) { return ($now - $t) < 3600; }));
+    $err = '';
+    if ($inWindow >= RATE_LIMIT_MAX) {
+        $err = 'RATE_LIMIT_IP';
+        $msg = 'Has enviado un reclamo recientemente. Por favor, espera ' . (int)ceil(RATE_LIMIT_WINDOW / 60) . ' minutos antes de volver a intentarlo.';
+    } elseif (count($mine) >= RATE_LIMIT_DAY_MAX) {
+        $err = 'RATE_LIMIT_IP_DAY';
+        $msg = 'Has alcanzado el límite diario de envíos desde tu conexión. Inténtalo nuevamente mañana' . $contacto . '.';
+    } elseif ($siteHour >= SITE_LIMIT_HOUR_MAX || count($site) >= SITE_LIMIT_DAY_MAX) {
+        $err = 'RATE_LIMIT_SITE';
+        $msg = 'Estamos recibiendo muchas solicitudes en este momento. Inténtalo nuevamente en unos minutos' . $contacto . '.';
+    } elseif ($dupHash !== '' && isset($dups[$dupHash])) {
+        $err = 'DUPLICATE_CONTENT';
+        $msg = 'Ya recibimos un reclamo con el mismo contenido. Si necesitas ayuda, comunícate con nosotros' . $contacto . '.';
+    }
+    if ($err !== '') {
+        flock($fp, LOCK_UN); fclose($fp);
+        logSecurityEvent($logFile, $err, ['ip_hash' => $ipHash]);
+        return $msg;
+    }
+    $mine[]         = $now;
+    $ips[$ipHash]   = $mine;
+    $site[]         = $now;
+    if ($dupHash !== '') $dups[$dupHash] = $now;
+    $written = @file_put_contents($stateFile, json_encode(['ip' => $ips, 'site' => $site, 'dup' => $dups]));
+    flock($fp, LOCK_UN); fclose($fp);
+    if ($written === false) {
+        logSecurityEvent($logFile, 'RATE_WRITE_FAILED', ['ip_hash' => $ipHash]);
+        return $generic;
+    }
+    return '';
+}
 
-    // 4. Origin / Referer
-    if (empty($errorMsg)) {
-        $origin  = $_SERVER['HTTP_ORIGIN']  ?? '';
-        $referer = $_SERVER['HTTP_REFERER'] ?? '';
-        if ($origin && strpos($origin, DOMINIO_PERMITIDO) === false) {
-            logSecurityEvent($logFile, 'ORIGIN_REJECTED', ['ip' => $clientIP, 'origin' => $origin]);
-            $errorMsg = 'Solicitud rechazada por origen no permitido.';
-        } elseif (!$origin && $referer && strpos($referer, DOMINIO_PERMITIDO) === false) {
-            logSecurityEvent($logFile, 'REFERER_REJECTED', ['ip' => $clientIP]);
-            $errorMsg = 'Solicitud rechazada.';
-        }
+// ── SMTP (implicit TLS on 465, STARTTLS otherwise; certificate verified by default) ──
+function enviarCorreoSMTP(string $toEmail, string $subject, string $htmlBody, string $pdfB64 = '', string $pdfName = '', string &$err = ''): bool {
+    if (!defined('SMTP_HOST') || !defined('SMTP_USER') || !defined('SMTP_PASS')) {
+        $err = 'SMTP configuration missing.';
+        return false;
     }
+    $toEmail = sanitizarCabecera($toEmail);
+    if (strlen($toEmail) > 254 || !filter_var($toEmail, FILTER_VALIDATE_EMAIL)) {
+        $err = 'Invalid recipient address.';
+        return false;
+    }
+    $subject   = mb_substr(sanitizarCabecera($subject), 0, 200, 'UTF-8');
+    $pdfName   = (string)preg_replace('/[^A-Za-z0-9._-]/', '_', $pdfName);
+    $fromEmail = sanitizarCabecera(SMTP_USER);
+    $replyTo   = sanitizarCabecera(EMPRESA_EMAIL);
+    $enc = function (string $s): string { return '=?UTF-8?B?' . base64_encode($s) . '?='; };
+    $eol = "\r\n";
+    $headers  = 'Date: ' . date('r') . $eol;
+    $headers .= 'From: ' . $enc(sanitizarCabecera(SMTP_FROM_NAME)) . ' <' . $fromEmail . '>' . $eol;
+    $headers .= 'To: <' . $toEmail . '>' . $eol;
+    $headers .= 'Subject: ' . $enc($subject) . $eol;
+    $headers .= 'Reply-To: ' . $replyTo . $eol;
+    $headers .= 'MIME-Version: 1.0' . $eol;
+    if ($pdfB64) {
+        $boundary = '----=_Part_' . md5(uniqid('', true));
+        $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"' . $eol;
+        $body  = '--' . $boundary . $eol;
+        $body .= 'Content-Type: text/html; charset=UTF-8' . $eol;
+        $body .= 'Content-Transfer-Encoding: 7bit' . $eol . $eol;
+        $body .= $htmlBody . $eol;
+        $body .= '--' . $boundary . $eol;
+        $body .= 'Content-Type: application/pdf; name="' . $pdfName . '"' . $eol;
+        $body .= 'Content-Transfer-Encoding: base64' . $eol;
+        $body .= 'Content-Disposition: attachment; filename="' . $pdfName . '"' . $eol . $eol;
+        $body .= $pdfB64 . $eol;
+        $body .= '--' . $boundary . '--';
+    } else {
+        $headers .= 'Content-Type: text/html; charset=UTF-8' . $eol;
+        $body = $htmlBody;
+    }
+    $message = $headers . $eol . $body;
+    $message = str_replace(["\r\n", "\r", "\n"], "\n", $message);
+    $message = str_replace("\n", $eol, $message);
+    $message = str_replace($eol . '.', $eol . '..', $message);
 
-    // 5. Rate limiting
-    if (empty($errorMsg)) {
-        if (!checkAndRegisterRateLimit($clientIP, $rateFile)) {
-            logSecurityEvent($logFile, 'RATE_LIMIT_EXCEEDED', ['ip' => $clientIP]);
-            $errorMsg = 'Has enviado un reclamo recientemente. Por favor, espera 30 minutos antes de volver a intentarlo.';
-        }
+    $verify = filter_var(SMTP_VERIFY_TLS, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    $verify = ($verify === null) ? true : $verify;
+    $sslOpts = ['verify_peer' => $verify, 'verify_peer_name' => $verify, 'allow_self_signed' => !$verify, 'SNI_enabled' => true];
+    if ($verify) $sslOpts['peer_name'] = SMTP_HOST;
+    $ctx = stream_context_create(['ssl' => $sslOpts]);
+    $implicitTls = in_array((int)SMTP_PORT, [465, 4655], true);
+    $fp = @stream_socket_client(($implicitTls ? 'ssl://' : '') . SMTP_HOST . ':' . SMTP_PORT, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$fp) { $err = "SMTP connection failed: $errstr ($errno)"; return false; }
+    stream_set_timeout($fp, 20);
+    $read = function () use ($fp): string {
+        $data = '';
+        while (($line = fgets($fp, 515)) !== false) { $data .= $line; if (strlen($line) < 4 || $line[3] === ' ') break; }
+        return $data;
+    };
+    $cmd = function (string $c) use ($fp, $read): string { fwrite($fp, $c . "\r\n"); return $read(); };
+    $ok  = function (string $resp, array $codes) use (&$err): bool {
+        foreach ($codes as $code) { if (strncmp($resp, $code, strlen($code)) === 0) return true; }
+        $err = trim($resp); return false;
+    };
+    $fail = function () use ($fp) { @fwrite($fp, "QUIT\r\n"); @fclose($fp); return false; };
+
+    if (!$ok($read(), ['220']))                                   return $fail();
+    if (!$ok($cmd('EHLO ' . SMTP_HOST), ['250']))                 return $fail();
+    if (!$implicitTls) { // never send credentials in clear text
+        if (!$ok($cmd('STARTTLS'), ['220']))                      return $fail();
+        if (!@stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) { $err = 'STARTTLS negotiation failed.'; return $fail(); }
+        if (!$ok($cmd('EHLO ' . SMTP_HOST), ['250']))             return $fail();
     }
+    if (!$ok($cmd('AUTH LOGIN'), ['334']))                        return $fail();
+    if (!$ok($cmd(base64_encode(SMTP_USER)), ['334']))            return $fail();
+    if (!$ok($cmd(base64_encode(SMTP_PASS)), ['235']))            return $fail();
+    if (!$ok($cmd('MAIL FROM:<' . $fromEmail . '>'), ['250']))    return $fail();
+    if (!$ok($cmd('RCPT TO:<' . $toEmail . '>'), ['250', '251'])) return $fail();
+    if (!$ok($cmd('DATA'), ['354']))                              return $fail();
+    if (!$ok($cmd($message . "\r\n."), ['250']))                  return $fail();
+    $cmd('QUIT'); fclose($fp);
+    return true;
+}
+
+// ── Runtime bootstrap (hardened) ──────────────────────────────────────────────
+@ini_set('display_errors', '0');
+@ini_set('html_errors', '0');
+reclamosCabecerasSeguridad();
+if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD', 'POST'], true)) {
+    http_response_code(405);
+    header('Allow: GET, HEAD, POST');
+    exit;
+}
+reclamosIniciarSesion();
+
+$success = false; $errorMsg = ''; $generatedCode = ''; $submittedData = []; $debugLog = [];
+if (!reclamosPrepararDirectorio($recordsDir)) {
+    $errorMsg = 'El servicio no está disponible temporalmente. Inténtalo más tarde o escríbenos a ' . EMPRESA_EMAIL . '.';
+}
+// The raw IP is never kept: $clientIP holds the salted hash (it is what the logs record).
+$ipHash   = reclamosHashIp(reclamosClientIp(), $recordsDir);
+$clientIP = $ipHash;
+
+set_error_handler(function ($errno) use (&$errorMsg) {
+    if ($errno === E_ERROR || $errno === E_USER_ERROR) $errorMsg = 'Error interno del servidor. Por favor, inténtelo más tarde.';
+    return true;
+});
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
+
+    // ── 1-5. Guards: size, honeypot, encoding, CSRF, time trap, origin, spam, captcha ──
+    $errorMsg = reclamosGuardarSolicitud($recordsDir, $logFile, $ipHash);
 
     // 6. Sanitizar y validar
     if (empty($errorMsg)) {
         $nombres      = limpiarTexto($_POST['nombres']      ?? '', 200);
         $doc_tipo     = $_POST['doc_tipo']     ?? '';
         $doc_nro      = limpiarTexto($_POST['doc_nro']      ?? '', 20);
-        $email        = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+        $email        = reclamosEmail($_POST['email'] ?? '');
         $telefono     = limpiarTexto($_POST['telefono']     ?? '', 20);
         $direccion    = limpiarTexto($_POST['direccion']    ?? '', 300);
         $departamento = limpiarTexto($_POST['departamento'] ?? '', 100);
@@ -317,8 +635,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $servicio     = limpiarTexto($_POST['servicio']     ?? '', 300);
         $bien_tipo    = $_POST['bien_tipo']    ?? '';
         $reclamo_tipo = $_POST['reclamo_tipo'] ?? '';
-        $detalle      = limpiarTexto($_POST['detalle']      ?? '', 2000);
-        $pedido       = limpiarTexto($_POST['pedido']       ?? '', 2000);
+        $detalle      = limpiarTexto($_POST['detalle']      ?? '', 2000, true);
+        $pedido       = limpiarTexto($_POST['pedido']       ?? '', 2000, true);
         $monto        = number_format(max(0.0, (float)preg_replace('/[^\d.]/', '', $_POST['monto'] ?? '0')), 2, '.', '');
 
         if (!in_array($doc_tipo,     ['DNI','CE','PASAPORTE','RUC'], true)) $doc_tipo     = 'DNI';
@@ -332,6 +650,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$nombres || !$doc_nro || !$email || !$direccion || !$detalle || !$pedido) {
             $errorMsg = 'Por favor, rellene todos los campos obligatorios.';
         }
+    }
+
+    // ── 6b. Atomic rate limit (IP + site-wide) and duplicate-content check ─────
+    if (empty($errorMsg)) {
+        $errorMsg = reclamosReservarEnvio($recordsDir, $ipHash, reclamosHuellaContenido($recordsDir, $detalle, $email), $logFile);
     }
 
     // 7. Guardar registro
@@ -400,7 +723,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>";
 
         $errC = '';
-        enviarCorreoSMTP($email, 'Cargo de Hoja de Reclamación N° ' . $generatedCode . ' — SSOMA SAFE', $emailConsumidor, $pdfB64, $pdfName, $errC);
+        $mailClienteSubj = 'Cargo de Hoja de Reclamación N° ' . $generatedCode . ' — SSOMA SAFE';
+        $mailClienteBody = $emailConsumidor;
 
         $emailEmpresa = "
         <div style='font-family:Arial,sans-serif;color:#333;max-width:600px;margin:0 auto;border:1px solid #e0e0e0;border-radius:8px;padding:25px;'>
@@ -415,9 +739,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style='background:#f7f7f7;padding:12px;border-left:4px solid #003F8C;'><strong>Pedido:</strong><br>" . nl2br(esc($pedido)) . "</div>
         </div>";
         $errE = '';
-        enviarCorreoSMTP(EMPRESA_NOTIF_EMAIL, 'NUEVA RECLAMACIÓN N° ' . $generatedCode . ' — ' . $nombres, $emailEmpresa, $pdfB64, $pdfName, $errE);
+        $okEmpresa = enviarCorreoSMTP(EMPRESA_NOTIF_EMAIL, 'NUEVA RECLAMACIÓN N° ' . $generatedCode . ' — ' . $nombres, $emailEmpresa, $pdfB64, $pdfName, $errE);
+        if ($okEmpresa) {
+            // Consumer copy only after the internal mail was accepted (anti mail-bombing).
+            if (!enviarCorreoSMTP($email, $mailClienteSubj, $mailClienteBody, $pdfB64, $pdfName, $errC)) {
+                logSecurityEvent($logFile, 'SMTP_CLIENT_FAILED', ['detail' => substr($errC, 0, 160)]);
+            }
+        } else {
+            logSecurityEvent($logFile, 'SMTP_INTERNAL_FAILED', ['detail' => substr($errE, 0, 160)]);
+        }
 
         $_SESSION['csrf_token']      = bin2hex(random_bytes(32));
+        session_regenerate_id(true);
         $_SESSION['reclamo_success'] = $submittedData;
         header('Location: libro-de-reclamaciones.php?ok=1');
         exit;
@@ -672,6 +1005,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                     <div class="p-6 sm:p-8">
                         <form method="POST" action="libro-de-reclamaciones.php" class="space-y-6">
                             <input type="hidden" name="csrf_token" value="<?= esc($_SESSION['csrf_token'] ?? '') ?>">
+                            <input type="hidden" name="form_ts" value="<?= esc(reclamosTokenTiempo($recordsDir, (string)($_SESSION['csrf_token'] ?? ''))) ?>">
                             <div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
                                 <label for="hp_website">Sitio web (no llenar)</label>
                                 <input type="text" name="hp_website" id="hp_website" tabindex="-1" autocomplete="off" value="">
