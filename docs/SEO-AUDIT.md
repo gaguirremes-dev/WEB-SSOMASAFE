@@ -19,7 +19,7 @@ El sitio es una página única estática con buena base técnica. No hay bloqueo
 | F3 | `noindex` heredado | ✅ | Solo `404.html` lleva `noindex` (correcto) | — | — |
 | F3 | Redirecciones | ✅ | `.htaccess`: http→https y no-www→www en **un solo salto** | Probar en producción (§5) | P2 |
 | F3 | Canonical / hreflang | ✅ | Canónico `https://www.ssomasafe.com/`, `es-PE` + `x-default` | — | — |
-| F3 | Sitemap | ✅ | Home (con imágenes), Libro, Privacidad, Términos; XML válido | Enviar en Search Console | P1 |
+| F3 | Sitemap | ✅ | Home (con imágenes), Libro, Privacidad, Términos y las 6 páginas de servicio/guía; XML válido | Enviar en Search Console | P1 |
 | F4 | `<title>` | ✅ | 49 caracteres: «Consultoría SSOMA, SST y EPP en Perú \| SSOMA SAFE» | — | — |
 | F4 | Meta description | ✅ | 139 caracteres, única | — | — |
 | F4 | H1 | ✅ | 1 solo H1 por página. En la home, «SSOMA» está en el subtítulo y el título; el H1 de marca se mantiene | — | — |
@@ -80,6 +80,8 @@ Si usas Cloudflare en modo «Flexible» y aparece un bucle de redirecciones, cá
 - No se pudo ejecutar el Libro de Reclamaciones (PHP) en local; solo se revisaron sus metadatos y el cambio de CSS.
 - La Política declara «sin cookies de seguimiento»: actualizar al añadir GA4 u otra analítica.
 - Los textos legales deben revisarse por un profesional antes de darlos por definitivos.
+- **Lenis (scroll suave) nunca ha cargado:** la URL `https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js` devuelve 404; la ruta correcta es `/dist/lenis.min.js`. El sitio funciona sin él (el código comprueba `typeof Lenis`). Corregirla activaría un scroll suave nuevo, por eso se dejó para decidir.
+- **Revisión de código (2026-11-16):** se corrigieron 2 hallazgos críticos (regla `.htaccess` que bloqueaba PDF.js y hero invisible si falla el CDN de GSAP) y los avisos: casilla de consentimiento y enlace a la política en el formulario, etiqueta real del servicio y aviso si el navegador bloquea WhatsApp, SRI en GSAP/ScrollTrigger, redirecciones con destino fijo, `robots.txt` sin rutas sensibles, bloqueo de `src/`, `docs/`, `scripts/` y archivos de build, hero con espacio reservado para las estadísticas y CSS muerto eliminado.
 
 ## 7. Próxima revisión
 
