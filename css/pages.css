@@ -10,6 +10,10 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 /* Foco visible para teclado en toda la página */
 :focus-visible { outline: 2px solid #7FB4E5; outline-offset: 3px; border-radius: 4px; }
 
+/* Menú móvil de la cabecera (<details>) */
+header summary { list-style: none; }
+header summary::-webkit-details-marker { display: none; }
+
 /* ── Texto largo (artículos) ── */
 .prose-ssoma { font-size: 1.0625rem; line-height: 1.75; color: #334155; }
 .prose-ssoma > :first-child { margin-top: 0; }

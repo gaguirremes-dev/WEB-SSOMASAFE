@@ -14,6 +14,7 @@ Dominio canónico: `https://www.ssomasafe.com`.
 | `css/tailwind.min.css` | CSS compilado (se versiona) |
 | `css/pages.css` | Estilos de texto largo, FAQ e índice de las páginas secundarias |
 | `scripts/_layout.py` | Maquetación compartida de las 9 páginas generadas (cabecera, héroe, tarjeta de contacto, CTA, pie, iconos SVG) |
+| `scripts/sync_home_nav.py` | Copia el desplegable «Servicios» de `_layout.py` a `index.html` (entre los marcadores `NAV-SERVICES-*`) |
 | `src/tailwind.css`, `tailwind.config.js` | Entrada y configuración de Tailwind 3 |
 | `docs/SEO-AUDIT.md` | Informe SEO y pendientes manuales |
 
@@ -29,6 +30,7 @@ npm run build        # ambos
 Las páginas generadas NO se editan a mano: el contenido está en `scripts/build_service_pages.py` y
 `scripts/build_legal_pages.py`; el diseño (cabecera, pie, héroe, botones) en `scripts/_layout.py` y `css/pages.css`.
 Tras cambiar clases de Tailwind en `_layout.py`, ejecuta `npm run build` (páginas y CSS).
+Para añadir un servicio al menú (home y páginas secundarias a la vez): editar `SERVICE_LINKS` y `SERVICE_DESC` en `_layout.py` y ejecutar `npm run build`.
 
 ## Despliegue (cPanel + GitHub)
 
