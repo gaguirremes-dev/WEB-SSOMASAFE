@@ -503,6 +503,57 @@ function reclamosReservarEnvio(string $dir, string $ipHash, string $dupHash, str
     return '';
 }
 
+// ── Escritura atómica + respaldo (los reclamos son registros legales) ────────
+function reclamosEscrituraAtomica(string $file, string $content): bool {
+    $tmp = $file . '.tmp';
+    if (@file_put_contents($tmp, $content, LOCK_EX) === false) { @unlink($tmp); return false; }
+    clearstatcache(true, $tmp);
+    if (@filesize($tmp) !== strlen($content)) { @unlink($tmp); return false; }
+    if (is_file($file)) @copy($file, $file . '.bak');
+    if (!@rename($tmp, $file)) { @unlink($tmp); return false; }
+    return true;
+}
+
+// Libera el cupo de rate limit / duplicado reservado cuando el guardado falla,
+// para que el usuario pueda reintentar sin esperar 30 minutos.
+function reclamosLiberarReserva(string $dir, string $ipHash, string $dupHash): void {
+    $stateFile = $dir . '/rate_state.json';
+    $fp = @fopen($stateFile . '.lock', 'c');
+    if (!$fp || !flock($fp, LOCK_EX)) { if ($fp) fclose($fp); return; }
+    $raw  = is_file($stateFile) ? (string)@file_get_contents($stateFile) : '';
+    $data = $raw !== '' ? (json_decode($raw, true) ?: []) : [];
+    if (is_array($data['ip'][$ipHash] ?? null)) {
+        array_pop($data['ip'][$ipHash]);
+        if (!$data['ip'][$ipHash]) unset($data['ip'][$ipHash]);
+    }
+    if (is_array($data['site'] ?? null)) array_pop($data['site']);
+    if ($dupHash !== '' && isset($data['dup'][$dupHash])) unset($data['dup'][$dupHash]);
+    @file_put_contents($stateFile, json_encode($data));
+    flock($fp, LOCK_UN); fclose($fp);
+}
+
+// Anota en el registro si los correos salieron, para poder detectar reclamos sin notificar.
+function reclamosMarcarNotificacion(string $recordsFile, string $lockFile, string $codigo, bool $empresaOk, bool $clienteOk, string $logFile): void {
+    $fp = @fopen($lockFile, 'c');
+    if (!$fp || !flock($fp, LOCK_EX)) { if ($fp) fclose($fp); logSecurityEvent($logFile, 'NOTIF_MARK_LOCK_FAILED', ['codigo' => $codigo]); return; }
+    $records = json_decode((string)@file_get_contents($recordsFile), true);
+    if (is_array($records)) {
+        foreach ($records as &$r) {
+            if (($r['codigo'] ?? '') === $codigo) {
+                $r['notificacion_empresa']    = $empresaOk ? 'enviada' : 'FALLIDA';
+                $r['notificacion_consumidor'] = $clienteOk ? 'enviada' : ($empresaOk ? 'FALLIDA' : 'no_intentada');
+                break;
+            }
+        }
+        unset($r);
+        $json = json_encode($records, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if ($json === false || !reclamosEscrituraAtomica($recordsFile, $json)) {
+            logSecurityEvent($logFile, 'NOTIF_MARK_WRITE_FAILED', ['codigo' => $codigo]);
+        }
+    }
+    flock($fp, LOCK_UN); fclose($fp);
+}
+
 // ── SMTP (implicit TLS on 465, STARTTLS otherwise; certificate verified by default) ──
 function enviarCorreoSMTP(string $toEmail, string $subject, string $htmlBody, string $pdfB64 = '', string $pdfName = '', string &$err = ''): bool {
     if (!defined('SMTP_HOST') || !defined('SMTP_USER') || !defined('SMTP_PASS')) {
@@ -647,8 +698,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
         $sedesValidas = ['Lima — Av. República de Chile 324', 'Chiclayo — Lapoint 1221', 'Servicio online / plataforma digital'];
         if (!in_array($sede, $sedesValidas, true)) $sede = 'No especificada';
 
-        if (!$nombres || !$doc_nro || !$email || !$direccion || !$detalle || !$pedido) {
+        if (!$nombres || !$doc_nro || !$email || !$direccion || !$detalle || !$pedido
+            || !$departamento || !$provincia || !$distrito || !$servicio) {
             $errorMsg = 'Por favor, rellene todos los campos obligatorios.';
+        } elseif ($menor_edad && (!$ap_nombres || !$ap_doc_nro)) {
+            $errorMsg = 'Si el consumidor es menor de edad, indique los datos del padre, madre o apoderado.';
+        } elseif (!isset($_POST['declaro_veracidad']) || !isset($_POST['acepto_datos'])) {
+            $errorMsg = 'Debe aceptar las declaraciones y el tratamiento de datos personales para registrar el reclamo.';
         }
     }
 
@@ -657,36 +713,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
         $errorMsg = reclamosReservarEnvio($recordsDir, $ipHash, reclamosHuellaContenido($recordsDir, $detalle, $email), $logFile);
     }
 
-    // 7. Guardar registro
+    // 7. Guardar registro (lectura-modificación-escritura atómica; nunca sobrescribe un archivo ilegible)
     if (empty($errorMsg)) {
+        $contactoErr = defined('EMPRESA_EMAIL') ? ' o escríbenos a ' . EMPRESA_EMAIL : '';
         $fp = fopen($lockFile, 'w');
         if ($fp && flock($fp, LOCK_EX)) {
-            $year    = date('Y');
-            $records = file_exists($recordsFile) ? (json_decode(file_get_contents($recordsFile), true) ?: []) : [];
-            $count   = count(array_filter($records, fn($r) => ($r['year'] ?? '') == $year));
-            $generatedCode = sprintf('REC-%s-%04d', $year, $count + 1);
-            $submittedData = [
-                'codigo' => $generatedCode, 'year' => $year, 'fecha' => date('d/m/Y h:i A'),
-                'nombres' => $nombres, 'doc_tipo' => $doc_tipo, 'doc_nro' => $doc_nro,
-                'email' => $email, 'telefono' => $telefono, 'direccion' => $direccion,
-                'departamento' => $departamento, 'provincia' => $provincia, 'distrito' => $distrito,
-                'menor_edad' => $menor_edad,
-                'apoderado_nombres'  => $menor_edad ? $ap_nombres  : '',
-                'apoderado_doc_tipo' => $menor_edad ? $ap_doc_tipo : '',
-                'apoderado_doc_nro'  => $menor_edad ? $ap_doc_nro  : '',
-                'sede' => $sede, 'servicio' => $servicio,
-                'bien_tipo' => $bien_tipo, 'monto' => $monto,
-                'reclamo_tipo' => $reclamo_tipo, 'detalle' => $detalle, 'pedido' => $pedido,
-                'estado' => 'Pendiente',
-            ];
-            $records[] = $submittedData;
-            file_put_contents($recordsFile, json_encode($records, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            $year      = date('Y');
+            $records   = [];
+            $recordsOk = true;
+            if (is_file($recordsFile)) {
+                $rawRecords = (string)file_get_contents($recordsFile);
+                if (trim($rawRecords) !== '') {
+                    $decoded = json_decode($rawRecords, true);
+                    if (is_array($decoded)) {
+                        $records = $decoded;
+                    } else {
+                        // Archivo ilegible: son registros legales, no se sobrescribe. Se conserva una copia.
+                        $recordsOk = false;
+                        @copy($recordsFile, $recordsDir . '/records.corrupt-' . date('Ymd-His') . '.json');
+                        logSecurityEvent($logFile, 'RECORDS_CORRUPT', []);
+                    }
+                }
+            }
+            if ($recordsOk) {
+                $maxSeq = 0;
+                foreach ($records as $r) {
+                    if (($r['year'] ?? '') == $year && preg_match('/-(\d+)$/', (string)($r['codigo'] ?? ''), $mm)) {
+                        $maxSeq = max($maxSeq, (int)$mm[1]);
+                    }
+                }
+                $generatedCode = sprintf('REC-%s-%04d', $year, $maxSeq + 1);
+                $submittedData = [
+                    'codigo' => $generatedCode, 'year' => $year, 'fecha' => date('d/m/Y h:i A'),
+                    'nombres' => $nombres, 'doc_tipo' => $doc_tipo, 'doc_nro' => $doc_nro,
+                    'email' => $email, 'telefono' => $telefono, 'direccion' => $direccion,
+                    'departamento' => $departamento, 'provincia' => $provincia, 'distrito' => $distrito,
+                    'menor_edad' => $menor_edad,
+                    'apoderado_nombres'  => $menor_edad ? $ap_nombres  : '',
+                    'apoderado_doc_tipo' => $menor_edad ? $ap_doc_tipo : '',
+                    'apoderado_doc_nro'  => $menor_edad ? $ap_doc_nro  : '',
+                    'sede' => $sede, 'servicio' => $servicio,
+                    'bien_tipo' => $bien_tipo, 'monto' => $monto,
+                    'reclamo_tipo' => $reclamo_tipo, 'detalle' => $detalle, 'pedido' => $pedido,
+                    'consentimiento_datos' => true, 'consentimiento_fecha' => date('c'),
+                    'estado' => 'Pendiente',
+                ];
+                $records[] = $submittedData;
+                $json = json_encode($records, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                if ($json !== false && reclamosEscrituraAtomica($recordsFile, $json)) {
+                    $success = true;
+                } else {
+                    logSecurityEvent($logFile, 'RECORD_WRITE_FAILED', ['codigo' => $generatedCode]);
+                    $errorMsg = 'No pudimos registrar tu reclamo en este momento. Inténtalo nuevamente en unos minutos' . $contactoErr . '.';
+                }
+            } else {
+                $errorMsg = 'No pudimos registrar tu reclamo en este momento. Inténtalo más tarde' . $contactoErr . '.';
+            }
             flock($fp, LOCK_UN);
-            $success = true;
         } else {
             $errorMsg = 'Error al registrar en el servidor. Inténtelo nuevamente.';
         }
         if ($fp) fclose($fp);
+        if (!$success) {
+            // No se guardó nada: devolver el cupo reservado para que pueda reintentar.
+            reclamosLiberarReserva($recordsDir, $ipHash, reclamosHuellaContenido($recordsDir, $detalle, $email));
+        }
     }
 
     // 8. Generar PDF + enviar correos + redirigir
@@ -740,14 +831,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
         </div>";
         $errE = '';
         $okEmpresa = enviarCorreoSMTP(EMPRESA_NOTIF_EMAIL, 'NUEVA RECLAMACIÓN N° ' . $generatedCode . ' — ' . $nombres, $emailEmpresa, $pdfB64, $pdfName, $errE);
+        $okCliente = false;
         if ($okEmpresa) {
             // Consumer copy only after the internal mail was accepted (anti mail-bombing).
-            if (!enviarCorreoSMTP($email, $mailClienteSubj, $mailClienteBody, $pdfB64, $pdfName, $errC)) {
-                logSecurityEvent($logFile, 'SMTP_CLIENT_FAILED', ['detail' => substr($errC, 0, 160)]);
+            $okCliente = enviarCorreoSMTP($email, $mailClienteSubj, $mailClienteBody, $pdfB64, $pdfName, $errC);
+            if (!$okCliente) {
+                logSecurityEvent($logFile, 'SMTP_CLIENT_FAILED', ['detail' => substr($errC, 0, 160), 'codigo' => $generatedCode]);
             }
         } else {
-            logSecurityEvent($logFile, 'SMTP_INTERNAL_FAILED', ['detail' => substr($errE, 0, 160)]);
+            logSecurityEvent($logFile, 'SMTP_INTERNAL_FAILED', ['detail' => substr($errE, 0, 160), 'codigo' => $generatedCode]);
         }
+        // Queda anotado en records.json (campos notificacion_*) para detectar reclamos sin notificar.
+        reclamosMarcarNotificacion($recordsFile, $lockFile, $generatedCode, $okEmpresa, $okCliente, $logFile);
+        $submittedData['correo_enviado'] = $okCliente;
 
         $_SESSION['csrf_token']      = bin2hex(random_bytes(32));
         session_regenerate_id(true);
@@ -842,7 +938,12 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
             </div>
             <h1 class="font-display font-extrabold text-3xl text-brand-dark mb-2">¡Reclamación Registrada!</h1>
             <p class="text-gray-500 text-sm max-w-lg mx-auto">
+                <?php if (!empty($submittedData['correo_enviado'])): ?>
                 Tu reclamo fue procesado. Se envió un cargo al correo <strong class="text-brand-dark"><?= esc($submittedData['email']) ?></strong>.
+                <?php else: ?>
+                Tu reclamo quedó registrado con el código <strong class="text-brand-dark"><?= esc($submittedData['codigo'] ?? '') ?></strong>.
+                No pudimos enviarte el cargo por correo: imprime o guarda esta página como constancia<?= defined('EMPRESA_EMAIL') ? ' y, si lo necesitas, escríbenos a <strong class="text-brand-dark">' . esc(EMPRESA_EMAIL) . '</strong>' : '' ?>.
+                <?php endif; ?>
             </p>
         </div>
 
@@ -942,7 +1043,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                 <?php foreach ([
                     ['Respuesta en 30 días', 'Plazo legal establecido por INDECOPI', 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
                     ['100% Confidencial', 'Protegido por la Ley N.° 29733', 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'],
-                    ['Registro inmediato', 'Confirmación al instante por email', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
+                    ['Registro inmediato', 'Constancia con tu código de reclamo', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
                 ] as [$t, $s, $path]): ?>
                 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:1rem;padding:1.1rem;">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5" style="background:rgba(127,180,229,.2);">
@@ -1154,11 +1255,11 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                             <!-- Declaraciones -->
                             <div class="pt-4 border-t border-gray-100 space-y-3">
                                 <label class="flex items-start gap-3 cursor-pointer">
-                                    <input type="checkbox" required class="w-4 h-4 mt-0.5 rounded flex-shrink-0 cursor-pointer" style="accent-color:#003F8C">
+                                    <input type="checkbox" name="declaro_veracidad" value="1" required class="w-4 h-4 mt-0.5 rounded flex-shrink-0 cursor-pointer" style="accent-color:#003F8C">
                                     <span class="text-gray-500 text-xs leading-relaxed">Declaro ser el usuario titular y que los datos consignados son reales y verdaderos.</span>
                                 </label>
                                 <label class="flex items-start gap-3 cursor-pointer">
-                                    <input type="checkbox" required class="w-4 h-4 mt-0.5 rounded flex-shrink-0 cursor-pointer" style="accent-color:#003F8C">
+                                    <input type="checkbox" name="acepto_datos" value="1" required class="w-4 h-4 mt-0.5 rounded flex-shrink-0 cursor-pointer" style="accent-color:#003F8C">
                                     <span class="text-gray-500 text-xs leading-relaxed">Acepto el tratamiento de mis datos personales conforme a la <strong class="text-gray-700">Ley N.° 29733</strong> y la Política de Privacidad de SSOMA SAFE.</span>
                                 </label>
                             </div>
