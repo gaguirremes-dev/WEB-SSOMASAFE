@@ -14,7 +14,7 @@ Dominio canónico: `https://www.ssomasafe.com`.
 | `css/tailwind.min.css` | CSS compilado (se versiona) |
 | `css/pages.css` | Estilos de texto largo, FAQ e índice de las páginas secundarias |
 | `scripts/_layout.py` | Maquetación compartida de las 9 páginas generadas (cabecera, héroe, tarjeta de contacto, CTA, pie, iconos SVG) |
-| `scripts/sync_home_nav.py` | Copia el desplegable «Servicios» de `_layout.py` a `index.html` (entre los marcadores `NAV-SERVICES-*`) |
+| `scripts/sync_home_nav.py` | Copia a `index.html` el desplegable «Servicios» y el pie de `_layout.py` (entre los marcadores `NAV-SERVICES-*` y `FOOTER`). **No edites el pie ni ese menú a mano en `index.html`** |
 | `src/tailwind.css`, `tailwind.config.js` | Entrada y configuración de Tailwind 3 |
 | `docs/SEO-AUDIT.md` | Informe SEO y pendientes manuales |
 
