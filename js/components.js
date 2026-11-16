@@ -115,8 +115,18 @@ function setupContactForm() {
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Enviando...';
 
-    /* Simulación de envío — reemplazar con endpoint real */
-    await new Promise(res => setTimeout(res, 1800));
+    /* Envío real: abre WhatsApp comercial con los datos del formulario */
+    const val = n => (form.querySelector(`[name="${n}"]`)?.value || '').trim();
+    const lines = [
+      'Hola, quiero solicitar información de SSOMA SAFE.',
+      `Nombre: ${val('nombre')}`,
+      `Empresa: ${val('empresa')}`,
+      `Correo: ${val('email')}`,
+      val('telefono') ? `Teléfono: ${val('telefono')}` : '',
+      `Servicio: ${val('servicio')}`,
+      val('mensaje') ? `Mensaje: ${val('mensaje')}` : ''
+    ].filter(Boolean);
+    window.open(`https://wa.me/51943704298?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
 
     btn.disabled = false;
     btn.innerHTML = originalContent;

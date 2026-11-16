@@ -6,39 +6,60 @@
   <meta name="theme-color" content="#003F8C" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="assets/img/favicon-ssoma.jpg" />
-  <link rel="apple-touch-icon" href="assets/img/favicon-ssoma.jpg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
 
   <!-- SEO primario -->
-  <title>SSOMA SAFE | Consultoría en Seguridad, Salud Ocupacional y EPPs — Perú</title>
-  <meta name="description" content="SSOMA SAFE: consultoría especializada en Seguridad y Salud en el Trabajo, vigilancia ocupacional, suministro de EPPs certificados y cumplimiento SUNAFIL. Lima y Chiclayo." />
-  <meta name="keywords" content="SSOMA, seguridad industrial, EPP, salud ocupacional, SUNAFIL, IPERC, auditoría SST, Ley 29783, Perú" />
-  <meta name="robots" content="index, follow" />
+  <title>Consultoría SSOMA, SST y EPP en Perú | SSOMA SAFE</title>
+  <meta name="description" content="Consultoría SSOMA y SST, vigilancia ocupacional y EPP certificados. Cumple SUNAFIL y la Ley 29783. Oficinas en Lima y Chiclayo. Cotiza hoy." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="author" content="SSOMA SAFE" />
   <link rel="canonical" href="https://www.ssomasafe.com/" />
+  <link rel="alternate" hreflang="es-PE" href="https://www.ssomasafe.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.ssomasafe.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.ssomasafe.com/" />
-  <meta property="og:title" content="SSOMA SAFE | Seguridad y Salud Ocupacional Premium" />
+  <meta property="og:title" content="SSOMA SAFE | Consultoría SSOMA, SST y EPP en Perú" />
   <meta property="og:description" content="Blindamos la seguridad y continuidad operativa de tu empresa. Consultoría SSOMA, EPPs certificados y cumplimiento normativo." />
   <meta property="og:image" content="https://www.ssomasafe.com/assets/img/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="SSOMA SAFE – Consultoría en Seguridad y Salud Ocupacional, certificada ISO 45001" />
   <meta property="og:locale" content="es_PE" />
   <meta property="og:site_name" content="SSOMA SAFE" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SSOMA SAFE | Consultoría SSOMA Perú" />
+  <meta name="twitter:title" content="SSOMA SAFE | Consultoría SSOMA, SST y EPP en Perú" />
   <meta name="twitter:description" content="Consultoría especializada en SST, vigilancia ocupacional y EPPs certificados." />
   <meta name="twitter:image" content="https://www.ssomasafe.com/assets/img/og-image.jpg" />
+  <meta name="twitter:image:alt" content="SSOMA SAFE – Consultoría en Seguridad y Salud Ocupacional, certificada ISO 45001" />
 
   <!-- Structured Data JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": "https://www.ssomasafe.com/#organization",
     "name": "SSOMA SAFE",
+    "logo": "https://www.ssomasafe.com/assets/img/logo-ssoma-sm.png",
+    "image": "https://www.ssomasafe.com/assets/img/og-image.jpg",
+    "inLanguage": "es-PE",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+51943704298",
+      "email": "comercial@ssomasafe.com",
+      "contactType": "customer service",
+      "areaServed": "PE",
+      "availableLanguage": "es"
+    },
     "description": "Consultoría especializada en Seguridad y Salud Ocupacional, vigilancia médica y suministro de EPPs certificados.",
-    "url": "https://www.ssomasafe.com",
+    "url": "https://www.ssomasafe.com/",
     "email": "comercial@ssomasafe.com",
     "telephone": "+51943704298",
     "taxID": "20607018287",
@@ -47,17 +68,19 @@
         "@type": "PostalAddress",
         "streetAddress": "Av. República de Chile 324",
         "addressLocality": "Lima",
+        "addressRegion": "Lima",
         "addressCountry": "PE"
       },
       {
         "@type": "PostalAddress",
         "streetAddress": "Lapoint 1221",
         "addressLocality": "Chiclayo",
+        "addressRegion": "Lambayeque",
         "addressCountry": "PE"
       }
     ],
     "serviceType": ["Consultoría SSOMA", "Suministro EPP", "Vigilancia Ocupacional", "Auditorías SST"],
-    "areaServed": "PE",
+    "areaServed": {"@type": "Country", "name": "Perú"},
     "sameAs": [
       "https://www.instagram.com/somos.ssoma.peru",
       "https://www.facebook.com/somos.ssoma.peru",
@@ -67,34 +90,28 @@
   }
   </script>
 
+  <!-- LCP: poster del hero -->
+  <link rel="preload" as="image" href="/assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.webp" fetchpriority="high" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.ssomasafe.com/#website",
+    "url": "https://www.ssomasafe.com/",
+    "name": "SSOMA SAFE",
+    "inLanguage": "es-PE",
+    "publisher": { "@id": "https://www.ssomasafe.com/#organization" }
+  }
+  </script>
+
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              primary: '#003F8C',
-              light: '#7FB4E5',
-              dark: '#1E293B',
-              gray: '#F5F7FA',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Manrope', 'sans-serif'],
-            heading: ['Poppins', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind compilado (npm run build:css) -->
+  <link rel="stylesheet" href="css/tailwind.min.css?v=1" />
 
   <!-- CSS propio -->
   <link rel="stylesheet" href="css/style.css?v=2" />
@@ -116,7 +133,7 @@
 
       <!-- Logo -->
       <a href="#hero" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
-        <img src="assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300" width="98" height="64" />
+        <img src="assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" class="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300" width="98" height="64" />
       </a>
 
       <!-- Nav links — desktop -->
@@ -126,7 +143,7 @@
         <li><a href="#beneficios" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Beneficios</a></li>
         <li><a href="#legal" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Marco Legal</a></li>
         <li><a href="#contacto" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Contacto</a></li>
-        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Intranet</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener nofollow" class="nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors">Intranet</a></li>
       </ul>
 
       <!-- CTA nav -->
@@ -155,7 +172,7 @@
         <li><a href="#beneficios" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Beneficios</a></li>
         <li><a href="#legal" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Marco Legal</a></li>
         <li><a href="#contacto" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Contacto</a></li>
-        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors">Intranet</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener nofollow" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors">Intranet</a></li>
         <li>
           <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer"
              class="block w-full text-center px-5 py-3 rounded-xl bg-brand-primary text-white font-semibold hover:bg-blue-800 transition-all">
@@ -180,7 +197,7 @@
           class="w-full h-full object-cover scale-105"
           autoplay muted loop playsinline
           aria-hidden="true"
-          poster="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.png">
+          poster="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.webp">
           <source src="assets/video/VIDEO%20HERO.mp4" type="video/mp4" />
         </video>
         <!-- Overlay multicapa -->
@@ -228,8 +245,7 @@
              class="cta-secondary px-8 py-4 rounded-2xl border border-white/30 text-white font-semibold text-base hover:bg-white/10 hover:border-white/50 transition-all duration-300 backdrop-blur-sm flex items-center gap-3"
              aria-label="Cotizar equipos de protección">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/>
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
             </svg>
             Cotizar Equipos
           </a>
@@ -239,14 +255,17 @@
         <div class="hero-stats mt-12">
         <!-- Certificación ISO 45001 (placa blanca para contraste sobre el video) -->
         <div class="mb-10 flex flex-col items-center gap-3">
-          <div class="rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-white/40">
-            <img src="assets/img/iso45001.svg"
-                 alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
-                 width="648" height="318" decoding="async"
-                 class="block h-auto w-40 sm:w-52" />
-          </div>
+          <img src="assets/img/iso45001-blanco.png"
+               alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
+               width="900" height="441" decoding="async"
+               class="block h-auto w-56 sm:w-72 drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]" />
           <p class="text-xs sm:text-sm text-white/70 font-medium tracking-wide">Certificación ISO 45001 · Seguridad y Salud en el Trabajo</p>
         </div>
+        </div>
+      </div>
+
+      <!-- Stats pegados al borde inferior del hero -->
+      <div class="hero-stats absolute bottom-6 sm:bottom-8 inset-x-0 z-10 px-6">
         <div class="grid grid-cols-3 gap-6 max-w-xl mx-auto">
           <div class="text-center">
             <p class="text-2xl font-display font-bold text-white">+500</p>
@@ -260,15 +279,6 @@
             <p class="text-2xl font-display font-bold text-white">10+</p>
             <p class="text-xs text-white/50 mt-1">Años de experiencia</p>
           </div>
-        </div>
-        </div>
-      </div>
-
-      <!-- Scroll indicator -->
-      <div class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2" aria-hidden="true">
-        <span class="text-white/40 text-xs tracking-widest uppercase">Scroll</span>
-        <div class="w-px h-12 bg-gradient-to-b from-white/40 to-transparent">
-          <div class="scroll-dot w-1 h-1 rounded-full bg-brand-light mx-auto animate-bounce mt-1"></div>
         </div>
       </div>
     </section>
@@ -319,7 +329,8 @@
             <!-- Imagen principal -->
             <div class="reveal-up relative rounded-3xl overflow-hidden shadow-2xl shadow-brand-primary/20">
               <img
-                src="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.png"
+                src="assets/img/SUPERVISI%C3%93N%20INDUSTRIAL.webp"
+                width="1536" height="1024"
                 alt="Ingeniero SSOMA supervisando operaciones en planta industrial"
                 class="w-full h-72 object-cover object-center"
                 loading="lazy" />
@@ -417,7 +428,8 @@
             <article class="service-card reveal-up group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
               <div class="relative h-40 overflow-hidden">
                 <img
-                  src="assets/img/INSPECCIONES%20INDUSTRIALES.png"
+                  src="assets/img/INSPECCIONES%20INDUSTRIALES.webp"
+                  width="1536" height="1024"
                   alt="Inspecciones industriales SSOMA"
                   class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   loading="lazy" />
@@ -457,7 +469,8 @@
             <article class="service-card reveal-up group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-brand-primary/30 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1 transition-all duration-500 cursor-pointer">
               <div class="relative h-40 overflow-hidden">
                 <img
-                  src="assets/img/BRIGADAS%20DE%20EMERGENCIA.png"
+                  src="assets/img/BRIGADAS%20DE%20EMERGENCIA.webp"
+                  width="1536" height="1024"
                   alt="Brigadas de emergencia SSOMA equipadas"
                   class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   loading="lazy" />
@@ -484,7 +497,8 @@
             <!-- Imagen de fondo EPP -->
             <div class="absolute inset-0">
               <img
-                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.png"
+                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.webp"
+                width="1536" height="1024"
                 alt=""
                 class="w-full h-full object-cover object-center"
                 aria-hidden="true"
@@ -525,7 +539,8 @@
             <!-- Imagen producto EPP -->
             <div class="mt-8 rounded-2xl overflow-hidden ring-1 ring-white/10">
               <img
-                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.png"
+                src="assets/img/EQUIPOS%20DE%20SEGURIDAD%20%20EPP.webp"
+                width="1536" height="1024"
                 alt="Equipos de protección personal certificados — cascos, protección auditiva, respiratoria y guantes"
                 class="w-full h-44 object-cover object-center hover:scale-105 transition-transform duration-500"
                 loading="lazy" />
@@ -575,7 +590,8 @@
     ═══════════════════════════════════════════ -->
     <section class="relative overflow-hidden h-[420px]" aria-label="Equipo SSOMA SAFE en campo">
       <img
-        src="assets/img/INGENIEROS%20INDUSTRIALES.png"
+        src="assets/img/INGENIEROS%20INDUSTRIALES.webp"
+        width="1536" height="1024"
         alt="Equipo de ingenieros SSOMA SAFE en planta industrial"
         class="absolute inset-0 w-full h-full object-cover object-center"
         loading="lazy" />
@@ -815,7 +831,7 @@
 
               <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-5 rounded-2xl bg-brand-gray hover:bg-green-50 border border-transparent hover:border-green-200 transition-all duration-300 group" aria-label="Contactar por WhatsApp">
                 <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center group-hover:bg-green-500 transition-colors flex-shrink-0">
-                  <svg class="w-6 h-6 text-green-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/></svg>
+                  <svg class="w-6 h-6 text-green-600 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                 </div>
                 <div>
                   <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">WhatsApp</p>
@@ -908,7 +924,7 @@
 
                 <!-- Success message -->
                 <div id="form-success" class="hidden p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm text-center font-medium" role="status" aria-live="polite">
-                  ¡Mensaje enviado! Nos comunicaremos contigo en menos de 24h.
+                  ¡Listo! Se abrió WhatsApp con tu consulta: envía el mensaje y te responderemos en menos de 24 h.
                 </div>
               </div>
             </form>
@@ -929,21 +945,14 @@
         <!-- Marca -->
         <div class="lg:col-span-2">
           <div class="mb-6">
-            <img src="assets/img/logo-ssoma-light.png" alt="SSOMA SAFE" class="h-16 w-auto object-contain" width="98" height="64" loading="lazy" />
+            <img src="assets/img/logo-ssoma-light-sm.png" alt="SSOMA SAFE" class="h-24 w-auto object-contain" width="147" height="96" loading="lazy" />
           </div>
           <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
             Consultoría especializada en Seguridad y Salud Ocupacional, Medio Ambiente e Insumos Industriales. Tu aliado definitivo en cumplimiento normativo.
           </p>
-          <div class="mb-6 inline-block rounded-xl bg-white p-2.5 shadow-lg ring-1 ring-white/20">
-            <img src="assets/img/iso45001.svg"
-                 alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
-                 width="648" height="318" loading="lazy" decoding="async"
-                 class="block h-auto w-44" />
-          </div>
-          <p class="text-gray-400 text-xs mb-6 max-w-xs">Certificación ISO 45001 · Sistema de Gestión de Seguridad y Salud en el Trabajo</p>
           <div class="flex gap-3">
             <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors" aria-label="WhatsApp de SSOMA SAFE">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.029 18.88a9.836 9.836 0 01-4.988-1.353l-.357-.212-3.704.971.989-3.614-.233-.373A9.842 9.842 0 012.143 12c0-5.44 4.426-9.866 9.866-9.866 5.441 0 9.866 4.426 9.866 9.866 0 5.441-4.425 9.88-9.846 9.88z"/></svg>
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
             </a>
             <a href="https://www.instagram.com/somos.ssoma.peru" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center hover:bg-brand-primary transition-colors" aria-label="Instagram de SSOMA SAFE">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
@@ -965,19 +974,26 @@
           <h4 class="font-display font-semibold text-sm uppercase tracking-widest text-gray-400 mb-5">Servicios</h4>
           <ul class="space-y-3" role="list">
             <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Consultoría SST</a></li>
-            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">IPERC y Auditorías</a></li>
-            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Vigilancia Ocupacional</a></li>
-            <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Suministro EPPs</a></li>
+            <li><a href="/matriz-iperc.html" class="text-gray-400 hover:text-white text-sm transition-colors">Matriz IPERC</a></li>
+            <li><a href="/auditoria-sst-sunafil.html" class="text-gray-400 hover:text-white text-sm transition-colors">Auditorías SST</a></li>
+            <li><a href="/vigilancia-ocupacional.html" class="text-gray-400 hover:text-white text-sm transition-colors">Vigilancia Ocupacional</a></li>
+            <li><a href="/epp-certificados.html" class="text-gray-400 hover:text-white text-sm transition-colors">Suministro EPPs</a></li>
             <li><a href="#servicios" class="text-gray-400 hover:text-white text-sm transition-colors">Capacitaciones</a></li>
+            <li><a href="/consultoria-sst-chiclayo.html" class="text-gray-400 hover:text-white text-sm transition-colors">Consultoría SST en Chiclayo</a></li>
+            <li><a href="/ley-29783-obligaciones-empleador.html" class="text-gray-400 hover:text-white text-sm transition-colors">Guía Ley 29783</a></li>
           </ul>
+          <img src="assets/img/iso45001-blanco.png"
+               alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
+               width="900" height="441" loading="lazy" decoding="async"
+               class="mt-8 block h-auto w-48" />
         </div>
 
         <!-- Legal -->
         <div>
           <h4 class="font-display font-semibold text-sm uppercase tracking-widest text-gray-400 mb-5">Legal</h4>
           <ul class="space-y-3" role="list">
-            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Política de Privacidad</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Términos y Condiciones</a></li>
+            <li><a href="/politica-de-privacidad.html" class="text-gray-400 hover:text-white text-sm transition-colors">Política de Privacidad</a></li>
+            <li><a href="/terminos-y-condiciones.html" class="text-gray-400 hover:text-white text-sm transition-colors">Términos y Condiciones</a></li>
             <li><a href="mailto:comercial@ssomasafe.com" class="text-gray-400 hover:text-white text-sm transition-colors">comercial@ssomasafe.com</a></li>
             <li class="pt-2">
               <a href="Libro-reclamaciones/libro-de-reclamaciones.php" title="Libro de Reclamaciones Virtual — INDECOPI" class="rec-card">
@@ -1015,7 +1031,7 @@
         <!-- Barra superior -->
         <header class="flex items-center gap-3 px-3 sm:px-5 py-3 bg-brand-dark text-white shrink-0">
           <div class="bg-white rounded-lg px-2 py-1.5 shrink-0 hidden sm:block">
-            <img src="assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-12 w-auto object-contain" width="73" height="48" />
+            <img src="assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" class="h-12 w-auto object-contain" width="73" height="48" />
           </div>
           <div class="min-w-0">
             <h3 id="catalogo-title" class="font-display font-bold text-sm sm:text-base leading-tight truncate">Catálogo SSOMA SAFE</h3>

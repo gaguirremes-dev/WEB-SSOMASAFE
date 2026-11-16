@@ -51,10 +51,7 @@ function heroEntrance() {
   }, '-=0.4')
   .to('.hero-stats', {
     opacity: 1, y: 0, duration: 0.7, ease: 'power3.out'
-  }, '-=0.3')
-  .to('.scroll-indicator', {
-    opacity: 1, y: 0, duration: 0.6, ease: 'power2.out'
-  }, '-=0.2');
+  }, '-=0.3');
 
   /* Parallax suave del video hero al scroll */
   gsap.to('#hero-video', {

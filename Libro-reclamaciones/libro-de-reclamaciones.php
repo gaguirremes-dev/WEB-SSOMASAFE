@@ -778,27 +778,14 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
     <title>Libro de Reclamaciones | SSOMA SAFE — Perú</title>
     <meta name="description" content="Libro de Reclamaciones Virtual de SSOMA SAFE. Registra tu queja o reclamo conforme al Código de Protección al Consumidor — Ley N.° 29571 — INDECOPI.">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ssomasafe.com/Libro-reclamaciones/">
-    <link rel="icon" type="image/jpeg" href="../assets/img/favicon-ssoma.jpg">
+    <link rel="canonical" href="https://www.ssomasafe.com/Libro-reclamaciones/libro-de-reclamaciones.php">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: { primary: '#003F8C', light: '#7FB4E5', dark: '#1E293B', pale: '#EFF6FF' }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Manrope', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="../css/tailwind.min.css?v=1">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { background: #F5F7FA; font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -832,7 +819,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
 <header class="no-print fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-3.5 flex items-center justify-between">
         <a href="../index.html" class="flex items-center group" aria-label="SSOMA SAFE — Ir al inicio">
-            <img src="../assets/img/logo-ssoma.png" alt="SSOMA SAFE" class="h-14 w-auto object-contain group-hover:scale-105 transition-transform" width="85" height="56">
+            <img src="../assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" class="h-14 w-auto object-contain group-hover:scale-105 transition-transform" width="85" height="56">
         </a>
         <a href="../index.html" class="text-brand-dark/60 hover:text-brand-primary text-sm flex items-center gap-1.5 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
