@@ -42,3 +42,5 @@ assets/img/raw/
 # Libro de Reclamaciones (credenciales y registros)
 config.smtp.php
 Libro-reclamaciones/reclamaciones/
+
+# Tailwind: css/tailwind.min.css SE COMMITEA (hosting estático); node_modules no
