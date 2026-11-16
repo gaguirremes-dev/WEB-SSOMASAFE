@@ -15,7 +15,6 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         display: ['Manrope', 'sans-serif'],
-        heading: ['Poppins', 'sans-serif'],
       },
     },
   },

@@ -33,7 +33,7 @@ function initAnimations() {
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     /* Sin animaciones — revelar todo de una vez */
-    gsap.set('.hero-badge,.hero-headline,.hero-sub,.hero-ctas,.hero-stats,.scroll-indicator,.reveal-up,.reveal-left,.reveal-right,.reveal-scale', {
+    gsap.set('.hero-badge,.hero-headline,.hero-sub,.hero-ctas,.hero-stats,.reveal-up,.reveal-left,.reveal-right,.reveal-scale', {
       opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all'
     });
     return;

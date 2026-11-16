@@ -21,11 +21,11 @@ desktop.ini
 *.log
 logs/
 
-# Dependencias (si en el futuro se agrega Node)
+# Dependencias (npm: solo Tailwind para compilar el CSS)
 node_modules/
 npm-debug.log*
 
-# Build output (si en el futuro se compila Tailwind)
+# Build output genérico (el CSS compilado va en css/tailwind.min.css y SÍ se versiona)
 dist/
 build/
 

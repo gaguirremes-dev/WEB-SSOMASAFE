@@ -12,7 +12,6 @@
 
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Manrope', sans-serif;
-  --font-heading: 'Poppins', sans-serif;
 
   --shadow-brand: 0 20px 60px -10px rgba(0, 63, 140, 0.35);
   --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.06);
@@ -195,18 +194,6 @@ section {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none !important;
-}
-
-/* ═══════════════════════════════════════════
-   SCROLL INDICATOR
-═══════════════════════════════════════════ */
-.scroll-indicator {
-  animation: fadeInUp 1s ease 2s both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* ═══════════════════════════════════════════

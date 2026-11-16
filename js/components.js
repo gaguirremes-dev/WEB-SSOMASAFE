@@ -108,34 +108,51 @@ function setupContactForm() {
       if (!validateField(el, fields[name])) isValid = false;
     });
 
+    /* Consentimiento (Ley N.° 29733): casilla obligatoria */
+    const consent = form.querySelector('[name="consentimiento"]');
+    const consentError = document.getElementById('consent-error');
+    if (consent && !consent.checked) {
+      consentError?.classList.remove('hidden');
+      isValid = false;
+    } else {
+      consentError?.classList.add('hidden');
+    }
+
     if (!isValid) return;
 
-    const btn = form.querySelector('button[type="submit"]');
-    const originalContent = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando...';
-
-    /* Envío real: abre WhatsApp comercial con los datos del formulario */
+    /* No hay backend: el formulario abre WhatsApp con el mensaje ya redactado */
     const val = n => (form.querySelector(`[name="${n}"]`)?.value || '').trim();
+    const servicio = form.querySelector('[name="servicio"]');
+    const servicioLabel = servicio?.selectedOptions[0]?.textContent.trim() || val('servicio');
     const lines = [
       'Hola, quiero solicitar información de SSOMA SAFE.',
       `Nombre: ${val('nombre')}`,
       `Empresa: ${val('empresa')}`,
       `Correo: ${val('email')}`,
       val('telefono') ? `Teléfono: ${val('telefono')}` : '',
-      `Servicio: ${val('servicio')}`,
+      `Servicio: ${servicioLabel}`,
       val('mensaje') ? `Mensaje: ${val('mensaje')}` : ''
     ].filter(Boolean);
-    window.open(`https://wa.me/51943704298?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    const waUrl = `https://wa.me/51943704298?text=${encodeURIComponent(lines.join('\n'))}`;
 
-    btn.disabled = false;
-    btn.innerHTML = originalContent;
-
-    form.reset();
     const success = document.getElementById('form-success');
-    if (success) {
-      success.classList.remove('hidden');
-      setTimeout(() => success.classList.add('hidden'), 5000);
+    const fallback = document.getElementById('form-fallback');
+    success?.classList.add('hidden');
+    fallback?.classList.add('hidden');
+
+    const win = window.open(waUrl, '_blank');
+    if (win) {
+      win.opener = null; /* equivalente a noopener, pero permite detectar el bloqueo de ventanas */
+      form.reset();
+      if (success) {
+        success.classList.remove('hidden');
+        setTimeout(() => success.classList.add('hidden'), 8000);
+      }
+    } else if (fallback) {
+      /* Ventana bloqueada: conservar lo escrito y ofrecer el enlace directo */
+      const link = fallback.querySelector('a');
+      if (link) link.href = waUrl;
+      fallback.classList.remove('hidden');
     }
   });
 

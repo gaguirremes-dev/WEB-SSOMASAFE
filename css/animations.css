@@ -8,8 +8,7 @@
 .hero-headline,
 .hero-sub,
 .hero-ctas,
-.hero-stats,
-.scroll-indicator {
+.hero-stats {
   opacity: 0;
 }
 
@@ -182,7 +181,6 @@
   .hero-sub,
   .hero-ctas,
   .hero-stats,
-  .scroll-indicator,
   .reveal-up,
   .reveal-left,
   .reveal-right,

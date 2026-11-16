@@ -118,8 +118,8 @@
   <link rel="stylesheet" href="css/animations.css?v=2" />
 
   <!-- GSAP + Plugins -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" defer></script>
   <!-- Lenis smooth scroll -->
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js" defer></script>
   <!-- Sin JavaScript: mostrar el contenido que las animaciones ocultan al inicio -->
@@ -190,7 +190,7 @@
     <!-- ═══════════════════════════════════════════
          HERO SECTION
     ═══════════════════════════════════════════ -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero principal">
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-36 sm:pb-32" aria-label="Hero principal">
 
       <!-- Video background -->
       <div class="absolute inset-0 z-0">
@@ -917,6 +917,15 @@
                     placeholder="Cuéntanos sobre tu empresa y necesidades..."></textarea>
                 </div>
 
+                <div>
+                  <label class="flex items-start gap-3 text-sm text-gray-600 leading-snug cursor-pointer">
+                    <input type="checkbox" id="consentimiento" name="consentimiento" required aria-required="true"
+                      class="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 accent-[#003F8C]" />
+                    <span>He leído y acepto la <a href="/politica-de-privacidad.html" target="_blank" rel="noopener" class="text-brand-primary underline">Política de Privacidad</a> y autorizo el tratamiento de mis datos para responder a mi solicitud. *</span>
+                  </label>
+                  <span id="consent-error" class="hidden text-red-500 text-xs mt-1" role="alert">Debes aceptar la política de privacidad para enviar tu solicitud</span>
+                </div>
+
                 <button type="submit"
                   class="w-full py-4 rounded-2xl bg-brand-primary text-white font-bold text-base hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-brand-primary/40 flex items-center justify-center gap-3"
                   aria-label="Enviar solicitud de diagnóstico">
@@ -927,6 +936,9 @@
                 <!-- Success message -->
                 <div id="form-success" class="hidden p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm text-center font-medium" role="status" aria-live="polite">
                   ¡Listo! Se abrió WhatsApp con tu consulta: envía el mensaje y te responderemos en menos de 24 h.
+                </div>
+                <div id="form-fallback" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center font-medium" role="alert">
+                  Tu navegador bloqueó la ventana de WhatsApp. <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer" class="underline font-semibold">Abrir WhatsApp con mi consulta</a>
                 </div>
               </div>
             </form>
