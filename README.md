@@ -49,6 +49,9 @@ Notas:
 - Los archivos de desarrollo (`src/`, `scripts/`, `docs/`, `package*.json`, `tailwind.config.js`, `*.md`)
   llegan al servidor pero el `.htaccess` los bloquea con 403.
 - Si cambias un vídeo o una imagen, usa un nombre de archivo nuevo: el servidor las cachea un año.
+- El `.htaccess` incluye al final el bloque de PHP que genera cPanel (`ea-php82`). Está versionado para que
+  «Update from Remote» no falle con *Your local changes to .htaccess would be overwritten*.
+  Si cPanel vuelve a modificar ese archivo (por ejemplo, al cambiar la versión de PHP), copia el bloque nuevo al repo.
 
 ## Antes de añadir analítica (GA4)
 

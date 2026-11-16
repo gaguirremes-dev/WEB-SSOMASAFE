@@ -59,3 +59,15 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
   Header always set Strict-Transport-Security "max-age=31536000"
 </IfModule>
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Versión de PHP del hosting. Lo genera cPanel (MultiPHP Manager) y lo escribe en este archivo;
+# se versiona tal cual para que `git pull` en cPanel no choque con el .htaccess del servidor.
+# Si cambias la versión de PHP en cPanel, actualiza aquí el nombre del paquete (ea-phpXX).
+# ─────────────────────────────────────────────────────────────────────────────
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
