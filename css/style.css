@@ -6,17 +6,10 @@
 :root {
   --brand-primary: #003F8C;
   --brand-light: #7FB4E5;
-  --brand-dark: #1E293B;
   --brand-gray: #F5F7FA;
   --white: #FFFFFF;
 
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Manrope', sans-serif;
-
   --shadow-brand: 0 20px 60px -10px rgba(0, 63, 140, 0.35);
-  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.06);
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
 }
 
 /* ── Lenis (scroll suave): evita el conflicto con scroll-behavior nativo ── */
@@ -28,6 +21,8 @@ html.lenis, html.lenis body { height: auto; }
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Navbar fija: las anclas (también sin Lenis) no deben quedar bajo ella */
+section[id] { scroll-margin-top: 80px; }
 body { margin: 0; }
 img, video { display: block; max-width: 100%; }
 
@@ -112,23 +107,6 @@ img, video { display: block; max-width: 100%; }
   transition: transform 8s ease-out;
 }
 
-/* Partículas */
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  background: var(--brand-light);
-  opacity: 0;
-  animation: particleFloat var(--duration) ease-in-out infinite var(--delay);
-}
-
-@keyframes particleFloat {
-  0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-  20%  { opacity: 0.3; }
-  80%  { opacity: 0.1; }
-  100% { opacity: 0; transform: translateY(-120px) scale(1); }
-}
-
 /* ═══════════════════════════════════════════
    SECCIONES GENERALES
 ═══════════════════════════════════════════ */
@@ -193,30 +171,6 @@ section {
   font-size: 0.75rem;
   color: #ef4444;
   margin-top: 0.25rem;
-}
-
-/* ── Loading state ── */
-#contact-form button[disabled] {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-/* ═══════════════════════════════════════════
-   GLASSMORPHISM UTILS
-═══════════════════════════════════════════ */
-.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.glass-dark {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ═══════════════════════════════════════════

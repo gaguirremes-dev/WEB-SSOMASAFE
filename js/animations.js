@@ -1,18 +1,27 @@
 /* ═══════════════════════════════════════════
    SSOMA SAFE — animations.js
    GSAP + ScrollTrigger: Hero, reveals, counters,
-   parallax, navbar y partículas
+   parallax y navbar
 ═══════════════════════════════════════════ */
 
 /* Si GSAP no carga (CDN caído o bloqueado), el contenido no debe quedar invisible */
 const GSAP_WAIT_MAX_TRIES = 50; // ~4 s
 const GSAP_HIDDEN_SELECTORS = '.hero-badge,.hero-headline,.hero-sub,.hero-ctas,.hero-stats,.reveal-up,.reveal-left,.reveal-right,.reveal-scale';
 
+/* Sin animación (reduced-motion o GSAP caído) los contadores deben mostrar su valor final, no "0" */
+function showFinalCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    if (!Number.isNaN(target)) el.textContent = (el.dataset.prefix || '') + target + (el.dataset.suffix || '');
+  });
+}
+
 function revealWithoutGSAP() {
   document.querySelectorAll(GSAP_HIDDEN_SELECTORS).forEach(el => {
     el.style.opacity = '1';
     el.style.transform = 'none';
   });
+  showFinalCounters();
 }
 
 function waitForGSAP(cb, tries = 0) {
@@ -33,9 +42,10 @@ function initAnimations() {
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     /* Sin animaciones — revelar todo de una vez */
-    gsap.set('.hero-badge,.hero-headline,.hero-sub,.hero-ctas,.hero-stats,.reveal-up,.reveal-left,.reveal-right,.reveal-scale', {
+    gsap.set(GSAP_HIDDEN_SELECTORS, {
       opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all'
     });
+    showFinalCounters();
     return;
   }
 
@@ -168,6 +178,7 @@ function setupCounters() {
 
       const el = entry.target;
       const target = parseInt(el.dataset.target, 10);
+      const prefix = el.dataset.prefix || '';
       const suffix = el.dataset.suffix || '';
       const obj = { val: 0 };
 
@@ -176,10 +187,10 @@ function setupCounters() {
         duration: 2,
         ease: 'power2.out',
         onUpdate: () => {
-          el.textContent = Math.round(obj.val) + suffix;
+          el.textContent = prefix + Math.round(obj.val) + suffix;
         },
         onComplete: () => {
-          el.textContent = target + suffix;
+          el.textContent = prefix + target + suffix;
         }
       });
     });
@@ -191,7 +202,7 @@ function setupCounters() {
 /* ─── Parallax secciones ─── */
 function setupParallax() {
   /* Fondo decorativo de sección nosotros */
-  gsap.to('#nosotros .absolute', {
+  gsap.to('#nosotros .parallax-decor', {
     yPercent: -15,
     ease: 'none',
     scrollTrigger: {
@@ -248,28 +259,4 @@ function setupNavbarScroll() {
       });
     }
   });
-}
-
-/* ─── Partículas hero ─── */
-function setupParticles() {
-  const container = document.getElementById('particles');
-  if (!container) return;
-
-  const count = window.innerWidth < 768 ? 12 : 24;
-
-  for (let i = 0; i < count; i++) {
-    const size = Math.random() * 4 + 2;
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      --duration: ${Math.random() * 6 + 5}s;
-      --delay: ${Math.random() * 6}s;
-      opacity: 0;
-    `;
-    container.appendChild(p);
-  }
 }

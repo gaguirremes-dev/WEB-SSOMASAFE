@@ -7,16 +7,14 @@ Para añadir una página: agrega un dict a PAGES, ejecuta el script, añade su U
 sitemap.xml y enlázala desde el footer de index.html. Luego `npm run build:css`.
 Este script NO modifica sitemap.xml ni index.html.
 """
-import os, re, json, urllib.parse
+import os, json, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 SITE = 'https://www.ssomasafe.com'
-DATE = '2026-11-16'
 
 P = 'class="text-gray-700 leading-relaxed mb-4"'
 UL = 'class="list-disc pl-6 space-y-2 text-gray-700 leading-relaxed mb-4"'
 H2 = 'class="font-display font-extrabold text-2xl mt-12 mb-4"'
-H3 = 'class="font-display font-bold text-lg mt-6 mb-2"'
 A = 'class="text-brand-primary underline"'
 
 def wa(text):
@@ -213,7 +211,9 @@ def render(p):
       "@context": "https://schema.org",
       "@graph": [
         {"@type": "Service", "name": p['h1'], "url": url, "areaServed": {"@type": "Country", "name": "Perú"},
-         "provider": {"@id": f"{SITE}/#organization"}, "description": p['desc'], "inLanguage": "es-PE"},
+         "provider": {"@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "SSOMA SAFE",
+                      "url": f"{SITE}/", "telephone": "+51943704298", "email": "comercial@ssomasafe.com"},
+         "description": p['desc'], "inLanguage": "es-PE"},
         {"@type": "BreadcrumbList", "itemListElement": [
           {"@type": "ListItem", "position": 1, "name": "Inicio", "item": f"{SITE}/"},
           {"@type": "ListItem", "position": 2, "name": p['crumb'], "item": url}]}
@@ -246,7 +246,7 @@ def render(p):
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/tailwind.min.css?v=1" />
+  <link rel="stylesheet" href="css/tailwind.min.css?v=2" />
 </head>
 <body class="bg-brand-gray text-brand-dark font-sans antialiased">
   <header class="bg-white border-b border-gray-200">
@@ -288,6 +288,5 @@ def render(p):
 '''
 
 for p in PAGES:
-    t = len(re.sub(r'\s*\|.*', '', p['title'])); full = len(p['title']); d = len(p['desc'])
-    print(f"{p['slug']}: title={full} desc={d}")
+    print(f"{p['slug']}: title={len(p['title'])} desc={len(p['desc'])}")
     open(f"{p['slug']}.html", 'w', encoding='utf-8', newline='\n').write(render(p))

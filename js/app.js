@@ -1,34 +1,12 @@
 /* ═══════════════════════════════════════════
    SSOMA SAFE — app.js
-   Inicialización principal y lazy loading
+   Inicialización principal
 ═══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  setupLazyImages();
   setupSkipLink();
   setupScrollProgress();
 });
-
-/* ─── Lazy loading de imágenes ─── */
-function setupLazyImages() {
-  if (!('IntersectionObserver' in window)) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const img = entry.target;
-      const src = img.dataset.src;
-      if (src) {
-        img.src = src;
-        img.removeAttribute('data-src');
-        img.classList.remove('lazy');
-      }
-      observer.unobserve(img);
-    });
-  }, { rootMargin: '200px 0px' });
-
-  document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));
-}
 
 /* ─── Skip to main content ─── */
 function setupSkipLink() {

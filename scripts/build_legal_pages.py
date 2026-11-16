@@ -7,7 +7,7 @@ Nota: 404.html usa rutas absolutas (/css/...) porque el servidor la entrega
 en cualquier URL. Las otras páginas usan rutas relativas.
 Después de generar, ejecuta `npm run build:css` si añadiste clases Tailwind nuevas.
 """
-import re, os
+import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
@@ -27,12 +27,12 @@ HEAD = '''<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/tailwind.min.css?v=1" />
+  <link rel="stylesheet" href="/css/tailwind.min.css?v=2" />
 </head>
 <body class="bg-brand-gray text-brand-dark font-sans antialiased">
   <header class="bg-white border-b border-gray-200">
     <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" aria-label="SSOMA SAFE — Inicio"><img src="/assets/img/logo-ssoma.png" alt="SSOMA SAFE" width="73" height="48" class="h-12 w-auto" /></a>
+      <a href="/" aria-label="SSOMA SAFE — Inicio"><img src="/assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" width="73" height="48" class="h-12 w-auto" /></a>
       <a href="/" class="text-sm font-semibold text-brand-primary hover:underline">&larr; Volver al inicio</a>
     </div>
   </header>
@@ -52,7 +52,6 @@ FOOT = '''  </main>
 def page(fn, title, desc, body, robots='index, follow'):
     canon = f'<link rel="canonical" href="https://www.ssomasafe.com/{fn}" />' if robots.startswith('index') else ''
     html = HEAD.format(title=title, desc=desc, robots=robots, canon=canon) + body + FOOT
-    html = html.replace('/assets/img/logo-ssoma.png', '/assets/img/logo-ssoma-sm.png')
     if fn != '404.html':  # rutas relativas: funcionan en el dominio y al abrir el archivo en local
         html = html.replace('"/css/', '"css/').replace('"/assets/', '"assets/').replace('"/favicon.ico"', '"favicon.ico"')
     open(fn, 'w', encoding='utf-8', newline='\n').write(html)
@@ -85,7 +84,7 @@ priv = f'''    <h1 class="font-display font-extrabold text-3xl sm:text-4xl mb-2"
 
     <h2 {H2}>3. Base legal y conservación</h2>
     <p {P}>Tratamos sus datos con su consentimiento libre, previo, expreso, informado e inequívoco, que usted otorga al enviar el formulario o marcar la casilla correspondiente; para la ejecución de las medidas precontractuales que usted solicita; y para cumplir obligaciones legales. Los conservamos durante el tiempo necesario para la finalidad que los originó y los plazos legales aplicables; luego los eliminamos o anonimizamos.</p>
-    <p {P}>Este sitio está dirigido a empresas y profesionales. No recopilamos de forma intencional datos de menores de edad.</p>
+    <p {P}>Este sitio está dirigido a empresas y profesionales y no recopila datos de menores de edad de forma intencional. La única excepción es el Libro de Reclamaciones: si el consumidor es menor de edad, la normativa de consumo exige registrar también los datos de su padre, madre o apoderado, que tratamos solo para atender el reclamo.</p>
 
     <h2 {H2}>4. Encargados y transferencias</h2>
     <p {P}>Para operar el sitio usamos proveedores que pueden tratar datos por nuestra cuenta: hosting, correo electrónico, Cloudflare (seguridad y red de entrega), hCaptcha (verificación antispam), Google Fonts y WhatsApp (Meta). Algunos pueden estar ubicados fuera del Perú, por lo que sus datos podrían ser objeto de flujo transfronterizo; en ese caso procuramos que el país de destino o el proveedor ofrezca un nivel adecuado de protección, conforme a la normativa vigente. Además, al cargar la página su navegador solicita recursos (tipografías y bibliotecas) a servidores de terceros, como Google Fonts, cdnjs y jsDelivr, que pueden registrar su dirección IP.</p>

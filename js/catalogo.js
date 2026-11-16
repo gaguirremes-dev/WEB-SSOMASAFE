@@ -27,6 +27,7 @@ const cat = {
   isOpen: false,
   lastFocused: null,
   libPromise: null,
+  loadToken: 0,      /* Identifica la carga vigente: las anteriores se descartan */
   observer: null,
   resizeTimer: null,
   scrollTick: false,
@@ -138,7 +139,8 @@ function closeCatalogo() {
   cat.isOpen = false;
 
   animateOut(() => {
-    cat.el.modal.classList.add('hidden');
+    /* Si se reabrió antes de terminar la animación, no ocultar el visor */
+    if (!cat.isOpen) cat.el.modal.classList.add('hidden');
   });
 
   document.body.style.overflow = '';
@@ -206,7 +208,12 @@ function ensurePdfJs() {
       pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
       resolve();
     };
-    script.onerror = () => reject(new Error('No se pudo cargar PDF.js'));
+    script.onerror = () => {
+      /* No cachear el fallo: un reintento debe volver a pedir el script */
+      script.remove();
+      cat.libPromise = null;
+      reject(new Error('No se pudo cargar PDF.js'));
+    };
     document.head.appendChild(script);
   });
 
@@ -215,12 +222,15 @@ function ensurePdfJs() {
 
 /* ─── Carga del documento ─── */
 async function loadDocument(src) {
+  const token = ++cat.loadToken;
+  const stale = () => token !== cat.loadToken; /* otra carga empezó mientras esperábamos */
   showLoader(true);
   showError(false);
   destroyPages();
 
   try {
     await ensurePdfJs();
+    if (stale()) return;
 
     const task = pdfjsLib.getDocument({
       url: encodeURI(src),
@@ -228,6 +238,7 @@ async function loadDocument(src) {
       disableAutoFetch: false,
     });
     const doc = await task.promise;
+    if (stale()) return;
 
     cat.doc = doc;
     cat.src = src;
@@ -240,6 +251,7 @@ async function loadDocument(src) {
       const vp = page.getViewport({ scale: 1 });
       return { num, width: vp.width, height: vp.height };
     }));
+    if (stale()) return;
 
     buildPages(sizes);
     computeFitScale();
@@ -255,6 +267,7 @@ async function loadDocument(src) {
       if (Math.abs(previous - cat.fitScale) > 0.005) relayout();
     });
   } catch (err) {
+    if (stale()) return;
     console.warn('[catálogo] No se pudo abrir el PDF:', src, err);
     showLoader(false);
     showError(true);

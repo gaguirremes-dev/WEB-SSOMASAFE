@@ -111,11 +111,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Tailwind compilado (npm run build:css) -->
-  <link rel="stylesheet" href="css/tailwind.min.css?v=1" />
+  <link rel="stylesheet" href="css/tailwind.min.css?v=2" />
 
   <!-- CSS propio -->
-  <link rel="stylesheet" href="css/style.css?v=2" />
-  <link rel="stylesheet" href="css/animations.css?v=2" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/animations.css?v=3" />
 
   <!-- GSAP + Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" defer></script>
@@ -153,7 +153,7 @@
         <a href="https://wa.me/51943704298?text=Hola,%20quiero%20solicitar%20un%20diagnóstico%20SSOMA"
            target="_blank" rel="noopener noreferrer"
            class="btn-nav px-5 py-2.5 rounded-xl bg-brand-primary text-white text-sm font-semibold hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-brand-primary/40"
-           aria-label="Contactar por WhatsApp">
+           aria-label="Solicitar Diagnóstico por WhatsApp">
           Solicitar Diagnóstico
         </a>
       </div>
@@ -174,9 +174,9 @@
         <li><a href="#beneficios" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Beneficios</a></li>
         <li><a href="#legal" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Marco Legal</a></li>
         <li><a href="#contacto" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Contacto</a></li>
-        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener nofollow" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors">Intranet</a></li>
+        <li><a href="https://rrhh.ssomasafe.com" target="_blank" rel="noopener nofollow" class="text-brand-dark hover:text-brand-primary font-semibold transition-colors" onclick="closeMobileMenu()">Intranet</a></li>
         <li>
-          <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer"
+          <a href="https://wa.me/51943704298" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu()"
              class="block w-full text-center px-5 py-3 rounded-xl bg-brand-primary text-white font-semibold hover:bg-blue-800 transition-all">
             Solicitar Diagnóstico
           </a>
@@ -253,16 +253,16 @@
           </a>
         </div>
 
-        <!-- Stats hero -->
+        <!-- Certificación ISO 45001 (logo blanco con fondo transparente). Usa la clase hero-stats
+             para entrar con la misma animación que la barra de estadísticas inferior. -->
         <div class="hero-stats mt-12">
-        <!-- Certificación ISO 45001 (placa blanca para contraste sobre el video) -->
-        <div class="mb-10 flex flex-col items-center gap-3">
-          <img src="assets/img/iso45001-blanco.png"
-               alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
-               width="900" height="441" decoding="async"
-               class="block h-auto w-56 sm:w-72 drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]" />
-          <p class="text-xs sm:text-sm text-white/70 font-medium tracking-wide">Certificación ISO 45001 · Seguridad y Salud en el Trabajo</p>
-        </div>
+          <div class="flex flex-col items-center gap-3">
+            <img src="assets/img/iso45001-blanco.png"
+                 alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo"
+                 width="900" height="441" decoding="async"
+                 class="block h-auto w-56 sm:w-72 drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]" />
+            <p class="text-xs sm:text-sm text-white/70 font-medium tracking-wide">Certificación ISO 45001 · Seguridad y Salud en el Trabajo</p>
+          </div>
         </div>
       </div>
 
@@ -290,7 +290,7 @@
     ═══════════════════════════════════════════ -->
     <section id="nosotros" class="relative py-32 bg-white overflow-hidden" aria-labelledby="nosotros-heading">
       <!-- Decoración fondo -->
-      <div class="absolute top-0 right-0 w-1/2 h-full opacity-5 pointer-events-none" aria-hidden="true"
+      <div class="parallax-decor absolute top-0 right-0 w-1/2 h-full opacity-5 pointer-events-none" aria-hidden="true"
            style="background: radial-gradient(ellipse at 80% 50%, #003F8C 0%, transparent 70%);">
       </div>
 
@@ -344,20 +344,20 @@
             <!-- Stats grid -->
             <div class="grid grid-cols-2 gap-4">
               <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-primary text-white">
-                <p class="counter text-4xl font-display font-black mb-1" data-target="500">0</p>
+                <p class="counter text-4xl font-display font-black mb-1" data-target="500" data-prefix="+">0</p>
                 <p class="text-blue-200 text-sm font-medium">Empresas asesoradas</p>
               </div>
               <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-gray border border-gray-200">
-                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="98">0</p>
-                <p class="text-gray-600 text-sm font-medium">% Tasa de cumplimiento</p>
+                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="98" data-suffix="%">0</p>
+                <p class="text-gray-600 text-sm font-medium">Tasa de cumplimiento</p>
               </div>
               <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-gray border border-gray-200">
-                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="10">0</p>
+                <p class="counter text-4xl font-display font-black text-brand-primary mb-1" data-target="10" data-suffix="+">0</p>
                 <p class="text-gray-600 text-sm font-medium">Años de experiencia</p>
               </div>
               <div class="stat-card reveal-up p-6 rounded-2xl bg-brand-dark text-white">
-                <p class="counter text-4xl font-display font-black text-brand-light mb-1" data-target="100">0</p>
-                <p class="text-gray-400 text-sm font-medium">% Respaldo normativo</p>
+                <p class="counter text-4xl font-display font-black text-brand-light mb-1" data-target="100" data-suffix="%">0</p>
+                <p class="text-gray-400 text-sm font-medium">Respaldo normativo</p>
               </div>
             </div>
           </div>
@@ -722,7 +722,7 @@
           <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
             <div class="text-brand-light text-sm font-bold mb-3 uppercase tracking-widest">Ley N.° 29783</div>
             <h3 class="font-display font-bold text-xl text-white mb-3">Seguridad y Salud en el Trabajo</h3>
-            <p class="text-gray-400 text-sm leading-relaxed">Marco legal principal de SST en Perú. Obligatoria para todas las empresas con más de 20 trabajadores.</p>
+            <p class="text-gray-400 text-sm leading-relaxed">Marco legal principal de SST en Perú. Aplica a todos los empleadores; el Comité de SST y el Reglamento Interno son obligatorios desde 20 trabajadores.</p>
           </div>
 
           <div class="legal-card reveal-up bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-brand-light/30 transition-all duration-500">
@@ -912,14 +912,14 @@
 
                 <div>
                   <label for="mensaje" class="block text-sm font-semibold text-brand-dark mb-2">Mensaje</label>
-                  <textarea id="mensaje" name="mensaje" rows="4"
+                  <textarea id="mensaje" name="mensaje" rows="4" maxlength="600"
                     class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-brand-gray text-brand-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all resize-none"
                     placeholder="Cuéntanos sobre tu empresa y necesidades..."></textarea>
                 </div>
 
                 <div>
                   <label class="flex items-start gap-3 text-sm text-gray-600 leading-snug cursor-pointer">
-                    <input type="checkbox" id="consentimiento" name="consentimiento" required aria-required="true"
+                    <input type="checkbox" id="consentimiento" name="consentimiento" required aria-required="true" aria-describedby="consent-error"
                       class="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 accent-[#003F8C]" />
                     <span>He leído y acepto la <a href="/politica-de-privacidad.html" target="_blank" rel="noopener" class="text-brand-primary underline">Política de Privacidad</a> y autorizo el tratamiento de mis datos para responder a mi solicitud. *</span>
                   </label>
@@ -1114,11 +1114,11 @@
   </div>
 
   <!-- JS Módulos -->
-  <script src="js/smooth-scroll.js?v=2" defer></script>
-  <script src="js/animations.js?v=2" defer></script>
-  <script src="js/components.js?v=2" defer></script>
-  <script src="js/app.js?v=2" defer></script>
-  <script src="js/catalogo.js?v=2" defer></script>
+  <script src="js/smooth-scroll.js?v=3" defer></script>
+  <script src="js/animations.js?v=3" defer></script>
+  <script src="js/components.js?v=3" defer></script>
+  <script src="js/app.js?v=3" defer></script>
+  <script src="js/catalogo.js?v=3" defer></script>
 
 </body>
 </html>

@@ -9,8 +9,9 @@ desktop.ini
 *.sublime-project
 *.sublime-workspace
 
-# Claude Code
+# Claude Code / herramientas de agentes
 .claude/
+.atl/
 
 # Variables de entorno
 .env

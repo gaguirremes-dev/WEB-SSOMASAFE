@@ -53,6 +53,8 @@ function setupMobileMenu() {
   }
 
   function closeMenu() {
+    /* Ya cerrado: no tocar el bloqueo de scroll que pueda haber puesto otro componente (p. ej. el visor del catálogo) */
+    if (menu.classList.contains('hidden')) return;
     btn.classList.remove('open');
     btn.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-hidden', 'true');
@@ -67,17 +69,13 @@ function setupMobileMenu() {
       menu.classList.add('hidden');
     }
   }
+
+  /* Usada por los onclick de los enlaces del menú móvil */
+  window.closeMobileMenu = closeMenu;
 }
 
-/* Función global para links dentro del menú móvil */
-window.closeMobileMenu = function () {
-  document.getElementById('mobile-menu')?.classList.add('hidden');
-  document.getElementById('menu-btn')?.classList.remove('open');
-  document.getElementById('menu-btn')?.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-};
-
 /* ─── Formulario de contacto ─── */
+const FORM_SUCCESS_MS = 8000; /* tiempo que se muestra el aviso de éxito */
 function setupContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -88,6 +86,15 @@ function setupContactForm() {
     email: { required: true, type: 'email' },
     servicio: { required: true },
   };
+
+  const consentEl = form.querySelector('[name="consentimiento"]');
+  const consentError = document.getElementById('consent-error');
+  consentEl?.addEventListener('change', () => {
+    if (consentEl.checked) {
+      consentError?.classList.add('hidden');
+      consentEl.removeAttribute('aria-invalid');
+    }
+  });
 
   /* Validación en tiempo real */
   Object.keys(fields).forEach(name => {
@@ -102,23 +109,30 @@ function setupContactForm() {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     let isValid = true;
+    let firstInvalid = null;
 
     Object.keys(fields).forEach(name => {
       const el = form.querySelector(`[name="${name}"]`);
-      if (!validateField(el, fields[name])) isValid = false;
+      if (!validateField(el, fields[name])) {
+        isValid = false;
+        firstInvalid = firstInvalid || el;
+      }
     });
 
     /* Consentimiento (Ley N.° 29733): casilla obligatoria */
-    const consent = form.querySelector('[name="consentimiento"]');
-    const consentError = document.getElementById('consent-error');
-    if (consent && !consent.checked) {
+    if (consentEl && !consentEl.checked) {
       consentError?.classList.remove('hidden');
+      consentEl.setAttribute('aria-invalid', 'true');
       isValid = false;
+      firstInvalid = firstInvalid || consentEl;
     } else {
       consentError?.classList.add('hidden');
     }
 
-    if (!isValid) return;
+    if (!isValid) {
+      firstInvalid?.focus();
+      return;
+    }
 
     /* No hay backend: el formulario abre WhatsApp con el mensaje ya redactado */
     const val = n => (form.querySelector(`[name="${n}"]`)?.value || '').trim();
@@ -146,7 +160,7 @@ function setupContactForm() {
       form.reset();
       if (success) {
         success.classList.remove('hidden');
-        setTimeout(() => success.classList.add('hidden'), 8000);
+        setTimeout(() => success.classList.add('hidden'), FORM_SUCCESS_MS);
       }
     } else if (fallback) {
       /* Ventana bloqueada: conservar lo escrito y ofrecer el enlace directo */
@@ -172,6 +186,7 @@ function setupContactForm() {
     const errEl = el.nextElementSibling;
     if (error) {
       el.classList.add('error');
+      el.setAttribute('aria-invalid', 'true');
       if (errEl?.classList.contains('form-error')) {
         errEl.textContent = error;
         errEl.classList.remove('hidden');
@@ -179,6 +194,7 @@ function setupContactForm() {
       return false;
     } else {
       el.classList.remove('error');
+      el.removeAttribute('aria-invalid');
       if (errEl?.classList.contains('form-error')) errEl.classList.add('hidden');
       return true;
     }
