@@ -830,11 +830,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
             <div style='background:#f7f7f7;padding:12px;border-left:4px solid #003F8C;'><strong>Pedido:</strong><br>" . nl2br(esc($pedido)) . "</div>
         </div>";
         $errE = '';
-        $okEmpresa = enviarCorreoSMTP(EMPRESA_NOTIF_EMAIL, 'NUEVA RECLAMACIÓN N° ' . $generatedCode . ' — ' . $nombres, $emailEmpresa, $pdfB64, $pdfName, $errE);
+        $okEmpresa = false;
         $okCliente = false;
+        // El reclamo ya está guardado: ninguna excepción de correo debe impedir mostrar la constancia.
+        try {
+            $okEmpresa = enviarCorreoSMTP(EMPRESA_NOTIF_EMAIL, 'NUEVA RECLAMACIÓN N° ' . $generatedCode . ' — ' . $nombres, $emailEmpresa, $pdfB64, $pdfName, $errE);
+            if ($okEmpresa) {
+                // Consumer copy only after the internal mail was accepted (anti mail-bombing).
+                $okCliente = enviarCorreoSMTP($email, $mailClienteSubj, $mailClienteBody, $pdfB64, $pdfName, $errC);
+            }
+        } catch (Throwable $e) {
+            $errE = $errE !== '' ? $errE : 'EXCEPTION: ' . get_class($e);
+            logSecurityEvent($logFile, 'SMTP_EXCEPTION', ['codigo' => $generatedCode, 'detail' => substr(get_class($e), 0, 80)]);
+        }
         if ($okEmpresa) {
-            // Consumer copy only after the internal mail was accepted (anti mail-bombing).
-            $okCliente = enviarCorreoSMTP($email, $mailClienteSubj, $mailClienteBody, $pdfB64, $pdfName, $errC);
             if (!$okCliente) {
                 logSecurityEvent($logFile, 'SMTP_CLIENT_FAILED', ['detail' => substr($errC, 0, 160), 'codigo' => $generatedCode]);
             }
@@ -881,7 +890,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/tailwind.min.css?v=1">
+    <link rel="stylesheet" href="../css/tailwind.min.css?v=2">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { background: #F5F7FA; font-family: 'Inter', sans-serif; overflow-x: hidden; }
