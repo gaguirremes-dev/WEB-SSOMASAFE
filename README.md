@@ -42,7 +42,16 @@ actualiza el texto en `scripts/build_legal_pages.py` y vuelve a generar.
 
 ## Imágenes: cómo se generaron los archivos optimizados
 
-Los originales están en `_fuentes/img/`. Los de `assets/img/` son derivados (Python + Pillow):
+Los originales están en `_fuentes/img/` y `_fuentes/video/`. Los de `assets/` son derivados.
+
+Vídeos (ffmpeg, sin audio porque se reproducen en `muted`; si cambias uno, el nombre del archivo nuevo debe cambiar también, porque el servidor los cachea un año):
+
+```bash
+ffmpeg -i "_fuentes/video/VIDEO HERO.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/hero.mp4
+ffmpeg -i "_fuentes/video/PARTÍCULAS ATMOSFÉRICAS.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/particulas.mp4
+```
+
+Imágenes (Python + Pillow):
 
 - Fotos: `*.png` (1536×1024) → `*.webp` calidad 80.
 - Logos: `logo-ssoma.png` y `logo-ssoma-light.png` → versiones `-sm` de 640 px de ancho.
