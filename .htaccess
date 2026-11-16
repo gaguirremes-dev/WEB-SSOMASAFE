@@ -4,26 +4,29 @@ ErrorDocument 404 /404.html
 
 RewriteEngine On
 
-# Archivos/carpetas internos: no servir
-RewriteRule ^(\.git|\.atl|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
+# Archivos/carpetas internos: no servir (la protección real es esta; robots.txt no los lista a propósito)
+RewriteRule ^(\.git|\.atl|src|docs|scripts|node_modules|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
 # lib/ es interno (FPDF), salvo PDF.js que el visor del catálogo carga desde el navegador
 RewriteCond %{REQUEST_URI} !^/lib/pdfjs/[^/]+\.js$
 RewriteRule ^lib(/|$) - [F,L]
 
-# Una sola redirección 301 hacia https://www.ssomasafe.com (evita cadenas http -> https -> www)
-# X-Forwarded-Proto evita bucles detrás de Cloudflare "Flexible"
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
+# Redirecciones 301 hacia https://www.ssomasafe.com, de un solo salto (sin cadenas http -> https -> www).
+# El destino es fijo (no se construye con el Host recibido) y otros hosts/subdominios (rrhh., localhost) no se tocan.
+# Regla 1: sin www (http o https) -> https://www
+RewriteCond %{HTTP_HOST} ^ssomasafe\.com$ [NC]
+RewriteRule ^(.*)$ https://www.ssomasafe.com/$1 [L,R=301]
 
+# Regla 2: www por http -> https. X-Forwarded-Proto evita bucles detrás de Cloudflare "Flexible"
+RewriteCond %{HTTP_HOST} ^www\.ssomasafe\.com$ [NC]
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
+RewriteRule ^(.*)$ https://www.ssomasafe.com/$1 [L,R=301]
 
 # Trailing slash → sin slash
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-<FilesMatch "(^\.|config\.smtp(\.example)?\.php$|\.(md|log|bak|sql)$)">
+<FilesMatch "(^\.|config\.smtp(\.example)?\.php$|^package(-lock)?\.json$|^tailwind\.config\.js$|\.(md|log|bak|sql)$)">
   Require all denied
 </FilesMatch>
 

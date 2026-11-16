@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /lib/
-Disallow: /Libro-reclamaciones/reclamaciones/
-Disallow: /config.smtp.php
 Disallow: /*.md$
 
 Sitemap: https://www.ssomasafe.com/sitemap.xml
