@@ -12,6 +12,8 @@ Dominio canónico: `https://www.ssomasafe.com`.
 | `auditoria-sst-sunafil.html`, `matriz-iperc.html`, `vigilancia-ocupacional.html`, `epp-certificados.html`, `ley-29783-obligaciones-empleador.html`, `consultoria-sst-chiclayo.html` | Generadas por `scripts/build_service_pages.py` |
 | `Libro-reclamaciones/` | Libro de reclamaciones (PHP, necesita `config.smtp.php`, que no se versiona) |
 | `css/tailwind.min.css` | CSS compilado (se versiona) |
+| `css/pages.css` | Estilos de texto largo, FAQ e índice de las páginas secundarias |
+| `scripts/_layout.py` | Maquetación compartida de las 9 páginas generadas (cabecera, héroe, tarjeta de contacto, CTA, pie, iconos SVG) |
 | `src/tailwind.css`, `tailwind.config.js` | Entrada y configuración de Tailwind 3 |
 | `docs/SEO-AUDIT.md` | Informe SEO y pendientes manuales |
 
@@ -24,8 +26,9 @@ npm run build:pages  # regenerar las 9 páginas generadas (requiere Python 3; en
 npm run build        # ambos
 ```
 
-Las páginas generadas NO se editan a mano: cambia el script y vuelve a generarlas
-(así el header, el footer y los metadatos se mantienen iguales en todas).
+Las páginas generadas NO se editan a mano: el contenido está en `scripts/build_service_pages.py` y
+`scripts/build_legal_pages.py`; el diseño (cabecera, pie, héroe, botones) en `scripts/_layout.py` y `css/pages.css`.
+Tras cambiar clases de Tailwind en `_layout.py`, ejecuta `npm run build` (páginas y CSS).
 
 ## Despliegue (cPanel + GitHub)
 

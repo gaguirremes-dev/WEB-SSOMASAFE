@@ -1,4 +1,4 @@
-"""Genera politica-de-privacidad.html, terminos-y-condiciones.html y 404.html.
+"""Genera politica-de-privacidad.html, terminos-y-condiciones.html y 404.html (maquetación en _layout.py).
 
 Uso (desde la raíz del repo):  python scripts/build_legal_pages.py
 Edita los textos AQUÍ y vuelve a ejecutar; no edites los .html a mano.
@@ -7,54 +7,17 @@ Nota: 404.html usa rutas absolutas (/css/...) porque el servidor la entrega
 en cualquier URL. Las otras páginas usan rutas relativas.
 Después de generar, ejecuta `npm run build:css` si añadiste clases Tailwind nuevas.
 """
-import os
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _layout as L  # maquetación compartida
+
+ROOT = L.ROOT
 os.chdir(ROOT)
 
-HEAD = '''<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#003F8C" />
-  <title>{title} | SSOMA SAFE</title>
-  <meta name="description" content="{desc}" />
-  <meta name="robots" content="{robots}" />
-  {canon}
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png" />
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/tailwind.min.css?v=2" />
-</head>
-<body class="bg-brand-gray text-brand-dark font-sans antialiased">
-  <header class="bg-white border-b border-gray-200">
-    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" aria-label="SSOMA SAFE — Inicio"><img src="/assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" width="73" height="48" class="h-12 w-auto" /></a>
-      <a href="/" class="text-sm font-semibold text-brand-primary hover:underline">&larr; Volver al inicio</a>
-    </div>
-  </header>
-  <main class="max-w-3xl mx-auto px-6 py-12">
-'''
-FOOT = '''  </main>
-  <footer class="border-t border-gray-200 bg-white">
-    <div class="max-w-3xl mx-auto px-6 py-6 text-xs text-gray-500 flex flex-col sm:flex-row gap-2 justify-between">
-      <p>&copy; 2026 SSOMA SAFE S.A.C. &middot; RUC 20607018287</p>
-      <p><a href="/politica-de-privacidad.html" class="hover:underline">Privacidad</a> &middot; <a href="/terminos-y-condiciones.html" class="hover:underline">Términos</a></p>
-    </div>
-  </footer>
-</body>
-</html>
-'''
+def page(fn, title, desc, body):
+    open(fn, 'w', encoding='utf-8', newline='\n').write(
+        L.legal_page(filename=fn, title=title, desc=desc, body_html=body))
 
-def page(fn, title, desc, body, robots='index, follow'):
-    canon = f'<link rel="canonical" href="https://www.ssomasafe.com/{fn}" />' if robots.startswith('index') else ''
-    html = HEAD.format(title=title, desc=desc, robots=robots, canon=canon) + body + FOOT
-    if fn != '404.html':  # rutas relativas: funcionan en el dominio y al abrir el archivo en local
-        html = html.replace('"/css/', '"css/').replace('"/assets/', '"assets/').replace('"/favicon.ico"', '"favicon.ico"')
-    open(fn, 'w', encoding='utf-8', newline='\n').write(html)
 
 H2 = 'class="font-display font-extrabold text-xl mt-10 mb-3"'
 P = 'class="text-gray-700 leading-relaxed mb-3"'
@@ -141,14 +104,6 @@ terms = f'''    <h1 class="font-display font-extrabold text-3xl sm:text-4xl mb-2
     <p {P}>Consultas: <a {A} href="mailto:comercial@ssomasafe.com">comercial@ssomasafe.com</a> · WhatsApp +51 943 704 298.</p>
 '''
 
-nf = '''    <div class="text-center py-16">
-      <p class="font-display font-extrabold text-7xl text-brand-primary mb-4">404</p>
-      <h1 class="font-display font-extrabold text-2xl mb-3">Página no encontrada</h1>
-      <p class="text-gray-600 mb-8">La página que buscas no existe o fue movida.</p>
-      <a href="/" class="inline-block px-8 py-3 rounded-2xl bg-brand-primary text-white font-bold hover:bg-blue-700 transition-colors">Ir al inicio</a>
-    </div>
-'''
-
 page('politica-de-privacidad.html', 'Política de Privacidad', 'Política de Privacidad de SSOMA SAFE conforme a la Ley N.° 29733 de Protección de Datos Personales del Perú.', priv)
 page('terminos-y-condiciones.html', 'Términos y Condiciones', 'Términos y condiciones de uso del sitio web de SSOMA SAFE, consultoría en seguridad y salud ocupacional en Perú.', terms)
-page('404.html', 'Página no encontrada', 'La página que buscas no existe o fue movida. Vuelve al inicio de SSOMA SAFE.', nf, 'noindex, follow')
+open('404.html', 'w', encoding='utf-8', newline='\n').write(L.not_found_page())

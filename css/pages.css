@@ -1,0 +1,72 @@
+/* ═══════════════════════════════════════════
+   SSOMA SAFE — pages.css
+   Estilos de las páginas secundarias (servicios, guías, legales, 404).
+   Se usa junto a css/tailwind.min.css. Colores: #003F8C (primary), #7FB4E5 (light), #1E293B (dark).
+═══════════════════════════════════════════ */
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, sans-serif; }
+
+/* Foco visible para teclado en toda la página */
+:focus-visible { outline: 2px solid #7FB4E5; outline-offset: 3px; border-radius: 4px; }
+
+/* ── Texto largo (artículos) ── */
+.prose-ssoma { font-size: 1.0625rem; line-height: 1.75; color: #334155; }
+.prose-ssoma > :first-child { margin-top: 0; }
+.prose-ssoma p { margin: 0 0 1.15rem; max-width: 72ch; }
+.prose-ssoma strong { color: #1E293B; }
+.prose-ssoma a {
+  color: #003F8C; font-weight: 600; text-decoration: underline;
+  text-underline-offset: 3px; text-decoration-thickness: 1px;
+}
+.prose-ssoma a:hover { color: #1d4ed8; }
+
+.prose-ssoma h2 {
+  font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; font-size: 1.5rem; line-height: 1.25;
+  color: #1E293B; margin: 2.75rem 0 1rem; padding-left: .9rem; border-left: 4px solid #7FB4E5;
+  scroll-margin-top: 6rem;
+}
+.prose-ssoma h2:first-child { margin-top: 0; }
+
+/* Listas con marca de verificación */
+.prose-ssoma ul { list-style: none; margin: 0 0 1.4rem; padding: 0; display: grid; gap: .75rem; }
+.prose-ssoma ul li { position: relative; padding-left: 2.1rem; max-width: 72ch; }
+.prose-ssoma ul li::before {
+  content: ""; position: absolute; left: 0; top: .28rem; width: 1.3rem; height: 1.3rem; border-radius: 9999px;
+  background: #E6EEF9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003F8C' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E") center / .8rem no-repeat;
+}
+
+/* ── Preguntas frecuentes ── */
+.faq { border: 1px solid #e2e8f0; background: #fff; border-radius: 1rem; margin-bottom: .75rem; overflow: hidden; }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .9rem 1.25rem; min-height: 48px; font-weight: 700; color: #1E293B;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; flex: none; width: 1.25rem; height: 1.25rem; transition: transform .2s ease;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003F8C' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.faq[open] summary { border-bottom: 1px solid #eef2f7; }
+.faq[open] summary::after { transform: rotate(180deg); }
+.faq summary:focus-visible { outline-offset: -3px; }
+.faq p { margin: 0; padding: 1rem 1.25rem 1.15rem; max-width: none; }
+
+/* ── Índice de contenidos (legales) ── */
+.toc a { display: block; padding: .4rem .75rem; border-left: 2px solid #e2e8f0; color: #475569; font-size: .875rem; line-height: 1.35; text-decoration: none; }
+.toc a:hover { color: #003F8C; border-left-color: #7FB4E5; background: #f8fafc; }
+
+/* ── Degradado de texto del 404 ── */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #003F8C, #7FB4E5); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .faq summary::after { transition: none; }
+  * { animation: none !important; transition: none !important; }
+}
+@media print {
+  header, footer, aside, .no-print { display: none !important; }
+  body { padding: 0 !important; }
+}

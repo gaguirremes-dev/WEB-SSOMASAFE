@@ -7,8 +7,11 @@ Para añadir una página: agrega un dict a PAGES, ejecuta el script, añade su U
 sitemap.xml y enlázala desde el footer de index.html. Luego `npm run build:css`.
 Este script NO modifica sitemap.xml ni index.html.
 """
-import os, json, urllib.parse
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import os, sys, json
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _layout as L  # maquetación compartida
+
+ROOT = L.ROOT
 os.chdir(ROOT)
 SITE = 'https://www.ssomasafe.com'
 
@@ -16,9 +19,6 @@ P = 'class="text-gray-700 leading-relaxed mb-4"'
 UL = 'class="list-disc pl-6 space-y-2 text-gray-700 leading-relaxed mb-4"'
 H2 = 'class="font-display font-extrabold text-2xl mt-12 mb-4"'
 A = 'class="text-brand-primary underline"'
-
-def wa(text):
-    return 'https://wa.me/51943704298?text=' + urllib.parse.quote(text)
 
 PAGES = [
  dict(
@@ -201,91 +201,37 @@ PAGES = [
 ]
 BY = {p['slug']: p for p in PAGES}
 
+EYEBROWS = {
+    'auditoria-sst-sunafil': 'Servicio SSOMA',
+    'matriz-iperc': 'Servicio SSOMA',
+    'vigilancia-ocupacional': 'Salud ocupacional',
+    'epp-certificados': 'Equipos de protección',
+    'ley-29783-obligaciones-empleador': 'Guía legal',
+    'consultoria-sst-chiclayo': 'Sede Chiclayo',
+}
+LABELS = dict(L.SERVICE_LINKS)
+
+
 def render(p):
     url = f"{SITE}/{p['slug']}.html"
-    faq_html = ''.join(
-        f'''      <details class="group border-b border-gray-200 py-3"><summary class="cursor-pointer font-semibold">{q}</summary><p {P} style="margin-top:.5rem">{a}</p></details>\n''' for q, a in p['faq'])
-    secs = ''.join(f'    <h2 {H2}>{h}</h2>\n    {b}\n' for h, b in p['sections'])
-    rel = ''.join(f'<li><a {A} href="{r}.html">{BY[r]["h1"]}</a></li>' for r in p['related'])
     ld = {
-      "@context": "https://schema.org",
-      "@graph": [
-        {"@type": "Service", "name": p['h1'], "url": url, "areaServed": {"@type": "Country", "name": "Perú"},
-         "provider": {"@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "SSOMA SAFE",
-                      "url": f"{SITE}/", "telephone": "+51943704298", "email": "comercial@ssomasafe.com"},
-         "description": p['desc'], "inLanguage": "es-PE"},
-        {"@type": "BreadcrumbList", "itemListElement": [
-          {"@type": "ListItem", "position": 1, "name": "Inicio", "item": f"{SITE}/"},
-          {"@type": "ListItem", "position": 2, "name": p['crumb'], "item": url}]}
-      ]}
-    return f'''<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#003F8C" />
-  <title>{p['title']}</title>
-  <meta name="description" content="{p['desc']}" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <link rel="canonical" href="{url}" />
-  <link rel="alternate" hreflang="es-PE" href="{url}" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="{url}" />
-  <meta property="og:title" content="{p['title']}" />
-  <meta property="og:description" content="{p['desc']}" />
-  <meta property="og:image" content="{SITE}/assets/img/og-image.jpg" />
-  <meta property="og:locale" content="es_PE" />
-  <meta property="og:site_name" content="SSOMA SAFE" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <script type="application/ld+json">
-  {json.dumps(ld, ensure_ascii=False, indent=2)}
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/tailwind.min.css?v=2" />
-</head>
-<body class="bg-brand-gray text-brand-dark font-sans antialiased">
-  <header class="bg-white border-b border-gray-200">
-    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" aria-label="SSOMA SAFE — Inicio"><img src="assets/img/logo-ssoma-sm.png" alt="SSOMA SAFE" width="73" height="48" class="h-12 w-auto" /></a>
-      <a href="/" class="text-sm font-semibold text-brand-primary hover:underline">&larr; Volver al inicio</a>
-    </div>
-  </header>
-  <main class="max-w-3xl mx-auto px-6 py-12">
-    <nav aria-label="Ruta de navegación" class="text-xs text-gray-500 mb-6"><a href="/" class="hover:underline">Inicio</a> &rsaquo; {p['crumb']}</nav>
-    <h1 class="font-display font-extrabold text-3xl sm:text-4xl leading-tight mb-5">{p['h1']}</h1>
-    <p class="text-lg text-gray-700 leading-relaxed mb-8">{p['lead']}</p>
-    <div class="flex flex-wrap gap-3 mb-4">
-      <a href="{wa(p['wa'])}" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-2xl bg-brand-primary text-white font-bold hover:bg-blue-700 transition-colors">Cotizar por WhatsApp</a>
-      <a href="/#contacto" class="px-6 py-3 rounded-2xl border border-brand-primary text-brand-primary font-semibold hover:bg-white transition-colors">Solicitar diagnóstico</a>
-    </div>
-{secs}
-    <h2 {H2}>Preguntas frecuentes</h2>
-    <div class="mb-4">
-{faq_html}    </div>
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Service", "name": p['h1'], "url": url, "areaServed": {"@type": "Country", "name": "Perú"},
+             "provider": {"@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "SSOMA SAFE",
+                          "url": f"{SITE}/", "telephone": "+51943704298", "email": "comercial@ssomasafe.com"},
+             "description": p['desc'], "inLanguage": "es-PE"},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Inicio", "item": f"{SITE}/"},
+                {"@type": "ListItem", "position": 2, "name": p['crumb'], "item": url}]}
+        ]}
+    sections = ''.join(f"        <h2>{h}</h2>\n        {b}\n" for h, b in p['sections'])
+    return L.service_page(
+        url=url, title=p['title'], desc=p['desc'], jsonld=json.dumps(ld, ensure_ascii=False, indent=2),
+        crumb=p['crumb'], eyebrow=EYEBROWS[p['slug']], h1=p['h1'], lead=p['lead'], wa_text=p['wa'],
+        sections_html=L.clean(sections), faq=p['faq'],
+        related=[(r, LABELS[r]) for r in p['related']])
 
-    <h2 {H2}>También te puede interesar</h2>
-    <ul {UL}>{rel}</ul>
-
-    <div class="mt-12 rounded-3xl bg-brand-primary text-white p-8">
-      <p class="font-display font-extrabold text-xl mb-2">¿Hablamos de tu empresa?</p>
-      <p class="mb-5 text-white/80">Cuéntanos tu actividad y te orientamos sin compromiso.</p>
-      <a href="{wa(p['wa'])}" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 rounded-2xl bg-white text-brand-primary font-bold hover:bg-brand-gray transition-colors">Escribir por WhatsApp</a>
-    </div>
-  </main>
-  <footer class="border-t border-gray-200 bg-white">
-    <div class="max-w-3xl mx-auto px-6 py-6 text-xs text-gray-500 flex flex-col sm:flex-row gap-2 justify-between">
-      <p>&copy; 2026 SSOMA SAFE S.A.C. &middot; RUC 20607018287</p>
-      <p><a href="politica-de-privacidad.html" class="hover:underline">Privacidad</a> &middot; <a href="terminos-y-condiciones.html" class="hover:underline">Términos</a></p>
-    </div>
-  </footer>
-</body>
-</html>
-'''
 
 for p in PAGES:
     print(f"{p['slug']}: title={len(p['title'])} desc={len(p['desc'])}")
