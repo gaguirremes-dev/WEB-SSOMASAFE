@@ -5,7 +5,7 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 
 # Archivos/carpetas internos: no servir (la protección real es esta; robots.txt no los lista a propósito)
-RewriteRule ^(\.git|\.atl|src|docs|scripts|node_modules|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
+RewriteRule ^(\.git|\.atl|src|docs|scripts|_fuentes|node_modules|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
 # lib/ es interno (FPDF), salvo PDF.js que el visor del catálogo carga desde el navegador
 RewriteCond %{REQUEST_URI} !^/lib/pdfjs/[^/]+\.js$
 RewriteRule ^lib(/|$) - [F,L]
@@ -26,7 +26,7 @@ RewriteRule ^(.*)$ https://www.ssomasafe.com/$1 [L,R=301]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-<FilesMatch "(^\.|config\.smtp(\.example)?\.php$|^package(-lock)?\.json$|^tailwind\.config\.js$|\.(md|log|bak|sql)$)">
+<FilesMatch "(^\.|config\.smtp(\.example)?\.php$|^package(-lock)?\.json$|^tailwind\.config\.js$|^LEEME\.txt$|\.(md|log|bak|sql)$)">
   Require all denied
 </FilesMatch>
 
