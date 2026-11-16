@@ -152,4 +152,4 @@ nf = '''    <div class="text-center py-16">
 
 page('politica-de-privacidad.html', 'Política de Privacidad', 'Política de Privacidad de SSOMA SAFE conforme a la Ley N.° 29733 de Protección de Datos Personales del Perú.', priv)
 page('terminos-y-condiciones.html', 'Términos y Condiciones', 'Términos y condiciones de uso del sitio web de SSOMA SAFE, consultoría en seguridad y salud ocupacional en Perú.', terms)
-page('404.html', 'Página no encontrada', 'La página que buscas no existe.', nf, 'noindex, follow')
+page('404.html', 'Página no encontrada', 'La página que buscas no existe o fue movida. Vuelve al inicio de SSOMA SAFE.', nf, 'noindex, follow')
