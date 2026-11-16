@@ -42,6 +42,7 @@ header summary::-webkit-details-marker { display: none; }
   .rec-card { transition: none; }
   .rec-card:hover,
   .rec-card:focus-visible { transform: none; }
+}
 
 /* ── Texto largo (artículos) ── */
 .prose-ssoma { font-size: 1.0625rem; line-height: 1.75; color: #334155; }

@@ -109,7 +109,7 @@ def head(title, desc, robots, canonical, pre, extra=''):
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{pre}css/tailwind.min.css?v=3" />
-  <link rel="stylesheet" href="{pre}css/pages.css?v=1" />
+  <link rel="stylesheet" href="{pre}css/pages.css?v=2" />
 </head>
 '''
 
@@ -309,10 +309,6 @@ def contact_card(pre, wa_text):
       <li class="flex gap-3">{icon('pin', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<span>Lima: Av. República de Chile 324</span></li>
       <li class="flex gap-3">{icon('pin', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<span>Chiclayo: Lapoint 1221</span></li>
     </ul>
-  </div>
-  <div class="mt-4 rounded-2xl bg-brand-dark p-5 text-center">
-    <img src="{pre}assets/img/iso45001-blanco.png" alt="Certificación ISO 45001 – Sistema de Gestión de Seguridad y Salud en el Trabajo" width="900" height="441" loading="lazy" class="mx-auto h-auto w-44" />
-    <p class="mt-2 text-xs text-gray-400">Certificación ISO 45001</p>
   </div>
 </aside>
 '''

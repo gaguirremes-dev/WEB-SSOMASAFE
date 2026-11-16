@@ -5,7 +5,8 @@
     "build:css": "tailwindcss -c tailwind.config.js -i src/tailwind.css -o css/tailwind.min.css --minify",
     "watch:css": "tailwindcss -c tailwind.config.js -i src/tailwind.css -o css/tailwind.min.css --watch",
     "build:pages": "python scripts/build_legal_pages.py && python scripts/build_service_pages.py && python scripts/sync_home_nav.py",
-    "build": "npm run build:pages && npm run build:css"
+    "build": "npm run check:css && npm run build:pages && npm run build:css",
+    "check:css": "python scripts/check_css.py"
   },
   "devDependencies": {
     "tailwindcss": "3.4.17"

@@ -24,7 +24,8 @@ Dominio canónico: `https://www.ssomasafe.com`.
 npm install          # una vez
 npm run build:css    # regenerar css/tailwind.min.css (obligatorio tras añadir clases Tailwind)
 npm run build:pages  # regenerar las 9 páginas generadas (requiere Python 3; en Linux/macOS usa `python3 scripts/...` si `python` no existe)
-npm run build        # ambos
+npm run check:css    # comprueba que los CSS propios tengan las llaves balanceadas (un `}` que falte rompe estilos en silencio)
+npm run build        # check:css + build:pages + build:css
 ```
 
 Las páginas generadas NO se editan a mano: el contenido está en `scripts/build_service_pages.py` y
