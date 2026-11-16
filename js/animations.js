@@ -4,11 +4,24 @@
    parallax, navbar y partículas
 ═══════════════════════════════════════════ */
 
-function waitForGSAP(cb) {
+/* Si GSAP no carga (CDN caído o bloqueado), el contenido no debe quedar invisible */
+const GSAP_WAIT_MAX_TRIES = 50; // ~4 s
+const GSAP_HIDDEN_SELECTORS = '.hero-badge,.hero-headline,.hero-sub,.hero-ctas,.hero-stats,.reveal-up,.reveal-left,.reveal-right,.reveal-scale';
+
+function revealWithoutGSAP() {
+  document.querySelectorAll(GSAP_HIDDEN_SELECTORS).forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+
+function waitForGSAP(cb, tries = 0) {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     cb();
+  } else if (tries >= GSAP_WAIT_MAX_TRIES) {
+    revealWithoutGSAP();
   } else {
-    setTimeout(() => waitForGSAP(cb), 80);
+    setTimeout(() => waitForGSAP(cb, tries + 1), 80);
   }
 }
 

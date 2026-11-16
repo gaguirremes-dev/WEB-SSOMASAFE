@@ -5,7 +5,10 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 
 # Archivos/carpetas internos: no servir
-RewriteRule ^(lib|\.git|\.atl|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
+RewriteRule ^(\.git|\.atl|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
+# lib/ es interno (FPDF), salvo PDF.js que el visor del catálogo carga desde el navegador
+RewriteCond %{REQUEST_URI} !^/lib/pdfjs/[^/]+\.js$
+RewriteRule ^lib(/|$) - [F,L]
 
 # Una sola redirección 301 hacia https://www.ssomasafe.com (evita cadenas http -> https -> www)
 # X-Forwarded-Proto evita bucles detrás de Cloudflare "Flexible"
