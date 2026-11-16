@@ -45,7 +45,7 @@ Contenido redactado con hechos normativos verificables, sin cifras ni casos inve
 | Servicio | IPERC / matriz IPERC | Informativa-comercial | Creada: `matriz-iperc.html` |
 | Servicio | vigilancia ocupacional / salud ocupacional empresas | Comercial | Creada: `vigilancia-ocupacional.html` |
 | Servicio | EPP certificados para empresas | Transaccional | Creada: `epp-certificados.html` |
-| Local | consultoría seguridad y salud en el trabajo Chiclayo | Comercial local | Creada: `consultoria-sst-chiclayo.html` |
+| Local | consultoría seguridad y salud en el trabajo Lima y Chiclayo | Comercial local | Creada: `consultoria-sst-lima-chiclayo.html` |
 | Contenido | Ley 29783: obligaciones de la empresa | Informativa | Creada: `ley-29783-obligaciones-empleador.html` |
 
 ## 4. Pendientes manuales 👤 (con pasos)

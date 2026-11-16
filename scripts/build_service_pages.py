@@ -1,6 +1,6 @@
 """Genera las 6 páginas de servicio/guía (auditoria-sst-sunafil, matriz-iperc,
 vigilancia-ocupacional, epp-certificados, ley-29783-obligaciones-empleador,
-consultoria-sst-chiclayo).
+consultoria-sst-lima-chiclayo).
 
 Uso (desde la raíz del repo):  python scripts/build_service_pages.py
 Para añadir una página: agrega un dict a PAGES, ejecuta el script, añade su URL a
@@ -169,15 +169,16 @@ PAGES = [
   related=['auditoria-sst-sunafil','matriz-iperc','vigilancia-ocupacional'],
  ),
  dict(
-  slug='consultoria-sst-chiclayo',
-  title='Consultoría SST en Chiclayo | SSOMA SAFE',
-  desc='Consultoría en seguridad y salud en el trabajo en Chiclayo: SGSST, IPERC, auditorías, capacitaciones y EPP. Oficina en Lapoint 1221, Chiclayo.',
-  h1='Consultoría en seguridad y salud en el trabajo en Chiclayo',
-  crumb='Chiclayo',
-  wa='Hola, quiero consultoría SST en Chiclayo.',
-  lead='SSOMA SAFE tiene oficina en Chiclayo (Lapoint 1221) y atiende a empresas de la región con consultoría en seguridad y salud en el trabajo, cumplimiento de la Ley N.° 29783 y suministro de EPP.',
+  slug='consultoria-sst-lima-chiclayo',
+  title='Consultoría SST en Lima y Chiclayo | SSOMA SAFE',
+  desc='Consultoría SST en Lima y Chiclayo: SGSST, IPERC, auditorías, capacitaciones y EPP. Oficinas en Av. República de Chile 324 y Lapoint 1221.',
+  h1='Consultoría en seguridad y salud en el trabajo en Lima y Chiclayo',
+  crumb='Lima y Chiclayo',
+  wa='Hola, quiero consultoría SST en Lima o Chiclayo.',
+  lead='SSOMA SAFE tiene oficinas en Lima (Av. República de Chile 324) y en Chiclayo (Lapoint 1221), y atiende a empresas de ambas ciudades con consultoría en seguridad y salud en el trabajo, cumplimiento de la Ley N.° 29783 y suministro de EPP.',
+  area=['Lima', 'Chiclayo'],
   sections=[
-   ('Servicios para empresas en Chiclayo', f'''<ul {UL}>
+   ('Servicios para empresas en Lima y Chiclayo', f'''<ul {UL}>
       <li><a {A} href="auditoria-sst-sunafil.html">Auditoría SST y preparación para SUNAFIL</a>.</li>
       <li><a {A} href="matriz-iperc.html">Matriz IPERC</a> y mapas de riesgos.</li>
       <li>Implementación del Sistema de Gestión de SST: política, programa anual, Comité o Supervisor, Reglamento Interno.</li>
@@ -185,15 +186,17 @@ PAGES = [
       <li>Capacitaciones y simulacros.</li>
       <li><a {A} href="epp-certificados.html">Suministro de EPP</a>.</li>
     </ul>'''),
-   ('Cómo contactarnos', f'''<ul {UL}>
-      <li><strong>Dirección:</strong> Lapoint 1221, Chiclayo.</li>
+   ('Nuestras sedes y contacto', f'''<ul {UL}>
+      <li><strong>Lima:</strong> Av. República de Chile 324.</li>
+      <li><strong>Chiclayo:</strong> Lapoint 1221.</li>
       <li><strong>WhatsApp:</strong> +51 943 704 298.</li>
       <li><strong>Correo:</strong> <a {A} href="mailto:comercial@ssomasafe.com">comercial@ssomasafe.com</a>.</li>
     </ul>
-    <p {P}>También atendemos en Lima (Av. República de Chile 324). Coordina con anticipación para programar visitas.</p>'''),
+    <p {P}>Coordina con anticipación para programar visitas a tu empresa o una reunión en la sede que te quede más cerca.</p>'''),
   ],
   faq=[
-   ('¿Atienden fuera de la ciudad de Chiclayo?', 'Escríbenos con la ubicación de tu empresa y coordinamos la visita.'),
+   ('¿Atienden fuera de Lima y Chiclayo?', 'Escríbenos con la ubicación de tu empresa y coordinamos la visita.'),
+   ('¿Con qué sede me conviene hablar?', 'Con la que te quede más cerca. Si no estás seguro, escríbenos por WhatsApp y te orientamos.'),
    ('¿Por dónde empiezo?', 'Con un diagnóstico inicial: revisamos qué tienes, qué falta y en qué orden conviene resolverlo.'),
   ],
   related=['auditoria-sst-sunafil','matriz-iperc','ley-29783-obligaciones-empleador'],
@@ -207,7 +210,7 @@ EYEBROWS = {
     'vigilancia-ocupacional': 'Salud ocupacional',
     'epp-certificados': 'Equipos de protección',
     'ley-29783-obligaciones-empleador': 'Guía legal',
-    'consultoria-sst-chiclayo': 'Sede Chiclayo',
+    'consultoria-sst-lima-chiclayo': 'Sedes Lima y Chiclayo',
 }
 LABELS = dict(L.SERVICE_LINKS)
 
@@ -217,7 +220,7 @@ def render(p):
     ld = {
         "@context": "https://schema.org",
         "@graph": [
-            {"@type": "Service", "name": p['h1'], "url": url, "areaServed": {"@type": "Country", "name": "Perú"},
+            {"@type": "Service", "name": p['h1'], "url": url, "areaServed": ([{"@type": "City", "name": c} for c in p['area']] if p.get('area') else {"@type": "Country", "name": "Perú"}),
              "provider": {"@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "SSOMA SAFE",
                           "url": f"{SITE}/", "telephone": "+51943704298", "email": "comercial@ssomasafe.com"},
              "description": p['desc'], "inLanguage": "es-PE"},

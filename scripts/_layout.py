@@ -21,7 +21,7 @@ SERVICE_LINKS = [
     ('matriz-iperc', 'Matriz IPERC'),
     ('vigilancia-ocupacional', 'Vigilancia ocupacional'),
     ('epp-certificados', 'EPP certificados'),
-    ('consultoria-sst-chiclayo', 'Consultoría SST en Chiclayo'),
+    ('consultoria-sst-lima-chiclayo', 'Consultoría SST en Lima y Chiclayo'),
     ('ley-29783-obligaciones-empleador', 'Guía de la Ley 29783'),
 ]
 
@@ -119,7 +119,7 @@ SERVICE_DESC = {
     'matriz-iperc': 'Peligros, riesgos y medidas de control',
     'vigilancia-ocupacional': 'Exámenes médicos ocupacionales',
     'epp-certificados': 'Equipos de protección personal',
-    'consultoria-sst-chiclayo': 'Atención en nuestra sede de Chiclayo',
+    'consultoria-sst-lima-chiclayo': 'Atención en nuestras sedes de Lima y Chiclayo',
     'ley-29783-obligaciones-empleador': 'Qué debe cumplir tu empresa',
 }
 NAV_LINK = 'nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors'
@@ -211,7 +211,7 @@ FOOTER_SERVICES = [
     ('vigilancia-ocupacional.html', 'Vigilancia Ocupacional'),
     ('epp-certificados.html', 'Suministro EPPs'),
     ('#servicios', 'Capacitaciones'),
-    ('consultoria-sst-chiclayo.html', 'Consultoría SST en Chiclayo'),
+    ('consultoria-sst-lima-chiclayo.html', 'Consultoría SST en Lima y Chiclayo'),
     ('ley-29783-obligaciones-empleador.html', 'Guía Ley 29783'),
 ]
 
