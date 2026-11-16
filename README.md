@@ -14,7 +14,6 @@ Dominio canónico: `https://www.ssomasafe.com`.
 | `css/tailwind.min.css` | CSS compilado (se versiona) |
 | `src/tailwind.css`, `tailwind.config.js` | Entrada y configuración de Tailwind 3 |
 | `docs/SEO-AUDIT.md` | Informe SEO y pendientes manuales |
-| `_fuentes/` | Originales sin usar en la web (PNG de 2 MB, logos de 4260 px, SVG viejo, vídeo extra). No se despliega |
 
 ## Flujo de trabajo
 
@@ -28,12 +27,22 @@ npm run build        # ambos
 Las páginas generadas NO se editan a mano: cambia el script y vuelve a generarlas
 (así el header, el footer y los metadatos se mantienen iguales en todas).
 
-## Despliegue
+## Despliegue (cPanel + GitHub)
 
-1. `npm run build`
-2. Subir todo menos `node_modules/`, `.git/`, `.atl/`, `src/`, `docs/`, `scripts/`, `_fuentes/`, `package*.json`
-   y `tailwind.config.js` (el `.htaccess` ya bloquea estos archivos si se suben por error).
-3. Comprobar tras desplegar (ver `docs/SEO-AUDIT.md`, sección 5).
+El servidor se sincroniza con este repositorio desde cPanel (Git Version Control), así que
+**lo que está en el repo es lo que se publica**.
+
+1. `npm run build` (regenera `css/tailwind.min.css` y las páginas generadas) y commitear el resultado.
+2. `git push` a GitHub.
+3. En cPanel → Git Version Control → *Update from Remote* / *Deploy HEAD Commit*.
+4. Comprobar tras desplegar (ver `docs/SEO-AUDIT.md`, sección 5).
+
+Notas:
+- `config.smtp.php` y `Libro-reclamaciones/reclamaciones/` NO están en el repo (secretos y datos personales):
+  viven solo en el servidor y el `git pull` no los toca.
+- Los archivos de desarrollo (`src/`, `scripts/`, `docs/`, `package*.json`, `tailwind.config.js`, `*.md`)
+  llegan al servidor pero el `.htaccess` los bloquea con 403.
+- Si cambias un vídeo o una imagen, usa un nombre de archivo nuevo: el servidor las cachea un año.
 
 ## Antes de añadir analítica (GA4)
 
@@ -42,13 +51,14 @@ actualiza el texto en `scripts/build_legal_pages.py` y vuelve a generar.
 
 ## Imágenes: cómo se generaron los archivos optimizados
 
-Los originales están en `_fuentes/img/` y `_fuentes/video/`. Los de `assets/` son derivados.
+Los originales (PNG de 2 MB, logos de 4260 px, vídeos de 10–14 MB) NO están en el repo, para no desplegarlos:
+se guardan en la carpeta `WEB-SSOMASAFE-originales/`, junto al repo, y en el historial de Git. Los de `assets/` son derivados.
 
 Vídeos (ffmpeg, sin audio porque se reproducen en `muted`; si cambias uno, el nombre del archivo nuevo debe cambiar también, porque el servidor los cachea un año):
 
 ```bash
-ffmpeg -i "_fuentes/video/VIDEO HERO.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/hero.mp4
-ffmpeg -i "_fuentes/video/PARTÍCULAS ATMOSFÉRICAS.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/particulas.mp4
+ffmpeg -i "../WEB-SSOMASAFE-originales/video/VIDEO HERO.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/hero.mp4
+ffmpeg -i "../WEB-SSOMASAFE-originales/video/PARTÍCULAS ATMOSFÉRICAS.mp4" -an -c:v libx264 -preset slow -crf 27 -profile:v high -pix_fmt yuv420p -movflags +faststart assets/video/particulas.mp4
 ```
 
 Imágenes (Python + Pillow):

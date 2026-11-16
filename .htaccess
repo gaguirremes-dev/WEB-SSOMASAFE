@@ -5,7 +5,7 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 
 # Archivos/carpetas internos: no servir (la protección real es esta; robots.txt no los lista a propósito)
-RewriteRule ^(\.git|\.atl|src|docs|scripts|_fuentes|node_modules|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
+RewriteRule ^(\.git|\.atl|src|docs|scripts|node_modules|Libro-reclamaciones/reclamaciones)(/|$) - [F,L]
 # lib/ es interno (FPDF), salvo PDF.js que el visor del catálogo carga desde el navegador
 RewriteCond %{REQUEST_URI} !^/lib/pdfjs/[^/]+\.js$
 RewriteRule ^lib(/|$) - [F,L]
