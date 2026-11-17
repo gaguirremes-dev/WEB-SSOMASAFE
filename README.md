@@ -9,7 +9,7 @@ Dominio canónico: `https://www.ssomasafe.com`.
 |---|---|
 | `index.html` | Página principal |
 | `politica-de-privacidad.html`, `terminos-y-condiciones.html`, `404.html` | Generadas por `scripts/build_legal_pages.py` |
-| `auditoria-sst-sunafil.html`, `matriz-iperc.html`, `vigilancia-ocupacional.html`, `epp-certificados.html`, `ley-29783-obligaciones-empleador.html`, `consultoria-sst-lima-chiclayo.html` | Generadas por `scripts/build_service_pages.py` |
+| `auditoria-sst-sunafil.html`, `matriz-iperc.html`, `vigilancia-ocupacional.html`, `epp-certificados.html`, `ley-29783-obligaciones-empleador.html`, `consultoria-sst-lima.html` | Generadas por `scripts/build_service_pages.py` |
 | `Libro-reclamaciones/` | Libro de reclamaciones (PHP, necesita `config.smtp.php`, que no se versiona) |
 | `css/tailwind.min.css` | CSS compilado (se versiona) |
 | `css/pages.css` | Estilos de texto largo, FAQ e índice de las páginas secundarias |

@@ -21,7 +21,7 @@ SERVICE_LINKS = [
     ('matriz-iperc', 'Matriz IPERC'),
     ('vigilancia-ocupacional', 'Vigilancia ocupacional'),
     ('epp-certificados', 'EPP certificados'),
-    ('consultoria-sst-lima-chiclayo', 'Consultoría SST en Lima y Chiclayo'),
+    ('consultoria-sst-lima', 'Consultoría SST en Lima'),
     ('ley-29783-obligaciones-empleador', 'Guía de la Ley 29783'),
 ]
 
@@ -119,7 +119,7 @@ SERVICE_DESC = {
     'matriz-iperc': 'Peligros, riesgos y medidas de control',
     'vigilancia-ocupacional': 'Exámenes médicos ocupacionales',
     'epp-certificados': 'Equipos de protección personal',
-    'consultoria-sst-lima-chiclayo': 'Atención en nuestras sedes de Lima y Chiclayo',
+    'consultoria-sst-lima': 'Atención desde nuestra oficina en Lima',
     'ley-29783-obligaciones-empleador': 'Qué debe cumplir tu empresa',
 }
 NAV_LINK = 'nav-link text-brand-dark hover:text-brand-primary text-[15px] font-semibold transition-colors'
@@ -211,7 +211,7 @@ FOOTER_SERVICES = [
     ('vigilancia-ocupacional.html', 'Vigilancia Ocupacional'),
     ('epp-certificados.html', 'Suministro EPPs'),
     ('#servicios', 'Capacitaciones'),
-    ('consultoria-sst-lima-chiclayo.html', 'Consultoría SST en Lima y Chiclayo'),
+    ('consultoria-sst-lima.html', 'Consultoría SST en Lima'),
     ('ley-29783-obligaciones-empleador.html', 'Guía Ley 29783'),
 ]
 
@@ -283,7 +283,7 @@ def footer(pre='', home='/'):
       <!-- Bottom bar -->
       <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-gray-400 text-sm">© 2026 SSOMA SAFE. Todos los derechos reservados.</p>
-        <p class="text-gray-400 text-xs">RUC: 20607018287 &nbsp;|&nbsp; Lima &amp; Chiclayo, Perú</p>
+        <p class="text-gray-400 text-xs">RUC: 20607018287 &nbsp;|&nbsp; Lima, Perú</p>
       </div>
     </div>
   </footer>
@@ -306,8 +306,7 @@ def contact_card(pre, wa_text):
     <ul class="mt-5 space-y-3 text-sm text-gray-700">
       <li class="flex gap-3">{icon('phone', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<a href="tel:+{WA_NUMBER}" class="font-semibold hover:text-brand-primary">{PHONE}</a></li>
       <li class="flex gap-3">{icon('mail', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<a href="mailto:{EMAIL}" class="break-all font-semibold hover:text-brand-primary">{EMAIL}</a></li>
-      <li class="flex gap-3">{icon('pin', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<span>Lima: Av. República de Chile 324</span></li>
-      <li class="flex gap-3">{icon('pin', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<span>Chiclayo: Lapoint 1221</span></li>
+      <li class="flex gap-3">{icon('pin', 'mt-0.5 h-4 w-4 shrink-0 text-brand-primary')}<span>Av. República de Chile 324 Int. 601, Santa Beatriz, Jesús María, Lima</span></li>
     </ul>
   </div>
 </aside>

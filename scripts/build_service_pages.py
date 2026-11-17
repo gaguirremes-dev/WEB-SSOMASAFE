@@ -1,6 +1,6 @@
 """Genera las 6 páginas de servicio/guía (auditoria-sst-sunafil, matriz-iperc,
 vigilancia-ocupacional, epp-certificados, ley-29783-obligaciones-empleador,
-consultoria-sst-lima-chiclayo).
+consultoria-sst-lima).
 
 Uso (desde la raíz del repo):  python scripts/build_service_pages.py
 Para añadir una página: agrega un dict a PAGES, ejecuta el script, añade su URL a
@@ -169,16 +169,16 @@ PAGES = [
   related=['auditoria-sst-sunafil','matriz-iperc','vigilancia-ocupacional'],
  ),
  dict(
-  slug='consultoria-sst-lima-chiclayo',
-  title='Consultoría SST en Lima y Chiclayo | SSOMA SAFE',
-  desc='Consultoría SST en Lima y Chiclayo: SGSST, IPERC, auditorías, capacitaciones y EPP. Oficinas en Av. República de Chile 324 y Lapoint 1221.',
-  h1='Consultoría en seguridad y salud en el trabajo en Lima y Chiclayo',
-  crumb='Lima y Chiclayo',
-  wa='Hola, quiero consultoría SST en Lima o Chiclayo.',
-  lead='SSOMA SAFE tiene oficinas en Lima (Av. República de Chile 324) y en Chiclayo (Lapoint 1221), y atiende a empresas de ambas ciudades con consultoría en seguridad y salud en el trabajo, cumplimiento de la Ley N.° 29783 y suministro de EPP.',
-  area=['Lima', 'Chiclayo'],
+  slug='consultoria-sst-lima',
+  title='Consultoría SST en Lima | SSOMA SAFE',
+  desc='Consultoría SST en Lima: SGSST, IPERC, auditorías, capacitaciones y EPP. Oficina en Av. República de Chile 324, Jesús María.',
+  h1='Consultoría en seguridad y salud en el trabajo en Lima',
+  crumb='Lima',
+  wa='Hola, quiero consultoría SST en Lima.',
+  lead='SSOMA SAFE tiene su oficina en Lima (Av. República de Chile 324, Jesús María) y atiende a empresas con consultoría en seguridad y salud en el trabajo, cumplimiento de la Ley N.° 29783 y suministro de EPP.',
+  area=['Lima'],
   sections=[
-   ('Servicios para empresas en Lima y Chiclayo', f'''<ul {UL}>
+   ('Servicios para empresas en Lima', f'''<ul {UL}>
       <li><a {A} href="auditoria-sst-sunafil.html">Auditoría SST y preparación para SUNAFIL</a>.</li>
       <li><a {A} href="matriz-iperc.html">Matriz IPERC</a> y mapas de riesgos.</li>
       <li>Implementación del Sistema de Gestión de SST: política, programa anual, Comité o Supervisor, Reglamento Interno.</li>
@@ -186,17 +186,15 @@ PAGES = [
       <li>Capacitaciones y simulacros.</li>
       <li><a {A} href="epp-certificados.html">Suministro de EPP</a>.</li>
     </ul>'''),
-   ('Nuestras sedes y contacto', f'''<ul {UL}>
-      <li><strong>Lima:</strong> Av. República de Chile 324.</li>
-      <li><strong>Chiclayo:</strong> Lapoint 1221.</li>
+   ('Nuestra oficina y contacto', f'''<ul {UL}>
+      <li><strong>Dirección:</strong> Av. República de Chile Nro. 324 Int. 601, Urb. Santa Beatriz (Edificio Polaris), Jesús María, Lima.</li>
       <li><strong>WhatsApp:</strong> +51 943 704 298.</li>
       <li><strong>Correo:</strong> <a {A} href="mailto:comercial@ssomasafe.com">comercial@ssomasafe.com</a>.</li>
     </ul>
-    <p {P}>Coordina con anticipación para programar visitas a tu empresa o una reunión en la sede que te quede más cerca.</p>'''),
+    <p {P}>Coordina con anticipación para programar una visita a tu empresa o una reunión en nuestra oficina.</p>'''),
   ],
   faq=[
-   ('¿Atienden fuera de Lima y Chiclayo?', 'Escríbenos con la ubicación de tu empresa y coordinamos la visita.'),
-   ('¿Con qué sede me conviene hablar?', 'Con la que te quede más cerca. Si no estás seguro, escríbenos por WhatsApp y te orientamos.'),
+   ('¿Atienden fuera de Lima?', 'Escríbenos con la ubicación de tu empresa y coordinamos la visita.'),
    ('¿Por dónde empiezo?', 'Con un diagnóstico inicial: revisamos qué tienes, qué falta y en qué orden conviene resolverlo.'),
   ],
   related=['auditoria-sst-sunafil','matriz-iperc','ley-29783-obligaciones-empleador'],
@@ -210,7 +208,7 @@ EYEBROWS = {
     'vigilancia-ocupacional': 'Salud ocupacional',
     'epp-certificados': 'Equipos de protección',
     'ley-29783-obligaciones-empleador': 'Guía legal',
-    'consultoria-sst-lima-chiclayo': 'Sedes Lima y Chiclayo',
+    'consultoria-sst-lima': 'Sede Lima',
 }
 LABELS = dict(L.SERVICE_LINKS)
 

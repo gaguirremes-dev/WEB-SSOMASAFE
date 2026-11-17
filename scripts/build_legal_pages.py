@@ -27,7 +27,7 @@ A = 'class="text-brand-primary underline"'
 priv = f'''    <h1 class="font-display font-extrabold text-3xl sm:text-4xl mb-2">Política de Privacidad</h1>
     <p class="text-sm text-gray-500 mb-8">Última actualización: 16 de noviembre de 2026</p>
 
-    <p {P}>SSOMA SAFE S.A.C. (RUC 20607018287), con domicilio en Av. República de Chile 324, Lima, y Lapoint 1221, Chiclayo, Perú (en adelante, «SSOMA SAFE»), es titular del sitio web www.ssomasafe.com y responsable del tratamiento de los datos personales que usted nos proporciona, conforme a la Ley N.° 29733, Ley de Protección de Datos Personales, y su Reglamento aprobado por el Decreto Supremo N.° 016-2024-JUS.</p>
+    <p {P}>SSOMA SAFE S.A.C. (RUC 20607018287), con domicilio en Av. República de Chile Nro. 324 Int. 601, Urb. Santa Beatriz (Edificio Polaris), Jesús María, Lima, Perú (en adelante, «SSOMA SAFE»), es titular del sitio web www.ssomasafe.com y responsable del tratamiento de los datos personales que usted nos proporciona, conforme a la Ley N.° 29733, Ley de Protección de Datos Personales, y su Reglamento aprobado por el Decreto Supremo N.° 016-2024-JUS.</p>
 
     <h2 {H2}>1. Datos que recopilamos</h2>
     <ul {UL}>
@@ -68,7 +68,7 @@ priv = f'''    <h1 class="font-display font-extrabold text-3xl sm:text-4xl mb-2"
 terms = f'''    <h1 class="font-display font-extrabold text-3xl sm:text-4xl mb-2">Términos y Condiciones</h1>
     <p class="text-sm text-gray-500 mb-8">Última actualización: 16 de noviembre de 2026</p>
 
-    <p {P}>El acceso y uso de www.ssomasafe.com (el «Sitio») implica la aceptación de estos términos. El Sitio es operado por SSOMA SAFE S.A.C., RUC 20607018287, Lima y Chiclayo, Perú.</p>
+    <p {P}>El acceso y uso de www.ssomasafe.com (el «Sitio») implica la aceptación de estos términos. El Sitio es operado por SSOMA SAFE S.A.C., RUC 20607018287, Lima, Perú.</p>
 
     <h2 {H2}>1. Objeto del Sitio</h2>
     <p {P}>El Sitio presenta información sobre los servicios de consultoría en seguridad y salud ocupacional, vigilancia ocupacional y suministro de equipos de protección personal (EPP) de SSOMA SAFE, y permite solicitar contacto, cotizaciones y registrar reclamos.</p>

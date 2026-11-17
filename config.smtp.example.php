@@ -9,7 +9,7 @@
 define('DOMINIO_PERMITIDO',    'ssomasafe.com');
 define('EMPRESA_RAZON_SOCIAL', 'SSOMA SAFE S.A.C.');
 define('EMPRESA_RUC',          '20607018287');
-define('EMPRESA_DIRECCION',    'Av. República de Chile 324, Lima / Lapoint 1221, Chiclayo');
+define('EMPRESA_DIRECCION',    'Av. República de Chile Nro. 324 Int. 601 Urb. Santa Beatriz (Edificio Polaris), Lima - Lima - Jesús María');
 define('EMPRESA_EMAIL',        'comercial@ssomasafe.com');
 
 // ── SMTP ──────────────────────────────────────────────────────────────────────

@@ -45,14 +45,14 @@ Contenido redactado con hechos normativos verificables, sin cifras ni casos inve
 | Servicio | IPERC / matriz IPERC | Informativa-comercial | Creada: `matriz-iperc.html` |
 | Servicio | vigilancia ocupacional / salud ocupacional empresas | Comercial | Creada: `vigilancia-ocupacional.html` |
 | Servicio | EPP certificados para empresas | Transaccional | Creada: `epp-certificados.html` |
-| Local | consultoría seguridad y salud en el trabajo Lima y Chiclayo | Comercial local | Creada: `consultoria-sst-lima-chiclayo.html` |
+| Local | consultoría seguridad y salud en el trabajo Lima | Comercial local | Creada: `consultoria-sst-lima.html` |
 | Contenido | Ley 29783: obligaciones de la empresa | Informativa | Creada: `ley-29783-obligaciones-empleador.html` |
 
 ## 4. Pendientes manuales 👤 (con pasos)
 
 1. **Search Console** (search.google.com/search-console): Añadir propiedad → tipo **Dominio** `ssomasafe.com` → copiar el registro TXT al DNS (Cloudflare) → Verificar → Sitemaps → enviar `https://www.ssomasafe.com/sitemap.xml`.
 2. **GA4** (analytics.google.com): Admin → Crear propiedad → flujo web `https://www.ssomasafe.com` → copiar el ID `G-XXXXXXX`. Añadir el script de GA4 en el `<head>` de `index.html` y en `HEAD` de los generadores de `scripts/` y **actualizar la Política de Privacidad**: hoy declara que no hay analítica ni cookies de seguimiento. Después: Admin → Product links → Search Console links.
-3. **Google Business Profile**: hay oficinas en Lima y Chiclayo. Si reciben clientes en la oficina con letrero, perfil de tienda por cada sede; si solo visitan al cliente, perfil de **servicio a domicilio** (dirección oculta, hasta 20 zonas de servicio). Nombre, dirección y teléfono idénticos a la web y al JSON-LD. Mantener un perfil por ubicación, sin apartados postales. La verificación puede pedir un video (letrero, interior, vehículos).
+3. **Google Business Profile**: la oficina está en Lima (Jesús María). Si reciben clientes en la oficina con letrero, perfil de tienda; si solo visitan al cliente, perfil de **servicio a domicilio** (dirección oculta, hasta 20 zonas de servicio). Nombre, dirección y teléfono idénticos a la web y al JSON-LD. Mantener un perfil por ubicación, sin apartados postales. La verificación puede pedir un video (letrero, interior, vehículos).
 4. **Registro de banco de datos personales**: las empresas que tratan datos personales deben inscribir sus bancos de datos en el Registro Nacional de Protección de Datos Personales (ANPD). Estado desconocido: confirmar con un abogado si SSOMA SAFE ya está inscrita.
 5. **Revisión legal**: la Política y los Términos son una base razonable según Ley N.° 29733 y su Reglamento (D.S. N.° 016-2024-JUS, en vigor desde el 31/03/2025), Ley N.° 29571 y D.S. N.° 101-2022-PCM. Sin cifras de plazos ARCO a propósito (no contrastadas con el texto oficial). No sustituyen asesoría legal.
 6. **Libro de Reclamaciones**: la normativa indica que debe ser visible en la página de inicio y que debe existir un libro físico de respaldo. El footer ya lo muestra; confirma el libro físico y el plazo de respuesta vigente con INDECOPI.

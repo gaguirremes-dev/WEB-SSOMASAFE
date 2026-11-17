@@ -14,7 +14,7 @@ if (file_exists($smtpConfigFile)) require $smtpConfigFile;
 if (!defined('DOMINIO_PERMITIDO'))    define('DOMINIO_PERMITIDO',    'ssomasafe.com');
 if (!defined('EMPRESA_RAZON_SOCIAL')) define('EMPRESA_RAZON_SOCIAL', 'SSOMA SAFE S.A.C.');
 if (!defined('EMPRESA_RUC'))          define('EMPRESA_RUC',          '20607018287');
-if (!defined('EMPRESA_DIRECCION'))    define('EMPRESA_DIRECCION',    'Av. República de Chile 324, Lima / Lapoint 1221, Chiclayo');
+if (!defined('EMPRESA_DIRECCION'))    define('EMPRESA_DIRECCION',    'Av. República de Chile Nro. 324 Int. 601 Urb. Santa Beatriz (Edificio Polaris), Lima - Lima - Jesús María');
 if (!defined('EMPRESA_EMAIL'))        define('EMPRESA_EMAIL',        'comercial@ssomasafe.com');
 if (!defined('SMTP_PORT'))            define('SMTP_PORT',            465);
 if (!defined('SMTP_FROM_NAME'))       define('SMTP_FROM_NAME',       'SSOMA SAFE');
@@ -695,7 +695,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $errorMsg === '') {
         if (!in_array($bien_tipo,    ['producto','servicio'],          true)) $bien_tipo    = 'servicio';
         if (!in_array($reclamo_tipo, ['reclamo','queja'],              true)) $reclamo_tipo = 'reclamo';
 
-        $sedesValidas = ['Lima — Av. República de Chile 324', 'Chiclayo — Lapoint 1221', 'Servicio online / plataforma digital'];
+        $sedesValidas = ['Lima — Av. República de Chile 324 (Jesús María)', 'Servicio online / plataforma digital'];
         if (!in_array($sede, $sedesValidas, true)) $sede = 'No especificada';
 
         if (!$nombres || !$doc_nro || !$email || !$direccion || !$detalle || !$pedido
@@ -1195,8 +1195,7 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                                         <label class="form-label">Sede / Establecimiento <span class="text-red-500">*</span></label>
                                         <select name="sede" required class="form-input">
                                             <option value="">Selecciona la sede</option>
-                                            <option value="Lima — Av. República de Chile 324"    <?= (($_POST['sede']??'')==='Lima — Av. República de Chile 324')?'selected':'' ?>>Lima — Av. República de Chile 324</option>
-                                            <option value="Chiclayo — Lapoint 1221"               <?= (($_POST['sede']??'')==='Chiclayo — Lapoint 1221')?'selected':'' ?>>Chiclayo — Lapoint 1221</option>
+                                            <option value="Lima — Av. República de Chile 324 (Jesús María)" <?= (($_POST['sede']??'')==='Lima — Av. República de Chile 324 (Jesús María)')?'selected':'' ?>>Lima — Av. República de Chile 324 (Jesús María)</option>
                                             <option value="Servicio online / plataforma digital"  <?= (($_POST['sede']??'')==='Servicio online / plataforma digital')?'selected':'' ?>>Servicio online / plataforma digital</option>
                                         </select>
                                     </div>
@@ -1308,10 +1307,6 @@ if (isset($_GET['ok']) && !empty($_SESSION['reclamo_success'])) {
                     <div>
                         <span class="block text-gray-400 uppercase tracking-widest text-[9px] mb-0.5">Dirección</span>
                         <span class="text-gray-600"><?= EMPRESA_DIRECCION ?></span>
-                    </div>
-                    <div>
-                        <span class="block text-gray-400 uppercase tracking-widest text-[9px] mb-0.5">Contacto</span>
-                        <a href="mailto:<?= EMPRESA_EMAIL ?>" class="text-brand-primary hover:underline"><?= EMPRESA_EMAIL ?></a>
                     </div>
                 </div>
 
